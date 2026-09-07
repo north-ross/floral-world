@@ -11,18 +11,48 @@ const sr = FileAttachment('./data/family-area-sr.json').json();
 ```
 
 ```js
+// lookup functions for map 
+// Build a lookup: area code -> richness, for the currently selected family
+const familyData = sr[selFamily] ?? {};
 
+const richnessByArea = new Map(
+  Object.entries(familyData).map(([area, val]) => [area, Math.round(val)])
+);
+
+// Color scale domain based on the *current* family's values (so it rescales per family)
+const richnessExtent = d3.extent(richnessByArea.values());
+```
+
+
+```js
+// Map
 const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth" },
   width: 1080,
+  color: {
+    type: "sequential",
+    scheme: "YlGn",
+    domain: richnessExtent,
+    unknown: "var(--theme-foreground-fainter)",
+    legend: true,
+    label: `Species richness — ${selFamily}`
+  },
   marks: [
     Plot.sphere(),
     Plot.graticule(),
-    Plot.geo(wgsrpd, {fill: "var(--theme-foreground-fainter)"}),
+    Plot.geo(wgsrpd, {
+      fill: (d) => richnessByArea.get(d.properties.LEVEL3_COD),
+      stroke: "white",
+      strokeWidth: 0.5
+      }),
     Plot.geo(wgsrpd, Plot.pointer({
-        title: "LEVEL3_NAM", 
+        title: (d) => {
+          const code = d.properties.LEVEL3_COD;
+          const val = richnessByArea.get(code);
+          return `${d.properties.LEVEL3_NAM}: ${val ?? "no data"}`;
+        },
         stroke: "var(--theme-foreground-focus)",
         tip: true
         }))
@@ -109,7 +139,7 @@ const selFamily = view(
     })
 );
 
-// TODO: Get global species richness included in sr
+// TODO: Get global species richness for species included in sr
 ```
 
   ${selFamily.length < 0
