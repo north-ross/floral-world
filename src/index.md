@@ -1,15 +1,30 @@
 ---
-title: Geo Test
+title: Vascular Plant Diversity
 toc: false
 ---
 
 # Floral World
+
+```js
+const persistedArea = Mutable(null);
+const setPersistedArea = (v) => {persistedArea.value = v;};
+```
+
 ```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
 const sr = FileAttachment('./data/family-area-sr.json').json();
 // Add a column for "total" for every family, which should display first
 // Get data on climate to make a bar chart
+const dark = Generators.dark();
+```
+
+
+```js
+// Trigger using log scale to color the map
+const logscale = view(Inputs.toggle({label: "Log scale", values: ["log", "sequential"]}));
+
+const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
 ```
 
 ```js
@@ -20,21 +35,10 @@ const familyData = sr[selFamily] ?? {};
 const richnessByArea = new Map(
   Object.entries(familyData).map(([area, val]) => [area, Math.round(val)])
 );
-
-// Color scale domain based on the *current* family's values (so it rescales per family)
-const richnessExtent = d3.extent(richnessByArea.values());
-
-const logscale = view(Inputs.radio(["log", "sequential"], {
-  label: "Color scale",
-  value: "sequential"
-  }));
 ```
-
 
 ```js
 // Map
-// Since changing selFamily reloads the map, it cancels the current selArea. Is there a way to make it persist?
-const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth" },
@@ -42,7 +46,6 @@ const selAreaMap = Plot.plot({
   color: {
     type: logscale ,// Add option to replace with log
     scheme: "YlGn", // Adjust color scale so that zero is the theme color
-    // domain: richnessExtent,
     unknown: "var(--theme-foreground-fainter)",
     legend: true,
     label: `Species richness — ${selFamily}`
@@ -52,7 +55,7 @@ const selAreaMap = Plot.plot({
     Plot.graticule(),
     Plot.geo(wgsrpd, {
       fill: (d) => richnessByArea.get(d.properties.LEVEL3_COD),
-      stroke: "white",
+      stroke: "#b0b0b0",
       strokeWidth: 0.5
       }),
     Plot.geo(wgsrpd, Plot.pointer({
@@ -70,25 +73,31 @@ const selAreaMap = Plot.plot({
 
 view(selAreaMap)
 
+```
+
+```js
+// Generator input for selArea
 const selArea = Generators.input(selAreaMap);
-// view(wgsrpdTopo.objects.mapshaper.geometries)
-// if there are problems with data requesting too fast:
-// Only call the table if it's "frozen" as per https://observablehq.com/@mtsvelik/plot-frozen-state-detection
+```
+
+```js
+// Set a persistent area that doesn't get reset when map is reloaded
+if (selArea !== null) setPersistedArea(selArea);
 ```
 
 <div class="grid grid-cols-2">
 <div class="card">
-  ${selArea === null
+
+  ${persistedArea === null
     ? html`<p>Select a botanical country from the map.</p>`
     : html`
-        <h2>${selArea.properties.LEVEL3_NAM}</h2>
-        <p>The bars are open in beautiful ${selArea.properties.LEVEL3_NAM}...</p>
+        <h2>${persistedArea.properties.LEVEL3_NAM}</h2>
+        <p>The bars are open in beautiful ${persistedArea.properties.LEVEL3_NAM}...</p>
       `
   }
 
 ```js
 // Get species richness by family
-
 // Transpose: for the chosen area, pull that value out of every family
 function transposeForArea(nested, areaCode) {
   return Object.entries(nested).map(([family, values]) => ({
@@ -97,10 +106,12 @@ function transposeForArea(nested, areaCode) {
   }));
 }
 
-const entries = transposeForArea(sr, selArea.properties.LEVEL3_COD);
+const areaEntries =persistedArea
+  ? transposeForArea(sr, persistedArea.properties.LEVEL3_COD)
+  : [];
 
 // Sort descending by richness
-const areaSorted = [...entries].sort((a, b) => d3.descending(a.richness, b.richness));
+const areaSorted = [...areaEntries].sort((a, b) => d3.descending(a.richness, b.richness));
 
 // Same average-tie ranking
 function assignRanks(sortedRows) {
@@ -117,11 +128,9 @@ function assignRanks(sortedRows) {
   return out;
 }
 
-const ranked = assignRanks(areaSorted);
-```
+const areaRanked = assignRanks(areaSorted);
 
-```js 
-Inputs.table(ranked, {
+const areaTableSel = view(Inputs.table(areaRanked, {
   columns: ["family", "richness", "rank"],
   header: {
     family: "Plant Family",
@@ -131,8 +140,9 @@ Inputs.table(ranked, {
   sort: "richness",
   select: false,
   reverse: true
-})
+}))
 ```
+
 </div>
 <div class="card">
 
@@ -159,7 +169,7 @@ ${selFamily === null
   ? html`<p>Choose a family from the search bar</p>`
   : html`
       <h2>${selFamily} (common name)</h2>
-      <p>Contains x species, highest species richness in ${famSorted[0].area}.</p>
+      <p>Contains x species, highest species richness in ${famSorted[0]?.area ?? "—"}.</p>
     `
 }
 
@@ -175,13 +185,13 @@ const codeToName = Object.fromEntries(
 )
 
 // 2. Turn the object into an array of rows
-const entries = Object.entries(sr[selFamily]).map(([area, richness]) => ({
+const famEntries = Object.entries(sr[selFamily]).map(([area, richness]) => ({
   area: codeToName[area], // Fix some missing areas
   richness: Math.round(richness)
 }));
 
 // 3. Sort descending by richness
-const famSorted = [...entries].sort((a, b) => d3.descending(a.richness, b.richness));
+const famSorted = [...famEntries].sort((a, b) => d3.descending(a.richness, b.richness));
 // 4. Show table
 const tableSelectedArea = view(Inputs.table(famSorted, {
   columns: ["area", "richness"],
