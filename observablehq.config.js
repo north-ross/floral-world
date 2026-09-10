@@ -23,9 +23,9 @@ export default {
   root: "src",
 
   // Some additional configuration options and their defaults:
-  theme: ["parchment"] // "ink" as dark theme?
+  theme: ["parchment", "coffee"],
   // header: "", // what to show in the header (HTML)
-  // footer: "Built with Observable.", // what to show in the footer (HTML)
+  footer: "Map data adapted from <a href=\"https://www.tdwg.org/standards/wgsrpd/\">World Geographic System for Recording Plant Distributions</a>, with species distributions from the <a href=\"https://powo.science.kew.org/about-wcvp\">World Checklist of Vascular Plants</a>. Built with Observable.", // what to show in the footer (HTML)
   // sidebar: true, // whether to show the sidebar
   // toc: true, // whether to show the table of contents
   // pager: true, // whether to show previous & next links in the footer
