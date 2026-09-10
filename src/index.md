@@ -6,73 +6,108 @@ toc: false
 # Floral World
 
 ```js
-const persistedArea = Mutable(null);
-const setPersistedArea = (v) => {persistedArea.value = v;};
-```
-
-```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
 const sr = FileAttachment('./data/family-area-sr.json').json();
+// const sr = FileAttachment('./data/family-area-sr-rank.json').json();
 // Add a column for "total" for every family, which should display first
 // Get data on climate to make a bar chart
 const dark = Generators.dark();
 ```
 
+```js
+// Pack into topojson feature
+const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
+
+
+view(sr)
+```
 
 ```js
 // Trigger using log scale to color the map
-const logscale = view(Inputs.toggle({label: "Log scale", values: ["log", "sequential"]}));
+// removed view() from this so it doesn't draw here (I think)
+const logscaleInput = Inputs.toggle({label: "Use log scale", values: ["log", "sequential"]});
+```
 
-const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
+```js
+// The reactive value stream — this is what other cells should depend on
+const logscale = Generators.input(logscaleInput);
+```
+
+```js
+// Define the color scale options once, shared between the plot and the standalone legend
+const colorOptions = {
+  type: logscale,
+  range: ["#FAF7C7", "#688816", "#1C3D28"], 
+  domain: [richnessExtent[0]+1, richnessExtent[1]], // guarded against showing zero, this also makes 0 white for small families (good)
+  interpolate: "rgb",
+  unknown: "var(--theme-foreground-fainter)",
+  label: `Species richness — ${persistedFam}`
+};
 ```
 
 ```js
 // lookup functions for map 
-// Build a lookup: area code -> richness, for the currently selected family
-const familyData = sr[selFamily] ?? {};
-
+const familyDataSr = sr[persistedFam] ?? {};
 const richnessByArea = new Map(
-  Object.entries(familyData).map(([area, val]) => [area, Math.round(val)])
+  Object.entries(familyDataSr).map(([area, val]) => [area, Math.round(val)])
 );
+const richnessExtent = d3.extent(richnessByArea.values());
 ```
 
 ```js
 // Map
+const mapWidth = 0.8 * width;
 
 const selAreaMap = Plot.plot({
-  projection: { type: "equal-earth" },
-  width: 1080,
-  color: {
-    type: logscale ,// Add option to replace with log
-    scheme: "YlGn", // Adjust color scale so that zero is the theme color
-    unknown: "var(--theme-foreground-fainter)",
-    legend: true,
-    label: `Species richness — ${selFamily}`
-  },
+  projection: { type: "equal-earth", domain: wgsrpd },
+  width: mapWidth,
+  color: { ...colorOptions, legend: false },
   marks: [
-    Plot.sphere(),
+    Plot.sphere({fill: "#A8CAD4", fillOpacity: 0.4}),
     Plot.graticule(),
     Plot.geo(wgsrpd, {
       fill: (d) => richnessByArea.get(d.properties.LEVEL3_COD),
-      stroke: "#b0b0b0",
+      stroke: "#afafaf",
       strokeWidth: 0.5
-      }),
+    }),
     Plot.geo(wgsrpd, Plot.pointer({
-        title: (d) => {
-          const code = d.properties.LEVEL3_COD;
-          const val = richnessByArea.get(code);
-          return `${d.properties.LEVEL3_NAM}: ${val ?? "no data"}`;
-        },
-        stroke: "var(--theme-foreground-focus)",
-        tip: true
-        }))
-    // Add another mark that activates when a country is selected
+      title: (d) => {
+        const code = d.properties.LEVEL3_COD;
+        const val = richnessByArea.get(code);
+        return `${d.properties.LEVEL3_NAM}: ${val ?? "no data"}`;
+      },
+      stroke: "#662200",
+      tip: {fill: "#662200"}
+    }))
   ]
 });
 
-view(selAreaMap)
+// Plot sets this explicitly from width + projection aspect ratio —
+// available immediately, no need to wait for DOM layout.
+const mapHeight = +selAreaMap.getAttribute("height");
 
+// view(selAreaMap)
+// console.log("reloaded map")
+```
+
+```js
+// Lightweight overlay — same width/height/projection domain as the base map,
+// Only this updates with persistedArea
+const highlightOverlay = Plot.plot({
+  projection: { type: "equal-earth", domain: wgsrpd },
+  width: mapWidth,
+  height: mapHeight,
+  marks: [
+    Plot.sphere({stroke:"var(--theme-foreground)"}),
+    Plot.geo(
+      persistedArea ? [persistedArea] : [],
+      { stroke: "#662200", strokeWidth: 2.5, fill: "none" }
+    )
+  ],
+  style: { backgroundColor: "transparent" }
+});
+// console.log("reloaded light map")
 ```
 
 ```js
@@ -81,8 +116,41 @@ const selArea = Generators.input(selAreaMap);
 ```
 
 ```js
-// Set a persistent area that doesn't get reset when map is reloaded
-if (selArea !== null) setPersistedArea(selArea);
+// Set mutable for selected area
+const persistedArea = Mutable(null);
+const setPersistedArea = (v) => {persistedArea.value = v;};
+```
+
+```js
+// When map is clicked, update persistent area mutable
+selAreaMap.addEventListener(
+  "pointerdown",
+  (event) => {
+    event.stopPropagation(); // stop Plot's own pointerdown (sticky toggle) from running
+    requestAnimationFrame(() => requestAnimationFrame(() => { // skip two frames to avoid premature result
+      if (selArea !== null) setPersistedArea(selArea);
+      // console.log("pst", persistedArea)
+    }));
+  },
+  { capture: true }
+);
+```
+
+```js
+// Standalone legend, rendered separately in normal document flow
+const colorLegend = Plot.legend({ color: colorOptions });
+```
+
+```js
+html`<div>
+  <div class="grid grid-cols-2">
+    <div>${colorLegend}</div> <div>${logscaleInput}</div>
+  </div>
+  <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
+    <div style="position: absolute; top: 0; left: 0;">${selAreaMap}</div>
+    <div style="position: absolute; top: 0; left: 0; pointer-events: none;">${highlightOverlay}</div>
+  </div>
+</div>`
 ```
 
 <div class="grid grid-cols-2">
@@ -130,7 +198,7 @@ function assignRanks(sortedRows) {
 
 const areaRanked = assignRanks(areaSorted);
 
-const areaTableSel = view(Inputs.table(areaRanked, {
+const famTableInput = view(Inputs.table(areaRanked, {
   columns: ["family", "richness", "rank"],
   header: {
     family: "Plant Family",
@@ -138,37 +206,57 @@ const areaTableSel = view(Inputs.table(areaRanked, {
     rank: "Rank"
   },
   sort: "richness",
-  select: false,
+  multiple: false,
   reverse: true
 }))
 ```
 
-</div>
-<div class="card">
+```js
+// Set mutable for selected family
+const persistedFam = Mutable(null);
+const setPersistedFam = (v) => {persistedFam.value = v;};
+```
 
 ```js
-const selFamilySearch = view(
-  Inputs.search(Object.keys(sr), {
+// Update selected family from table when table clicked
+if (famTableInput !== null) setPersistedFam(famTableInput.family);
+// Now reset the search bar
+```
+
+```js
+const selFamilySearchInput = Inputs.search(
+  Object.keys(sr), {
     placeholder: "Choose a family",
-    query: "Total",
+    query: "Vascular Plants",
     required: false,
     datalist: Object.keys(sr),
     multiple: false 
-    })
+  }
 );
-// TODO: Get global species richness for species included in sr
+// TODO: Get global species richness by family included in sr
 ```
 
 ```js
-// Get first family from search
-// Make this a mutable or generator so it can be overwritten by clicking a family name elsewhere
-const selFamily = selFamilySearch[0]
+const selFamilySearch = Generators.input(selFamilySearchInput);
 ```
 
-${selFamily === null
-  ? html`<p>Choose a family from the search bar</p>`
+```js
+// Set first result from search as persistent family
+if (selFamilySearch[0] != null) setPersistedFam(selFamilySearch[0]);
+// And reset the table selection
+```
+</div>
+
+
+
+<div class="card">
+${persistedFam == null
+  ? html`${selFamilySearchInput}<p>Choose a family from the search bar</p>`
   : html`
-      <h2>${selFamily} (common name)</h2>
+      <div class="grid grid-cols-2">
+        <div><h2>${persistedFam} (common name)</h2></div>
+        <div>${selFamilySearchInput}</div>
+      </div>
       <p>Contains x species, highest species richness in ${famSorted[0]?.area ?? "—"}.</p>
     `
 }
@@ -185,24 +273,43 @@ const codeToName = Object.fromEntries(
 )
 
 // 2. Turn the object into an array of rows
-const famEntries = Object.entries(sr[selFamily]).map(([area, richness]) => ({
-  area: codeToName[area], // Fix some missing areas
+// 2. Turn the object into an array of rows with a safe fallback
+const famEntries = Object.entries(sr[persistedFam] || {}).map(([areaCode, richness]) => ({
+  areaCode: areaCode,
+  areaName: codeToName[areaCode] ?? areaCode, // Fallback if areaCode isn't in codeToName
   richness: Math.round(richness)
 }));
 
 // 3. Sort descending by richness
 const famSorted = [...famEntries].sort((a, b) => d3.descending(a.richness, b.richness));
 // 4. Show table
-const tableSelectedArea = view(Inputs.table(famSorted, {
-  columns: ["area", "richness"],
+const areaTableSelect = view(Inputs.table(famSorted, {
+  columns: ["areaName", "richness"],
   header: {
-    area: "Area",
+    areaName: "Area",
     richness: "Species Richness"
   },
-  select: false 
-  //multiple: false// Would be nice if they could select a country here and have it flash on the map, or even change the selection
+  // select: false 
+  multiple: false
 }))
 ```
+
+```js
+// Set persistent area based on table selection
+// Lookup feature from country code
+const codeToFeature = Object.fromEntries(
+  wgsrpd.features.map(feature => [
+    feature.properties.LEVEL3_COD,
+    feature
+  ])
+)
+// Set persistent area
+if (areaTableSelect !== null) setPersistedArea(
+  codeToFeature[areaTableSelect.areaCode]
+);
+
+```
+
 
 </div>
 </div>
@@ -220,6 +327,7 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 
 ## Planned features
 ### Priority
+
 - Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
   - Find the common name that contains "family" and use that
   - Let the search bar search this too
@@ -230,11 +338,12 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - Excluding zero-species taxa (replace with NA for this purpose)
   - How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.
   - For countries that have multiple families where they're #1, include the number of them
-- Selecting a family from the countries table updates the selected family reactively
-  - Maybe I can make this work with the country too, but it seems difficult
+
+- 🗹 ~~Selecting a family from the countries table updates the selected family reactively~~
 
 ### Low priority
 - Pan/zoom map and change projection
+  - Probably not possible anymore
 - Add some higher-level categories like "ferns"
 - In the family info box, include an "iconic species" (maybe most observed on iNat)
 - Filter data to include introduced ranges or exclude extinct species
@@ -245,4 +354,4 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - Will need to make small islands more visible
 
 
-Map data adapted from [World Geographic System for Recording Plant Distributions](https://www.tdwg.org/standards/wgsrpd/), with species distributions from the [World Checklist of Vascular Plants](https://powo.science.kew.org/about-wcvp).
+
