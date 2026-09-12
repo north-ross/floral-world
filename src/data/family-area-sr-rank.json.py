@@ -2,11 +2,11 @@
 Reads from WCVP archive
 """
 import json
+import sys
 from zipfile import ZipFile
 from io import BytesIO
 from urllib.request import urlopen
 import pandas as pd
-import sys
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
 
@@ -31,8 +31,6 @@ filtered_ddf = ddf.merge(species_ids, on='plant_name_id', how='inner')
 # remove introduced species
 filtered_ddf = filtered_ddf.loc[filtered_ddf['introduced']==0]
 
-# I also want to get the total species per family
-
 # Group this to just get a count of unique plant_name_ids in each area_code_l3
 sr = filtered_ddf[['area_code_l3', 'plant_name_id', 'family']].pivot_table(
     index='area_code_l3',
@@ -42,7 +40,8 @@ sr = filtered_ddf[['area_code_l3', 'plant_name_id', 'family']].pivot_table(
     )
 sr = sr.fillna(0)
 
-# Rank each family. Average method gives us the average value for a tie so we can better compare between groups
+# Rank each family. Average method gives us the average value for a tie 
+#   so we can better compare between groups
 ranked_df = sr.apply(lambda x: x.rank(method='average', ascending=False))
 
 # And get the dense ranking with number of ties for display
@@ -50,8 +49,8 @@ def getTieNumber(x):
     dense = x.rank(method='dense', ascending=False)
     diff = x.rank(method='max') - x.rank(method='min') + 1
     tieformat = pd.Series(
-        [f"{int(d_val)} ({int(diff_val)}-way tie)" 
-            if diff_val > 1 else str(int(d_val)) 
+        [f"{int(d_val)} ({int(diff_val)}-way tie)"
+            if diff_val > 1 else str(int(d_val))
             for d_val, diff_val in zip(dense, diff)],
         index=x.index)
     return tieformat
@@ -62,7 +61,7 @@ pct_above_avg = (sr - sr.mean())/sr.mean()
 pct_above_avg[pct_above_avg < 0] = None
 
 # Combine all tables
-result = pd.concat([sr, ranked_df, ranked_df_ties, pct_above_avg], axis=1, 
+result = pd.concat([sr, ranked_df, ranked_df_ties, pct_above_avg], axis=1,
     keys=['sr','rank', 'tie', 'pct_above_avg'])
 
 # Swap the levels so family is first, sr/rank/tie is second

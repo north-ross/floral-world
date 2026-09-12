@@ -3,7 +3,7 @@ title: Vascular Plant Diversity
 toc: false
 ---
 
-# Floral World
+# Floral World: ${persistedFam}
 
 ```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
@@ -159,7 +159,7 @@ html`<div>
   ${persistedArea === null
     ? html`<p>Select a botanical country from the map.</p>`
     : html`
-        <h2>${persistedArea.properties.LEVEL3_NAM}</h2>
+        <h1>${persistedArea.properties.LEVEL3_NAM}</h1>
         <p>The bars are open in beautiful ${persistedArea.properties.LEVEL3_NAM}...</p>
       `
   }
@@ -227,7 +227,7 @@ if (famTableInput !== null) setPersistedFam(famTableInput.family);
 const selFamilySearchInput = Inputs.search(
   Object.keys(sr), {
     placeholder: "Choose a family",
-    query: "Vascular Plants",
+    query: "Total", // "Vascular Plants",
     required: false,
     datalist: Object.keys(sr),
     multiple: false 
@@ -272,7 +272,6 @@ const codeToName = Object.fromEntries(
   ])
 )
 
-// 2. Turn the object into an array of rows
 // 2. Turn the object into an array of rows with a safe fallback
 const famEntries = Object.entries(sr[persistedFam] || {}).map(([areaCode, richness]) => ({
   areaCode: areaCode,
@@ -288,8 +287,8 @@ const areaTableSelect = view(Inputs.table(famSorted, {
   header: {
     areaName: "Area",
     richness: "Species Richness"
+    // Add "% of global"
   },
-  // select: false 
   multiple: false
 }))
 ```
@@ -327,12 +326,14 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 
 ## Planned features
 ### Priority
-
+- Fix the search bar so it doesn't reload after every press
+- Add data loader to keep site up-to-date
+  - Fix it so it builds json correctly, and write code to get derived values (ties etc) in js
+  - Add data loader for common names
 - Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
   - Find the common name that contains "family" and use that
   - Let the search bar search this too
 - Get an image and link to the family Wikipedia page (and iNat)
-- Add data loader to keep site up-to-date - also update common names
 - Determine the "specialty" family for each area
   - From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
   - Excluding zero-species taxa (replace with NA for this purpose)
