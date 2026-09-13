@@ -6,6 +6,10 @@ toc: false
 # Floral World: ${persistedFam ?? "Vascular Plants"}
 
 ```js
+import { rankFamily} from "./rankings.js";
+```
+
+```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
 const sr = FileAttachment('./data/family-area-sr.json').json();
@@ -36,7 +40,7 @@ const logscale = Generators.input(logscaleInput);
 const colorOptions = {
   type: logscale,
   range: ["#FAF7C7", "#688816", "#1C3D28"], 
-  domain: [richnessExtent[0]+1, richnessExtent[1]], // guarded against showing zero, this also makes 0 white for small families (good).
+  domain: [richnessExtent[0], richnessExtent[1]], // guarded against showing zero, this also makes 0 white for small families (good).
   // TODO: Fix this causing problems for single-species families by making it just richnessExtent if logscale == "sequential", else make it this.
   interpolate: "rgb",
   unknown: "var(--theme-foreground-fainter)",
@@ -178,8 +182,7 @@ html`<div>
   }
 
 ```js
-// Get species richness by family
-// Transpose: for the chosen area, pull that value out of every family
+// Get species richness by family, for the selected area
 function transposeForArea(nested, areaCode) {
   return Object.entries(nested).map(([family, values]) => ({
     family,
@@ -187,38 +190,25 @@ function transposeForArea(nested, areaCode) {
   }));
 }
 
-const areaEntries =persistedArea
+const areaEntries = persistedArea
   ? transposeForArea(sr, persistedArea.properties.LEVEL3_COD)
   : [];
 
-// Sort descending by richness
-const areaSorted = [...areaEntries].sort((a, b) => d3.descending(a.richness, b.richness));
-
-// Same average-tie ranking
-function assignRanks(sortedRows) {
-  const n = sortedRows.length;
-  const out = new Array(n);
-  let i = 0;
-  while (i < n) {
-    let j = i;
-    while (j < n && sortedRows[j].richness === sortedRows[i].richness) j++;
-    const avgRank = (i + 1 + j) / 2;
-    for (let k = i; k < j; k++) out[k] = { ...sortedRows[k], rank: avgRank };
-    i = j;
-  }
-  return out;
-}
-
-const areaRanked = assignRanks(areaSorted);
+// NOTE: rankFamily ranks whatever array you give it — here that's "families
+// within one area" rather than "areas within one family", but the ranking
+// math (ties, averages) is identical either way, so we reuse it directly.
+const areaRanked = rankFamily(
+  areaEntries);
 
 const famTableInput = view(Inputs.table(areaRanked, {
-  columns: ["family", "richness", "rank"],
+  columns: ["family", "richness", "tieLabel", "pctAboveAvg"],
   header: {
     family: "Plant Family",
     richness: "Species Richness",
-    rank: "Rank"
+    tieLabel: "Rank",
+    pctAboveAvg: "% Above Average"
   },
-  sort: "richness",
+  sort: "rank",
   multiple: false,
   reverse: true
 }))
@@ -269,7 +259,7 @@ ${persistedFam == null
         <div><h1>${persistedFam} (${cmnNames[persistedFam][0] ?? ""})</h1></div>
         <div>${selFamilySearchInput}</div>
       ${cmnNames[persistedFam].length > 1 ? html`<p><strong>Also known as:</strong> ${cmnNames[persistedFam].slice(1).join(", ")}</p>`:html``}
-      <p>Contains ${sr[persistedFam]['global']} species globally, highest species richness in ${famSorted[0]?.areaName ?? "—"}.</p>
+      <p>Contains ${sr[persistedFam]['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
     `
 }
 
@@ -286,23 +276,24 @@ const codeToName = Object.fromEntries(
 
 // 2. Turn the object into an array of rows with a safe fallback
 const famEntries = Object.entries(sr[persistedFam]?.['sr'] || {}).map(([areaCode, richness]) => ({
-  areaCode: areaCode,
-  areaName: codeToName[areaCode] ?? areaCode, // Fallback if areaCode isn't in codeToName
+  areaCode,
+  areaName: codeToName[areaCode] ?? areaCode,
   richness: Math.round(richness),
   percentGlobal: Math.round(richness / sr[persistedFam]['global'] * 1000) / 10
 }));
 
-// 3. Sort descending by richness
-const famSorted = [...famEntries].sort((a, b) => d3.descending(a.richness, b.richness));
-// 4. Show table
-const areaTableSelect = view(Inputs.table(famSorted, {
+const famRanked = rankFamily(famEntries);
+
+const areaTableSelect = view(Inputs.table(famEntries, {
   columns: ["areaName", "richness", "percentGlobal"],
   header: {
     areaName: "Area",
     richness: "Species Richness",
-    percentGlobal: "% of Global Richness"
+    percentGlobal: "% of Global"
   },
-  multiple: false
+  multiple: false,
+  sort: "richness", reverse: true
+  
 }))
 ```
 
