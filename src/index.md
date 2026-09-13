@@ -176,42 +176,61 @@ html`<div>
     ? html`<p>Select a botanical country from the map.</p>`
     : html`
         <h1>${persistedArea.properties.LEVEL3_NAM}</h1>
-        <p><strong>Vascular plant species richness:</strong> ${totalSrMap[persistedArea.properties.LEVEL3_COD]}</p>
-        <p>The bars are open in beautiful ${persistedArea.properties.LEVEL3_NAM}...</p>
+        <p>Contains ${areaRanked.filter((d) => d.richness>0).length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
+        ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
       `
   }
 
 ```js
-// Get species richness by family, for the selected area
+const globalRankCache = new Map();
+
+function getGlobalRanking(family) {
+  if (!globalRankCache.has(family)) {
+    const entries = Object.entries(sr[family]['sr'] ?? {}).map(([areaCode, richness]) => ({
+      areaCode,
+      richness: Math.round(richness)
+    }));
+    globalRankCache.set(family, rankFamily(entries));
+  }
+  return globalRankCache.get(family);
+}
+
+// For the selected area, look up each family's GLOBAL rank at that area's code
 function transposeForArea(nested, areaCode) {
-  return Object.entries(nested).map(([family, values]) => ({
-    family,
-    richness: Math.round(values['sr'][areaCode] ?? 0)
-  }));
+  return Object.keys(nested).map((family) => {
+    const globalRanked = getGlobalRanking(family);
+    const row = globalRanked.find((d) => d.areaCode === areaCode);
+    return {
+      family,
+      richness: row?.richness ?? 0,
+      rank: row?.rank ?? null,
+      denseRank: row?.denseRank ?? null,
+      tieLabel: row?.tieLabel ?? "—",
+      pctAboveAvg: row?.pctAboveAvg ?? null
+    };
+  });
 }
 
 const areaEntries = persistedArea
   ? transposeForArea(sr, persistedArea.properties.LEVEL3_COD)
   : [];
 
-// NOTE: rankFamily ranks whatever array you give it — here that's "families
-// within one area" rather than "areas within one family", but the ranking
-// math (ties, averages) is identical either way, so we reuse it directly.
-const areaRanked = rankFamily(
-  areaEntries);
+// Sort by the family's global rank (best/lowest rank number first)
+const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank));
 
 const famTableInput = view(Inputs.table(areaRanked, {
-  columns: ["family", "richness", "tieLabel", "pctAboveAvg"],
+  columns: ["family", "tieLabel", "richness", "pctAboveAvg"],
   header: {
     family: "Plant Family",
+    tieLabel: "Global Rank",
     richness: "Species Richness",
-    tieLabel: "Rank",
     pctAboveAvg: "% Above Average"
   },
   sort: "rank",
   multiple: false,
   reverse: true
 }))
+const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
 ```
 
 ```js
@@ -283,6 +302,7 @@ const famEntries = Object.entries(sr[persistedFam]?.['sr'] || {}).map(([areaCode
 }));
 
 const famRanked = rankFamily(famEntries);
+// TODO: get rid of rankFamily, not being used, revert to old sorting
 
 const areaTableSelect = view(Inputs.table(famEntries, {
   columns: ["areaName", "richness", "percentGlobal"],
@@ -332,12 +352,12 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 ### Priority
 - Fix the search bar so it doesn't reload after every press
 - Add data loader to keep site up-to-date
-  - Fix it so it builds json correctly, and write code to get derived values (ties etc) in js
-  - Add data loader for common names
+  - Test it
+  - ~~Fix it so it builds json correctly, and write code to get derived values (ties etc) in js~~
+  - ~~Add data loader for common names~~
 - Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
-  - Find the common name that contains "family" and use that
   - Let the search bar search this too
-- Get an image and link to the family Wikipedia page (and iNat)
+- Lookup Wikidata page to add links to wikipedia, iNat, paleobio database
 - Determine the "specialty" family for each area
   - From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
   - Excluding zero-species taxa (replace with NA for this purpose)
