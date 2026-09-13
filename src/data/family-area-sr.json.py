@@ -1,12 +1,14 @@
 """Data loader for the family-area-sr.json file
 Reads from WCVP archive
 """
+#%%
 import json
 import sys
 from zipfile import ZipFile
 from io import BytesIO
 from urllib.request import urlopen
 import pandas as pd
+import numpy as np
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
 
@@ -40,54 +42,38 @@ sr = filtered_ddf[['area_code_l3', 'plant_name_id', 'family']].pivot_table(
     )
 sr = sr.fillna(0)
 
-# Rank each family. Average method gives us the average value for a tie 
-#   so we can better compare between groups
-ranked_df = sr.apply(lambda x: x.rank(method='average', ascending=False))
+# Add "total" species richness column for each area
+# TODO: calculate this in the app instead
+# sr['Vascular Plants'] = sr.sum(axis=1)
 
-# And get the dense ranking with number of ties for display
-def getTieNumber(x):
-    dense = x.rank(method='dense', ascending=False)
-    diff = x.rank(method='max') - x.rank(method='min') + 1
-    tieformat = pd.Series(
-        [f"{int(d_val)} ({int(diff_val)}-way tie)"
-            if diff_val > 1 else str(int(d_val))
-            for d_val, diff_val in zip(dense, diff)],
-        index=x.index)
-    return tieformat
-ranked_df_ties = sr.apply(getTieNumber)
-
-# also get % above average, remove values <0
-pct_above_avg = (sr - sr.mean())/sr.mean()
-pct_above_avg[pct_above_avg < 0] = None
-
-# Combine all tables
-result = pd.concat([sr, ranked_df, ranked_df_ties, pct_above_avg], axis=1,
-    keys=['sr','rank', 'tie', 'pct_above_avg'])
-
-# Swap the levels so family is first, sr/rank/tie is second
-result = result.swaplevel(0, 1, axis=1).sort_index(axis=1)
-
-# Add "total" species richness column for each area, no ranking
-result[('Vascular Plants', 'sr')] = sr.sum(axis=1)
-
-# Now write directly to the json to add family-level traits
-result_dict = json.loads(result.to_json())
+#%%
+# Write to json
 
 # Get global SR by family
 global_sr = species.groupby('family').agg(pd.Series.nunique).to_dict()
-for family, richness in global_sr.items():
-    if family in result_dict:
-        result_dict[family]['global_sr'] = richness
 
 # Get most common climate by family
 modal_climate = species[['family', 'climate_description']]\
     .groupby('family')\
         .agg(pd.Series.mode).to_dict()
 
-for family, climate in modal_climate.items():
-    if family in result_dict:
-        result_dict[family]['modal_climate'] = climate
+sr_dict = {}
+def getSrJson(x):
+    # Convert modal climate to a scalar or list
+    climate_val = modal_climate['climate_description'][x.name]
+    if isinstance(climate_val, np.ndarray):
+        climate_val = climate_val[0] if len(climate_val) > 0 else None
 
-json.dump(result_dict, sys.stdout)
-# with open('family-area-sr-rank.json', "w") as f:
-#     json.dump(result_dict, f)
+    sr_dict[x.name] = {
+        'sr': x.to_dict(), 
+        'global': int(global_sr['plant_name_id'][x.name]),
+        'climate': climate_val
+        }
+sr.apply(lambda x: getSrJson(x))
+#%%
+
+json.dump(sr_dict, sys.stdout)
+# with open('family-area-sr.json', "w") as f:
+#     json.dump(sr_dict, f)
+
+# %%

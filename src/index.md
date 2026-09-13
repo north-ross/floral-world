@@ -3,13 +3,13 @@ title: Vascular Plant Diversity
 toc: false
 ---
 
-# Floral World: ${persistedFam}
+# Floral World: ${persistedFam ?? "Vascular Plants"}
 
 ```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
 const sr = FileAttachment('./data/family-area-sr.json').json();
-// const sr = FileAttachment('./data/family-area-sr-rank.json').json();
+const cmnNames = FileAttachment('./data/taxa-inat-darwincore.json').json();
 // Add a column for "total" for every family, which should display first
 // Get data on climate to make a bar chart
 const dark = Generators.dark();
@@ -18,9 +18,6 @@ const dark = Generators.dark();
 ```js
 // Pack into topojson feature
 const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
-
-
-view(sr)
 ```
 
 ```js
@@ -39,7 +36,8 @@ const logscale = Generators.input(logscaleInput);
 const colorOptions = {
   type: logscale,
   range: ["#FAF7C7", "#688816", "#1C3D28"], 
-  domain: [richnessExtent[0]+1, richnessExtent[1]], // guarded against showing zero, this also makes 0 white for small families (good)
+  domain: [richnessExtent[0]+1, richnessExtent[1]], // guarded against showing zero, this also makes 0 white for small families (good).
+  // TODO: Fix this causing problems for single-species families by making it just richnessExtent if logscale == "sequential", else make it this.
   interpolate: "rgb",
   unknown: "var(--theme-foreground-fainter)",
   label: `Species richness — ${persistedFam}`
@@ -47,8 +45,22 @@ const colorOptions = {
 ```
 
 ```js
+// Get total vascular plant sr by family
+const totalSrMap = {};
+
+const areaKeys = Object.keys(sr[Object.keys(sr)[0]].sr);
+
+// For each country code, sum the values across all plant families
+areaKeys.forEach(area => {
+  totalSrMap[area] = Object.values(sr).reduce((sum, family) => {
+    return sum + (family.sr[area] || 0);
+  }, 0);
+});
+```
+
+```js
 // lookup functions for map 
-const familyDataSr = sr[persistedFam] ?? {};
+const familyDataSr = persistedFam != null ? sr[persistedFam]['sr'] : totalSrMap;
 const richnessByArea = new Map(
   Object.entries(familyDataSr).map(([area, val]) => [area, Math.round(val)])
 );
@@ -160,6 +172,7 @@ html`<div>
     ? html`<p>Select a botanical country from the map.</p>`
     : html`
         <h1>${persistedArea.properties.LEVEL3_NAM}</h1>
+        <p><strong>Vascular plant species richness:</strong> ${totalSrMap[persistedArea.properties.LEVEL3_COD]}</p>
         <p>The bars are open in beautiful ${persistedArea.properties.LEVEL3_NAM}...</p>
       `
   }
@@ -170,7 +183,7 @@ html`<div>
 function transposeForArea(nested, areaCode) {
   return Object.entries(nested).map(([family, values]) => ({
     family,
-    richness: Math.round(values[areaCode] ?? 0)
+    richness: Math.round(values['sr'][areaCode] ?? 0)
   }));
 }
 
@@ -227,7 +240,7 @@ if (famTableInput !== null) setPersistedFam(famTableInput.family);
 const selFamilySearchInput = Inputs.search(
   Object.keys(sr), {
     placeholder: "Choose a family",
-    query: "Total", // "Vascular Plants",
+    // query: "Acanthaceae",
     required: false,
     datalist: Object.keys(sr),
     multiple: false 
@@ -253,11 +266,10 @@ if (selFamilySearch[0] != null) setPersistedFam(selFamilySearch[0]);
 ${persistedFam == null
   ? html`${selFamilySearchInput}<p>Choose a family from the search bar</p>`
   : html`
-      <div class="grid grid-cols-2">
-        <div><h2>${persistedFam} (common name)</h2></div>
+        <div><h1>${persistedFam} (${cmnNames[persistedFam][0] ?? ""})</h1></div>
         <div>${selFamilySearchInput}</div>
-      </div>
-      <p>Contains x species, highest species richness in ${famSorted[0]?.area ?? "—"}.</p>
+      ${cmnNames[persistedFam].length > 1 ? html`<p><strong>Also known as:</strong> ${cmnNames[persistedFam].slice(1).join(", ")}</p>`:html``}
+      <p>Contains ${sr[persistedFam]['global']} species globally, highest species richness in ${famSorted[0]?.areaName ?? "—"}.</p>
     `
 }
 
@@ -273,21 +285,22 @@ const codeToName = Object.fromEntries(
 )
 
 // 2. Turn the object into an array of rows with a safe fallback
-const famEntries = Object.entries(sr[persistedFam] || {}).map(([areaCode, richness]) => ({
+const famEntries = Object.entries(sr[persistedFam]?.['sr'] || {}).map(([areaCode, richness]) => ({
   areaCode: areaCode,
   areaName: codeToName[areaCode] ?? areaCode, // Fallback if areaCode isn't in codeToName
-  richness: Math.round(richness)
+  richness: Math.round(richness),
+  percentGlobal: Math.round(richness / sr[persistedFam]['global'] * 1000) / 10
 }));
 
 // 3. Sort descending by richness
 const famSorted = [...famEntries].sort((a, b) => d3.descending(a.richness, b.richness));
 // 4. Show table
 const areaTableSelect = view(Inputs.table(famSorted, {
-  columns: ["areaName", "richness"],
+  columns: ["areaName", "richness", "percentGlobal"],
   header: {
     areaName: "Area",
-    richness: "Species Richness"
-    // Add "% of global"
+    richness: "Species Richness",
+    percentGlobal: "% of Global Richness"
   },
   multiple: false
 }))
