@@ -39,11 +39,10 @@ const logscale = Generators.input(logscaleInput);
 // Define the color scale options once, shared between the plot and the standalone legend
 const colorOptions = {
   type: logscale,
-  range: ["#FAF7C7", "#688816", "#1C3D28"], 
+  range: ["#FAF7C7", "#688816", "#1C3D28"], // TODO: one day - add white at the start, then a lot of intermdiate colors so it only shows for 0?
   domain: logscale == "log" // transform so log doesn't show 0
-            ? [richnessExtent[0]+1, richnessExtent[1]]
+            ? [richnessExtent[0]+0.5, richnessExtent[1]]
             : richnessExtent,
-  // TODO: Fix this causing problems for single-species families by making it just richnessExtent if logscale == "sequential", else make it this.
   interpolate: "rgb",
   unknown: "var(--theme-foreground-fainter)",
   label: `Species richness — ${persistedFam}`
@@ -147,7 +146,7 @@ selAreaMap.addEventListener(
     event.stopPropagation(); // stop Plot's own pointerdown (sticky toggle) from running
     requestAnimationFrame(() => requestAnimationFrame(() => { // skip two frames to avoid premature result
       if (selArea !== null) setPersistedArea(selArea);
-      // console.log("pst", persistedArea)
+      // TODO: Reset the areaTableSelect
     }));
   },
   { capture: true }
@@ -244,10 +243,12 @@ const setPersistedFam = (v) => {persistedFam.value = v;};
 ```js
 // Update selected family from table when table clicked
 if (famTableInput !== null) setPersistedFam(famTableInput.family);
-// Now reset the search bar
+// TODO: Now reset the search bar
 ```
 
 ```js
+// TODO: Replace this with a generic html search box with an enter button to stop it resetting all the time
+// + let the datalist also search common names
 const selFamilySearchInput = Inputs.search(
   Object.keys(sr), {
     placeholder: "Choose a family",
@@ -257,7 +258,6 @@ const selFamilySearchInput = Inputs.search(
     multiple: false 
   }
 );
-// TODO: Get global species richness by family included in sr
 ```
 
 ```js
@@ -267,7 +267,7 @@ const selFamilySearch = Generators.input(selFamilySearchInput);
 ```js
 // Set first result from search as persistent family
 if (selFamilySearch[0] != null) setPersistedFam(selFamilySearch[0]);
-// And reset the table selection
+// TODO: reset the table selection
 ```
 </div>
 
@@ -280,6 +280,7 @@ ${persistedFam == null
         <div><h1>${persistedFam} (${cmnNames[persistedFam][0] ?? ""})</h1></div>
         <div>${selFamilySearchInput}</div>
       ${cmnNames[persistedFam].length > 1 ? html`<p><strong>Also known as:</strong> ${cmnNames[persistedFam].slice(1).join(", ")}</p>`:html``}
+      <p><strong>Modal preferred climate:</strong> ${sr[persistedFam]['climate']}</p>
       <p>Contains ${sr[persistedFam]['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
     `
 }
@@ -304,7 +305,6 @@ const famEntries = Object.entries(sr[persistedFam]?.['sr'] || {}).map(([areaCode
 }));
 
 const famRanked = rankFamily(famEntries);
-// TODO: get rid of rankFamily, not being used, revert to old sorting
 
 const areaTableSelect = view(Inputs.table(famEntries, {
   columns: ["areaName", "richness", "percentGlobal"],
