@@ -277,7 +277,7 @@ if (selFamilySearch[0] != null) setPersistedFam(selFamilySearch[0]);
 ${persistedFam == null
   ? html`${selFamilySearchInput}<p>Choose a family from the search bar</p>`
   : html`
-        <div><h1>${persistedFam} (${cmnNames[persistedFam]?.[0] ?? ""})</h1></div>
+        <div><h1>${persistedFam} ${cmnNames[persistedFam]?.[0] ? "\("+cmnNames[persistedFam][0]+"\)" : ""}</h1></div>
         <div>${selFamilySearchInput}</div>
       ${cmnNames[persistedFam]?.length > 1 ? html`<p><strong>Also known as:</strong> ${cmnNames[persistedFam].slice(1).join(", ")}.</p>`:html``}
       <p><strong>Modal preferred climate:</strong> ${sr[persistedFam]['climate']}</p>
