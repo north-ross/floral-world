@@ -40,7 +40,9 @@ const logscale = Generators.input(logscaleInput);
 const colorOptions = {
   type: logscale,
   range: ["#FAF7C7", "#688816", "#1C3D28"], 
-  domain: [richnessExtent[0], richnessExtent[1]], // guarded against showing zero, this also makes 0 white for small families (good).
+  domain: logscale == "log" // transform so log doesn't show 0
+            ? [richnessExtent[0]+1, richnessExtent[1]]
+            : richnessExtent,
   // TODO: Fix this causing problems for single-species families by making it just richnessExtent if logscale == "sequential", else make it this.
   interpolate: "rgb",
   unknown: "var(--theme-foreground-fainter)",
@@ -357,12 +359,12 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - ~~Add data loader for common names~~
 - Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
   - Let the search bar search this too
-- Lookup Wikidata page to add links to wikipedia, iNat, paleobio database
+- Lookup Wikidata page to add links to wikipedia, iNat, CoL paleobio database
 - Determine the "specialty" family for each area
   - From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
   - Excluding zero-species taxa (replace with NA for this purpose)
-  - How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.
-  - For countries that have multiple families where they're #1, include the number of them
+  - ~~How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.~~
+  - ~~For countries that have multiple families where they're #1, include the number of them~~
 
 - 🗹 ~~Selecting a family from the countries table updates the selected family reactively~~
 
