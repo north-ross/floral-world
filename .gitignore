@@ -5,3 +5,6 @@ yarn-error.log
 src/data/inaturalist-taxonomy.dwca*
 *.zip
 src/data/col_taxonomy*
+# run the data loader instead of caching these
+src/data/family-area-sr.json
+src/data/taxa-inat-darwincore.json
