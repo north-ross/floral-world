@@ -17,27 +17,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - id: date
-      run: echo "date=$(date +'%Y-%U')" >> $GITHUB_OUTPUT   # %U = week number
-    - uses: actions/cache@v4
-      with:
-        path: src/.observablehq/cache
-        key: data-${{ hashFiles('src/data/*') }}-${{ steps.date.outputs.date }}
-    - run: npm run build
-    - uses: actions/configure-pages@v4
-    - uses: actions/upload-pages-artifact@v3
-      with:
-        path: dist
-    - name: Deploy
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install node dependencies
+        run: npm ci
+
+      # Cache data loader outputs so a plain re-run (e.g. manual dispatch
+      # right after a scheduled one) doesn't re-download the WCVP/iNat zips.
+      - id: date
+        run: echo "date=$(date +'%Y-%U')" >> "$GITHUB_OUTPUT"
+
+      - id: cache-data
+        uses: actions/cache@v4
+        with:
+          path: src/.observablehq/cache
+          key: data-${{ hashFiles('src/data/*') }}-${{ steps.date.outputs.date }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to north-ross.github.io/floral-world
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.PAGES_DEPLOY_KEY }}
+          external_repository: north-ross/north-ross.github.io
+          publish_branch: main
+          publish_dir: ./dist
+          destination_dir: floral-world
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"

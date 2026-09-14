@@ -22,6 +22,7 @@ export default {
 
   // The path to the source root.
   root: "src",
+  base: "/floral-world",
 
   markdownIt: (md) => md.use(MarkdownItFootnote),
   // Some additional configuration options and their defaults:
