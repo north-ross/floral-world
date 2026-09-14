@@ -1,4 +1,4 @@
-import MarkdownItFootnote from "markdown-it-footnote";
+// import MarkdownItFootnote from "markdown-it-footnote";
 // See https://observablehq.com/framework/config for documentation.
 export default {
   // The app’s title; used in the sidebar and webpage titles.
@@ -24,7 +24,8 @@ export default {
   root: "src",
   base: "/floral-world",
 
-  markdownIt: (md) => md.use(MarkdownItFootnote),
+  // markdownIt: (md) => md.use(MarkdownItFootnote),
+  
   // Some additional configuration options and their defaults:
   theme: ["parchment", "coffee"],
   // header: "", // what to show in the header (HTML)
