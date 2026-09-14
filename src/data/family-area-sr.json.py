@@ -42,10 +42,15 @@ sr = filtered_ddf[['area_code_l3', 'plant_name_id', 'family']].pivot_table(
     )
 sr = sr.fillna(0)
 
-# Add "total" species richness column for each area
-# TODO: calculate this in the app instead
-# sr['Vascular Plants'] = sr.sum(axis=1)
-
+# TODO: Get a table of ipni_id and family name for lookup, include this in json
+# Also get number of endemics and sr by climate desc per family
+#%%
+# There is no taxon_rank family, this won't work likely
+ipni_df = df.loc[
+    (df['taxon_status']=="Accepted") & (df['taxon_rank']=="Family"),
+    ['ipni_id', 'family']
+]
+ipni_df.set_index('family')
 #%%
 # Write to json
 
@@ -66,6 +71,7 @@ def getSrJson(x):
 
     sr_dict[x.name] = {
         'sr': x.to_dict(), 
+        'ipni_id': ipni_df[x.name], # TODO: TEST this
         'global': int(global_sr['plant_name_id'][x.name]),
         'climate': climate_val
         }
