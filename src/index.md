@@ -14,9 +14,15 @@ import { rankFamily} from "./rankings.js";
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
 const sr = FileAttachment('./data/family-area-sr.json').json();
 const cmnNames = FileAttachment('./data/taxa-inat-darwincore.json').json();
-// Add a column for "total" for every family, which should display first
-// Get data on climate to make a bar chart
 const dark = Generators.dark();
+```
+
+```js
+// Restrict common names to only families actually present in sr
+// (iNat taxonomy includes families WCVP doesn't recognize / has merged / renamed)
+const cmnNamesFiltered = Object.fromEntries(
+  Object.entries(cmnNames).filter(([fam]) => fam in sr)
+);
 ```
 
 ```js
@@ -159,6 +165,7 @@ const colorLegend = Plot.legend({ color: colorOptions });
 ```
 
 ```js
+// TODO: Align to center, maybe limit height to a fraction of the screen?
 html`<div>
   <div class="grid grid-cols-2">
     <div>${colorLegend}</div> <div>${logscaleInput}</div>
@@ -232,6 +239,11 @@ const famTableInput = view(Inputs.table(areaRanked, {
   reverse: true
 }))
 const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
+
+// starter code for number of endemic families
+// replace persistedFam with all families. 
+// If this country has all the global species, and the second highest country has zero, it's endemic.
+// if (sr[persistedFam]['global'] === sr[persistedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
 ```
 
 ```js
@@ -247,26 +259,48 @@ if (famTableInput !== null) setPersistedFam(famTableInput.family);
 ```
 
 ```js
-// TODO: Replace this with a generic html search box with an enter button to stop it resetting all the time
-// + let the datalist also search common names
-const selFamilySearchInput = Inputs.search(
-  Object.keys(sr), {
-    placeholder: "Choose a family",
-    // query: "Acanthaceae",
-    required: false,
-    datalist: Object.keys(sr),
-    multiple: false 
+// For the search bar, build search term -> family lookup
+// Python: {name: fam for fam, names in cmnNamesFiltered.items() for name in [fam, *names]}
+const familyLookup = new Map();
+for (const [fam, commonNames] of Object.entries(cmnNamesFiltered)) {
+  familyLookup.set(fam.toLowerCase(), fam);
+  for (const cname of commonNames) {
+    familyLookup.set(cname.toLowerCase(), fam);
   }
-);
+}
+
+// Flat list of display strings for the datalist
+const searchOptions = Array.from(familyLookup.keys());
 ```
 
 ```js
-const selFamilySearch = Generators.input(selFamilySearchInput);
-```
+const familySearchBox = html`<div style="display:flex; gap:4px;">
+  <input id="famInput" list="famOptions" placeholder="Type a family or common name" style="flex:1;">
+  <datalist id="famOptions">
+    ${searchOptions.map(name => html`<option value="${name}">`)}
+  </datalist>
+  <button id="famSubmit">Go</button>
+</div>`;
 
-```js
-// Set first result from search as persistent family
-if (selFamilySearch[0] != null) setPersistedFam(selFamilySearch[0]);
+const inputEl = familySearchBox.querySelector("#famInput");
+const buttonEl = familySearchBox.querySelector("#famSubmit");
+
+function commitFamily() {
+  const raw = inputEl.value.trim().toLowerCase();
+  const resolved = familyLookup.get(raw);
+  if (resolved) {
+    setPersistedFam(resolved);
+  }
+  // else: optionally flash an "not found" state — up to you
+}
+
+buttonEl.addEventListener("click", commitFamily);
+inputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    commitFamily();
+  }
+});
 // TODO: reset the table selection
 ```
 </div>
@@ -274,16 +308,29 @@ if (selFamilySearch[0] != null) setPersistedFam(selFamilySearch[0]);
 
 
 <div class="card">
-${persistedFam == null
-  ? html`${selFamilySearchInput}<p>Choose a family from the search bar</p>`
+
+```js
+persistedFam == null
+  ? html`<p>Choose a family from the search bar</p>`
   : html`
-        <div><h1>${persistedFam} ${cmnNames[persistedFam]?.[0] ? "\("+cmnNames[persistedFam][0]+"\)" : ""}</h1></div>
-        <div>${selFamilySearchInput}</div>
-      ${cmnNames[persistedFam]?.length > 1 ? html`<p><strong>Also known as:</strong> ${cmnNames[persistedFam].slice(1).join(", ")}.</p>`:html``}
-      <p><strong>Modal preferred climate:</strong> ${sr[persistedFam]['climate']}</p>
-      <p>Contains ${sr[persistedFam]['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
-    `
-}
+        <div><h1>${persistedFam} ${cmnNamesFiltered[persistedFam]?.[0] ? "\("+cmnNamesFiltered[persistedFam][0]+"\)" : ""}</h1></div>
+        `
+```
+<div>${familySearchBox}</div>
+
+```js
+const akaHtml = (cmnNamesFiltered[persistedFam]?.length > 1)
+  ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[persistedFam].slice(1).join(", ")}.</p>`
+  : html` `
+```
+
+```js
+persistedFam != null
+  ? html`${akaHtml}<p><strong>Preferred climate:</strong> ${sr[persistedFam]?.['climate']}</p>
+<p>Contains ${sr[persistedFam]?.['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>`
+  : html` `
+```
+
 
 ```js
 // Show a table of species richness by area for selected family
@@ -348,6 +395,11 @@ The World Checklist for Vascular Plants divides the world's [vascular plants](ht
 
 Since the boundaries used for aggregation are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [this article](https://www.nature.com/articles/s41467-022-32063-z) for a much more scientific approach. However, this approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
 
+Interestinng distributions to check out:
+- Rousseaceae
+- Sarracenaceae
+- Polemoniaceae (phlox)
+- Ericaceae - try with log scale
 </details>
 
 ## Planned features
