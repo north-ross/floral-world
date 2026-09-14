@@ -401,17 +401,28 @@ if (areaTableSelect !== null) setPersistedArea(
 
 The World Checklist for Vascular Plants[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
-Since the boundaries used for aggregation are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much more scientific approach. However, my approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
 
-Interestinng distributions to check out:
-- Rousseaceae
-- Sarracenaceae
-- Polemoniaceae (phlox)
-- Ericaceae - try with log scale
+<details><summary>What does this map really show?</summary>
+
+Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much more scientific approach. However, my approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
+
+</details>
+<br>
+
+## What should I look at?
+You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
+
+Here are a few plant families with interesting distributions you could check out as well:
+- Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the rest of the world
+  - ${Inputs.button("Select Ericaceae", {reduce: () => setPersistedFam("Ericaceae")})} 
+- Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
+  - ${Inputs.button("Select Polemoniaceae", {reduce: () => setPersistedFam("Polemoniaceae")})}
+- ${Inputs.button("Sarracenaceae (pitcher plants)", {reduce: () => setPersistedFam("Sarracenaceae")})}
+- ${Inputs.button("Rousseaceae", {reduce: () => setPersistedFam("Rousseaceae")})}
 
 ## Source
 
-This is an open source (GNU Licence) project. See the source and planned features on GitHub.
+This is an open source project. Check out the source and planned features, or make your own fork or contribution on [GitHub](https://github.com/north-ross/floral-world).
 
 [^1]: Govaerts, R., Nic Lughadha, E. et al. The World Checklist of Vascular Plants, a continuously updated resource for exploring global plant diversity. Sci Data 8, 215 (2021). [https://doi.org/10.1038/s41597-021-00997-6]
 
