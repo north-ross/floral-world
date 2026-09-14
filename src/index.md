@@ -3,11 +3,16 @@ title: Vascular Plant Diversity
 toc: false
 ---
 
+```js echo
+// DEMO: site is still under construction
+```
+
 # Floral World: ${persistedFam ?? "Vascular Plants"}
 
 ```js
 import { rankFamily} from "./rankings.js";
 ```
+
 
 ```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
@@ -101,7 +106,7 @@ const selAreaMap = Plot.plot({
         return `${d.properties.LEVEL3_NAM}: ${val ?? "no data"}`;
       },
       stroke: "#662200",
-      tip: {fill: "#662200"}
+      tip: {fill: dark ? "#662200" : "var(--theme-background)",}
     }))
   ]
 });
@@ -181,7 +186,7 @@ html`<div>
 <div class="card">
 
   ${persistedArea === null
-    ? html`<p>Select a botanical country from the map.</p>`
+    ? html`<p>Select a botanical country from the map or right table.</p>`
     : html`
         <h1>${persistedArea.properties.LEVEL3_NAM}</h1>
         <p>Contains ${areaRanked.filter((d) => d.richness>0).length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
@@ -311,7 +316,7 @@ inputEl.addEventListener("keydown", (event) => {
 
 ```js
 persistedFam == null
-  ? html`<p>Choose a family from the search bar</p>`
+  ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
         <div><h1>${persistedFam} ${cmnNamesFiltered[persistedFam]?.[0] ? "\("+cmnNamesFiltered[persistedFam][0]+"\)" : ""}</h1></div>
         `
@@ -379,7 +384,6 @@ const codeToFeature = Object.fromEntries(
 if (areaTableSelect !== null) setPersistedArea(
   codeToFeature[areaTableSelect.areaCode]
 );
-
 ```
 
 
@@ -388,49 +392,18 @@ if (areaTableSelect !== null) setPersistedArea(
 
 ## About
 
-<details>
-<summary>About</summary>
+The World Checklist for Vascular Plants[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
-The World Checklist for Vascular Plants divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
-
-Since the boundaries used for aggregation are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [this article](https://www.nature.com/articles/s41467-022-32063-z) for a much more scientific approach. However, this approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
+Since the boundaries used for aggregation are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much more scientific approach. However, my approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
 
 Interestinng distributions to check out:
 - Rousseaceae
 - Sarracenaceae
 - Polemoniaceae (phlox)
 - Ericaceae - try with log scale
-</details>
 
-## Planned features
-### Priority
-- Fix the search bar so it doesn't reload after every press
-- Add data loader to keep site up-to-date
-  - Test it
-  - ~~Fix it so it builds json correctly, and write code to get derived values (ties etc) in js~~
-  - ~~Add data loader for common names~~
-- Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
-  - Let the search bar search this too
-- Lookup Wikidata page to add links to wikipedia, iNat, CoL paleobio database
-- Determine the "specialty" family for each area
-  - From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
-  - Excluding zero-species taxa (replace with NA for this purpose)
-  - ~~How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.~~
-  - ~~For countries that have multiple families where they're #1, include the number of them~~
+[^1]: Govaerts, R., Nic Lughadha, E. et al. The World Checklist of Vascular Plants, a continuously updated resource for exploring global plant diversity. Sci Data 8, 215 (2021). [https://doi.org/10.1038/s41597-021-00997-6]
 
-- 🗹 ~~Selecting a family from the countries table updates the selected family reactively~~
-
-### Low priority
-- Pan/zoom map and change projection
-  - Probably not possible anymore
-- Add some higher-level categories like "ferns"
-- In the family info box, include an "iconic species" (maybe most observed on iNat)
-- Filter data to include introduced ranges or exclude extinct species
-- Chart of preferred climate for each species by family
-- Line chart of species richness by latitude
-- Show a list of species in selected area-family
-- Number of endemic species to each area
-  - Will need to make small islands more visible
-
+[^2]: Sabatini, F.M., Jiménez-Alfaro, B., Jandt, U. et al. Global patterns of vascular plant alpha diversity. Nat Commun 13, 4683 (2022). https://doi.org/10.1038/s41467-022-32063-z
 
 
