@@ -1,16 +1,16 @@
-name: Deploy to north-ross.github.io/floral-world
+name: Publish
 
 on:
-  # Run this workflow whenever a new commit is pushed to main.
-  push: {branches: [main]}
-  # Run this workflow once per day, at 10:15 UTC
-  schedule: 
-    # Weekly refresh — Monday 06:00 UTC. Adjust as you like.
-    - cron: "0 6 * * 1"
+  push:
+    branches: ["main"]
+  schedule:
+    - cron: "0 6 * * 1"   # weekly refresh
   workflow_dispatch: {}
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -20,47 +20,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
-      - name: Install node dependencies
-        run: npm ci
-
-      # Cache data loader outputs so a plain re-run (e.g. manual dispatch
-      # right after a scheduled one) doesn't re-download the WCVP/iNat zips.
+      - run: pip install -r requirements.txt
+      - run: npm ci
       - id: date
         run: echo "date=$(date +'%Y-%U')" >> "$GITHUB_OUTPUT"
-
-      - id: cache-data
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: src/.observablehq/cache
           key: data-${{ hashFiles('src/data/*') }}-${{ steps.date.outputs.date }}
-
-      - name: Build
-        run: npm run build
-
-      - name: Deploy to north-ross.github.io/floral-world
-        uses: peaceiris/actions-gh-pages@v4
+      - run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
-          deploy_key: ${{ secrets.PAGES_DEPLOY_KEY }}
-          external_repository: north-ross/north-ross.github.io
-          publish_branch: main
-          publish_dir: ./dist
-          destination_dir: floral-world
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
