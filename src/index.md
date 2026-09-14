@@ -188,7 +188,7 @@ html`<div>
   ${persistedArea === null
     ? html`<p>Select a botanical country from the map or right table.</p>`
     : html`
-        <h1>${persistedArea.properties.LEVEL3_NAM}</h1>
+        <h1 style="font-family: 'serif';">${persistedArea.properties.LEVEL3_NAM}</h1>
         <p>Contains ${areaRanked.filter((d) => d.richness>0).length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
         ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
       `
@@ -280,7 +280,7 @@ const searchOptions = Array.from(familyLookup.keys());
 
 ```js
 const familySearchBox = html`<div style="display:flex; gap:4px;">
-  <input id="famInput" list="famOptions" placeholder="Type a family or common name" style="flex:1;">
+  <input id="famInput" list="famOptions" placeholder="Type a family or common name and press enter" style="flex:1;">
   <datalist id="famOptions">
     ${searchOptions.map(name => html`<option value="${name}">`)}
   </datalist>
@@ -318,9 +318,10 @@ inputEl.addEventListener("keydown", (event) => {
 persistedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1>${persistedFam} ${cmnNamesFiltered[persistedFam]?.[0] ? "\("+cmnNamesFiltered[persistedFam][0]+"\)" : ""}</h1></div>
+        <div><h1 style="font-family: 'serif';">${persistedFam} ${cmnNamesFiltered[persistedFam]?.[0] ? "\("+cmnNamesFiltered[persistedFam][0]+"\)" : ""}</h1></div>
         `
 ```
+
 <div>${familySearchBox}</div>
 
 ```js
@@ -332,7 +333,13 @@ const akaHtml = (cmnNamesFiltered[persistedFam]?.length > 1)
 ```js
 persistedFam != null
   ? html`${akaHtml}<p><strong>Preferred climate:</strong> ${sr[persistedFam]?.['climate']}</p>
-<p>Contains ${sr[persistedFam]?.['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>`
+<p>Contains ${sr[persistedFam]?.['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+  <details>
+  <summary>About</summary>
+  <img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
+  Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
+  </details>
+  `
   : html` `
 ```
 
@@ -401,6 +408,10 @@ Interestinng distributions to check out:
 - Sarracenaceae
 - Polemoniaceae (phlox)
 - Ericaceae - try with log scale
+
+## Source
+
+This is an open source (GNU Licence) project. See the source and planned features on GitHub.
 
 [^1]: Govaerts, R., Nic Lughadha, E. et al. The World Checklist of Vascular Plants, a continuously updated resource for exploring global plant diversity. Sci Data 8, 215 (2021). [https://doi.org/10.1038/s41597-021-00997-6]
 
