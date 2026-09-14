@@ -1,0 +1,43 @@
+name: Deploy to north-ross.github.io/floral-world
+
+on:
+  # Run this workflow whenever a new commit is pushed to main.
+  push: {branches: [main]}
+  # Run this workflow once per day, at 10:15 UTC
+  schedule: 
+    # Weekly refresh — Monday 06:00 UTC. Adjust as you like.
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: date
+      run: echo "date=$(date +'%Y-%U')" >> $GITHUB_OUTPUT   # %U = week number
+    - uses: actions/cache@v4
+      with:
+        path: src/.observablehq/cache
+        key: data-${{ hashFiles('src/data/*') }}-${{ steps.date.outputs.date }}
+    - run: npm run build
+    - uses: actions/configure-pages@v4
+    - uses: actions/upload-pages-artifact@v3
+      with:
+        path: dist
+    - name: Deploy
+      id: deployment
+      uses: actions/deploy-pages@v4

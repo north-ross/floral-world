@@ -24,6 +24,7 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - [x] How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.
   - [x] For countries that have multiple families where they're #1, include the number of them
 - [x] Selecting a family from the countries table updates the selected family reactively
+- [ ] Selecting a new family or area updates the table select options
 
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
