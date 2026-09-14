@@ -8,3 +8,7 @@ src/data/col_taxonomy*
 # run the data loader instead of caching these
 src/data/family-area-sr.json
 src/data/taxa-inat-darwincore.json
+__pycache__/
+*.py[cod]
+.venv/
+src/.observablehq/cache/
