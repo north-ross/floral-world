@@ -1,85 +1,100 @@
-"""Data loader for the family-area-sr.json file
-Reads from WCVP archive
+"""Build family richness from accepted WCVP species and native distributions.
+
+Run without arguments as an Observable loader, or pass --archive for an offline
+validation of a downloaded WCVP ZIP. Diagnostics go to stderr; stdout is JSON.
 """
-#%%
-import json
-import sys
-from zipfile import ZipFile
+import argparse
 from io import BytesIO
+import json
+from pathlib import Path
+import sys
 from urllib.request import urlopen
+from zipfile import ZipFile
+
 import pandas as pd
-import numpy as np
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
+# Present in the current WCVP archive but absent from the bundled map.
+# Keep this explicit so new mismatches still fail validation. Do not remap these
+# localities to nearby polygons; global species counts remain unaffected.
+UNMAPPED_CODES = frozenset({
+    "BER", "CKI", "CPI", "DSV", "HBI", "KZN", "LDV", "MCI", "MCS", "MDV",
+    "MRS", "NRU", "OGA", "PHX", "PIT", "SCS", "SEL", "TOK", "TUV", "WAK",
+})
+MAP_PATH = Path(__file__).with_name("level3.json")
+NAME_COLUMNS = ["plant_name_id", "taxon_status", "taxon_rank", "family", "climate_description"]
+DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced"]
 
-# Download zip into memory
-with urlopen(WCVP_URL) as response:
-    zip_data = BytesIO(response.read())
 
-with ZipFile(zip_data) as zf:
-    # WCVP dataframe of plant names
-    df = pd.read_csv(zf.open("wcvp_names.csv"), sep="|")
-    # WCVP dataframe of plant distributions
-    ddf = pd.read_csv(zf.open("wcvp_distribution.csv"), sep="|")
+def map_codes(path=MAP_PATH):
+    with open(path) as source:
+        topology = json.load(source)
+    return sorted({geometry["properties"]["LEVEL3_COD"]
+                   for obj in topology["objects"].values()
+                   for geometry in obj["geometries"]})
 
-# Rank countries based on species richness within each family
 
-# Get list of accepted species in family
-species = df.loc[(df['taxon_status']=="Accepted") & (df['taxon_rank']=="Species")]
+def build_richness(names, distributions, area_codes):
+    """Deterministic aggregation; duplicate localities never inflate species richness."""
+    species = names.loc[(names.taxon_status == "Accepted") &
+                        (names.taxon_rank == "Species"), NAME_COLUMNS].drop_duplicates()
+    if species.empty:
+        raise ValueError("No accepted species in WCVP names")
+    if species[["plant_name_id", "family"]].isna().any().any():
+        raise ValueError("Accepted species must have an ID and family")
+    if species.plant_name_id.duplicated().any():
+        raise ValueError("Conflicting accepted species records for the same ID")
 
-# Now filter the distributions df to only include native plants from our query
-species_ids = species[['plant_name_id', 'family']]
-filtered_ddf = ddf.merge(species_ids, on='plant_name_id', how='inner')
-# remove introduced species
-filtered_ddf = filtered_ddf.loc[filtered_ddf['introduced']==0]
-
-# Group this to just get a count of unique plant_name_ids in each area_code_l3
-sr = filtered_ddf[['area_code_l3', 'plant_name_id', 'family']].pivot_table(
-    index='area_code_l3',
-    columns = 'family',
-    values='plant_name_id',
-    aggfunc=pd.Series.nunique
-    )
-sr = sr.fillna(0)
-
-# TODO: Get a table of ipni_id and family name for lookup, include this in json
-# Also get number of endemics and sr by climate desc per family
-#%%
-# There is no taxon_rank family, this won't work likely
-ipni_df = df.loc[
-    (df['taxon_status']=="Accepted") & (df['taxon_rank']=="Family"),
-    ['ipni_id', 'family']
-]
-ipni_df.set_index('family')
-#%%
-# Write to json
-
-# Get global SR by family
-global_sr = species.groupby('family').agg(pd.Series.nunique).to_dict()
-
-# Get most common climate by family
-modal_climate = species[['family', 'climate_description']]\
-    .groupby('family')\
-        .agg(pd.Series.mode).to_dict()
-
-sr_dict = {}
-def getSrJson(x):
-    # Convert modal climate to a scalar or list
-    climate_val = modal_climate['climate_description'][x.name]
-    if isinstance(climate_val, np.ndarray):
-        climate_val = climate_val[0] if len(climate_val) > 0 else None
-
-    sr_dict[x.name] = {
-        'sr': x.to_dict(), 
-        'ipni_id': ipni_df[x.name], # TODO: TEST this
-        'global': int(global_sr['plant_name_id'][x.name]),
-        'climate': climate_val
+    native = distributions.loc[distributions.introduced.astype("string") == "0"]
+    native = native.merge(species[["plant_name_id", "family"]],
+                          on="plant_name_id", how="inner", validate="many_to_one")
+    # Some WCVP localities specify only a continent or region, not level 3.
+    # They cannot be assigned to a map area, but remain in global counts.
+    native = native.loc[native.area_code_l3.notna() & (native.area_code_l3 != "")]
+    unmapped = set(native.area_code_l3) - set(area_codes)
+    unknown = unmapped - UNMAPPED_CODES
+    if unknown:
+        raise ValueError(f"Unknown WGSRPD level 3 codes: {sorted(unknown)}")
+    if unmapped:
+        print(f"WCVP areas absent from level3.json (excluded from area counts): {sorted(unmapped)}", file=sys.stderr)
+    counts = native.groupby(["family", "area_code_l3"]).plant_name_id.nunique()
+    result = {}
+    for family, group in species.groupby("family", sort=True):
+        # pandas mode sorts ties; choose the first, or null when all are missing.
+        climates = group.climate_description.dropna()
+        modes = climates[climates != ""].mode()
+        result[family] = {
+            "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
+            # WCVP names contains no family-rank records. Species IPNI IDs are
+            # not family IDs; leave this unavailable until an authority is added.
+            "ipni_id": None,
+            "global": int(group.plant_name_id.nunique()),
+            "climate": str(modes.iloc[0]) if not modes.empty else None,
         }
-sr.apply(lambda x: getSrJson(x))
-#%%
+    return result
 
-json.dump(sr_dict, sys.stdout)
-# with open('family-area-sr.json', "w") as f:
-#     json.dump(sr_dict, f)
 
-# %%
+def load_archive(archive, area_codes):
+    with ZipFile(archive) as zf:
+        with zf.open("wcvp_names.csv") as source:
+            names = pd.read_csv(source, sep="|", usecols=NAME_COLUMNS, dtype="string")
+        with zf.open("wcvp_distribution.csv") as source:
+            distributions = pd.read_csv(source, sep="|", usecols=DISTRIBUTION_COLUMNS, dtype="string")
+    return build_richness(names, distributions, area_codes)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--archive", type=Path, help="Use a local WCVP ZIP instead of downloading")
+    args = parser.parse_args()
+    if args.archive:
+        result = load_archive(args.archive, map_codes())
+    else:
+        with urlopen(WCVP_URL, timeout=120) as response:
+            result = load_archive(BytesIO(response.read()), map_codes())
+    json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
+    sys.stdout.write("\n")
+
+
+if __name__ == "__main__":
+    main()
