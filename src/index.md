@@ -52,11 +52,9 @@ const logscale = Generators.input(logscaleInput);
 const colorOptions = {
   type: logscale,
   range: ["#FAF7C7", "#688816", "#1C3D28"], // TODO: one day - add white at the start, then a lot of intermdiate colors so it only shows for 0?
-  domain: logscale == "log" // transform so log doesn't show 0
-            ? [richnessExtent[0]+0.5, richnessExtent[1]]
-            : richnessExtent,
+  domain: richnessExtent,
   interpolate: "rgb",
-  unknown: "var(--theme-foreground-fainter)",
+  unknown: "#FFF", // since we replaced null with zero
   label: `Species richness — ${persistedFam}`
 };
 ```
@@ -78,8 +76,9 @@ areaKeys.forEach(area => {
 ```js
 // lookup functions for map 
 const familyDataSr = persistedFam != null ? sr[persistedFam]['sr'] : totalSrMap;
+// Set zeros to null for display purposes
 const richnessByArea = new Map(
-  Object.entries(familyDataSr).map(([area, val]) => [area, Math.round(val)])
+  Object.entries(familyDataSr).map(([area, val]) => [area, val == 0 ? null : Math.round(val)])
 );
 const richnessExtent = d3.extent(richnessByArea.values());
 ```
@@ -104,7 +103,7 @@ const selAreaMap = Plot.plot({
       title: (d) => {
         const code = d.properties.LEVEL3_COD;
         const val = richnessByArea.get(code);
-        return `${d.properties.LEVEL3_NAM}: ${val ?? "no data"}`;
+        return `${d.properties.LEVEL3_NAM}: ${val ?? 0}`; // show zero for null. In any case where its null it should probably be zero anyways
       },
       stroke: "#662200",
       tip: {fill: dark ? "#662200" : "var(--theme-background)",}
@@ -231,8 +230,14 @@ const areaEntries = persistedArea
 
 // Sort by the family's global rank (best/lowest rank number first)
 const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank));
+const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
+// starter code for number of endemic families
+// replace persistedFam with all families. 
+// If this country has all the global species, and the second highest country has zero, it's endemic.
+// if (sr[persistedFam]['global'] === sr[persistedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
 
-const famTableInput = view(Inputs.table(areaRanked, {
+
+const famTableInput = view(Inputs.table(areaRanked.filter((d) => d.richness>0), {
   columns: ["family", "tieLabel", "richness", "pctAboveAvg"],
   header: {
     family: "Plant Family",
@@ -242,14 +247,10 @@ const famTableInput = view(Inputs.table(areaRanked, {
   },
   sort: "rank",
   multiple: false,
-  reverse: true
+  reverse: true,
+  // maxHeight:  // TODO: set this to height of div, maybe using resize?
 }))
-const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
 
-// starter code for number of endemic families
-// replace persistedFam with all families. 
-// If this country has all the global species, and the second highest country has zero, it's endemic.
-// if (sr[persistedFam]['global'] === sr[persistedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
 ```
 
 ```js
