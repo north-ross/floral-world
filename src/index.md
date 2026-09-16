@@ -8,7 +8,7 @@ toc: false
 // It really does not work on mobile especially
 ```
 
-# Floral World: ${persistedFam ?? "Vascular Plants"}
+# Floral World: ${selectedFam ?? "Vascular Plants"}
 
 ```js
 import { rankFamily} from "./rankings.js";
@@ -55,7 +55,7 @@ const colorOptions = {
   domain: richnessExtent,
   interpolate: "rgb",
   unknown: "#FFF", // since we replaced null with zero
-  label: `Species richness — ${persistedFam}`
+  label: `Species richness — ${selectedFam}`
 };
 ```
 
@@ -75,7 +75,7 @@ areaKeys.forEach(area => {
 
 ```js
 // lookup functions for map 
-const familyDataSr = persistedFam != null ? sr[persistedFam]['sr'] : totalSrMap;
+const familyDataSr = selectedFam != null ? sr[selectedFam]['sr'] : totalSrMap;
 // Set zeros to null for display purposes
 const richnessByArea = new Map(
   Object.entries(familyDataSr).map(([area, val]) => [area, val == 0 ? null : Math.round(val)])
@@ -232,36 +232,45 @@ const areaEntries = persistedArea
 const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank));
 const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
 // starter code for number of endemic families
-// replace persistedFam with all families. 
+// replace selectedFam with all families. 
 // If this country has all the global species, and the second highest country has zero, it's endemic.
-// if (sr[persistedFam]['global'] === sr[persistedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
-
+// if (sr[selectedFam]['global'] === sr[selectedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
 
 const famTableInput = view(Inputs.table(areaRanked.filter((d) => d.richness>0), {
-  columns: ["family", "tieLabel", "richness", "pctAboveAvg"],
+  columns: ["family", "richness", "rank", "pctAboveAvg"],
   header: {
     family: "Plant Family",
-    tieLabel: "Global Rank",
     richness: "Species Richness",
+    rank: "Global Rank",
     pctAboveAvg: "% Above Average"
   },
-  sort: "rank",
+  format: {
+    pctAboveAvg: (d) => d == null ? "—" : `${(d).toFixed(1)}%`,
+    // display the formatted tie label field instead of average rank
+    rank: (d, i) => areaRanked[i]?.tieLabel ?? "—", 
+  },
   multiple: false,
-  reverse: true,
-  // maxHeight:  // TODO: set this to height of div, maybe using resize?
+  value: areaRanked.filter((d) => (d.family === tableSelectedFam))[0] ?? null
 }))
-
 ```
 
 ```js
 // Set mutable for selected family
-const persistedFam = Mutable(null);
-const setPersistedFam = (v) => {persistedFam.value = v;};
+const selectedFam = Mutable(null);
+const setSelectedFam = (v) => {selectedFam.value = v;};
+```
+
+```js
+// Set mutable for selected family in table
+// This needs to be separate from selected fam so the table doesn't infinitely reload
+const tableSelectedFam = Mutable(null);
+const setTableSelectedFam = (v) => {tableSelectedFam.value = v;};
+
 ```
 
 ```js
 // Update selected family from table when table clicked
-if (famTableInput !== null) setPersistedFam(famTableInput.family);
+if (famTableInput !== null) setSelectedFam(famTableInput.family);
 // TODO: Now reset the search bar
 ```
 
@@ -296,7 +305,9 @@ function commitFamily() {
   const raw = inputEl.value.trim().toLowerCase();
   const resolved = familyLookup.get(raw);
   if (resolved) {
-    setPersistedFam(resolved);
+    setSelectedFam(resolved);
+    setTableSelectedFam(resolved);
+    console.log(tableSelectedFam)
   }
   // else: optionally flash an "not found" state — up to you
 }
@@ -317,30 +328,30 @@ inputEl.addEventListener("keydown", (event) => {
 <div class="card">
 
 ```js
-persistedFam == null
+selectedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1 style="font-family: 'serif';">${persistedFam} ${cmnNamesFiltered[persistedFam]?.[0] ? "\("+cmnNamesFiltered[persistedFam][0]+"\)" : ""}</h1></div>
+        <div><h1 style="font-family: 'serif';">${selectedFam} ${cmnNamesFiltered[selectedFam]?.[0] ? "\("+cmnNamesFiltered[selectedFam][0]+"\)" : ""}</h1></div>
         `
 ```
 
 <div>${familySearchBox}</div>
 
 ```js
-const akaHtml = (cmnNamesFiltered[persistedFam]?.length > 1)
-  ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[persistedFam].slice(1).join(", ")}.</p>`
+const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
+  ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[selectedFam].slice(1).join(", ")}.</p>`
   : html` `
 ```
 
 ```js
-persistedFam != null
-  ? html`${akaHtml}<p><strong>Preferred climate:</strong> ${sr[persistedFam]?.['climate']}</p>
-<p>Contains ${sr[persistedFam]?.['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+selectedFam != null
+  ? html`${akaHtml}<p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
+<p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
   `
   : html` `
 ```
 <details>
-<summary>About</summary>
+<summary><b>Family info</b></summary>
 <img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
 Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
 </details>
@@ -357,11 +368,11 @@ const codeToName = Object.fromEntries(
 )
 
 // 2. Turn the object into an array of rows with a safe fallback
-const famEntries = Object.entries(sr[persistedFam]?.['sr'] || {}).map(([areaCode, richness]) => ({
+const famEntries = Object.entries(sr[selectedFam]?.['sr'] || {}).map(([areaCode, richness]) => ({
   areaCode,
   areaName: codeToName[areaCode] ?? areaCode,
   richness: Math.round(richness),
-  percentGlobal: Math.round(richness / sr[persistedFam]['global'] * 1000) / 10
+  percentGlobal: Math.round(richness / sr[selectedFam]['global'] * 1000) / 10
 }));
 
 const famRanked = rankFamily(famEntries);
@@ -415,14 +426,14 @@ You might want to start by clicking on your home area, or one that you're intere
 
 Here are a few plant families with interesting distributions you could check out as well:
 - Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the rest of the world
-  - ${Inputs.button("Select Ericaceae", {reduce: () => setPersistedFam("Ericaceae")})} 
+  - ${Inputs.button("Select Ericaceae", {reduce: () => setSelectedFam("Ericaceae")})} 
 - Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
-  - ${Inputs.button("Select Polemoniaceae", {reduce: () => setPersistedFam("Polemoniaceae")})}
+  - ${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
 - The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean.
-  - ${Inputs.button("Select Cytinaceae", {reduce: () => setPersistedFam("Cytinaceae")})}
-- ${Inputs.button("Sarraceniaceae (pitcher plants)", {reduce: () => setPersistedFam("Sarraceniaceae")})}
+  - ${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
+- ${Inputs.button("Sarraceniaceae (pitcher plants)", {reduce: () => setSelectedFam("Sarraceniaceae")})}
 - Roussaceae, a New Caledonian family with a cool distribution
-  - ${Inputs.button("Rousseaceae", {reduce: () => setPersistedFam("Rousseaceae")})}
+  - ${Inputs.button("Rousseaceae", {reduce: () => setSelectedFam("Rousseaceae")})}
 
 
 ## Source
