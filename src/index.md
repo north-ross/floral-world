@@ -419,6 +419,20 @@ The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular
 
 The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**, updated weekly from WCVP. The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
+## How to use 
+<details><summary>Read more</summary>
+You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
+
+Here are a few plant families with interesting distributions you could check out as well:
+- Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the variation in rest of the world better
+  - ${Inputs.button("Select Ericaceae", {reduce: () => setSelectedFam("Ericaceae")})} 
+- Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
+  - ${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
+- The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean.
+  - ${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
+- ${Inputs.button("Sarraceniaceae (pitcher plants)", {reduce: () => setSelectedFam("Sarraceniaceae")})}
+</details><br>
+
 ## What does this map really show?
 <details><summary>Read more</summary>
 
@@ -449,19 +463,6 @@ Onagraceae (the "evening primrose" or fireweed family), is present around the wo
 I hope this helps you dive into lots of rabbit holes!
 
 </details><br>
-
-## How to use 
-You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
-
-Here are a few plant families with interesting distributions you could check out as well:
-- Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the variation in rest of the world better
-  - ${Inputs.button("Select Ericaceae", {reduce: () => setSelectedFam("Ericaceae")})} 
-- Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
-  - ${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
-- The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean.
-  - ${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
-- ${Inputs.button("Sarraceniaceae (pitcher plants)", {reduce: () => setSelectedFam("Sarraceniaceae")})}
-
 
 ## Source code
 

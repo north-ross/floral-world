@@ -11,18 +11,13 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 ## Planned features
 ### Priority
 - [x] Add data loader to keep site up-to-date
-  - [x] Test that it work properly
-  - [x] Fix it so it builds json correctly, and write code to get derived values (ties etc) in js
-  - [x] Add data loader for common names
 - [x] Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
   - [ ] Maybe replace this with the more complete dataset from [Catalogue of Life API](https://www.checklistbank.org/about/formats#data-content)
+- [x] Selecting a family from the countries table updates the selected family reactively
 - [ ] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
   - [ ] Embed an image from wikidata, and maybe the heading of the Wikipedia page in a collapsable summary box
 - [ ] Add some text about the "specialty" family for each area
-  - [ ] From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties), excluding absent taxa (i.e. in Antarctica)
-  - [x] How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.
-  - [x] For countries that have multiple families where they're #1, include the number of them
-- [x] Selecting a family from the countries table updates the selected family reactively
+  - [ ] From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
 - [ ] Adapt the page to have a basic level of functionality on mobile
   - [ ] Map should at least stretch to full page width
   - [ ] Add an area selector dropdown/search bar
@@ -31,7 +26,7 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
 - [ ] Fix the flickering when selecting a country from the map
-- [ ] Change map projection, maybe pan/zoom d3 style if possible
+- [ ] Add option to change map projection, maybe pan/zoom d3 style if possible
 - [ ] Add some higher-level categories like "ferns", or even all taxonomic levels if it doesn't make things too janky
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
 - [ ] Allow the user to apply filters data to include introduced ranges or exclude extinct species
@@ -45,9 +40,9 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - This was causing some slowdown issues and bugs when I implemented it as a mutable, might try another technique later
 
 ## Use of AI
-The purpose of this project was mostly out of the personal interest of the lead developer (North Ross, myself), but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understand everything that's gone into the project, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.
+The purpose of this project was mostly out of my personal interest, but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understood all the code that's gone into the project on some level, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.
 
-While I recognize the irony of using a computationally resource-intensive product to make an app highlighting the global biodiversity under threat from such development, I would absolutely not have been able to put this together in the same timeframe if I hadn't used this. Another 40+ hours of my life spent working on this app would certainly incur its own resource costs, which I expect might be higher than the computation costs incurred.
+While I recognize the irony of using a computationally resource-intensive product to make an app highlighting the global biodiversity under threat from such development, I would absolutely not have been able to put this together in the same timeframe if I hadn't used it. Another 40+ hours of my life spent working on this app would certainly incur its own resource costs, which I expect might be higher than the computation costs.
 
 That being said, this is an open source project and some of the contributors may have used AI coding agents more liberally than myself. However, all code from contributors has still been reviewed personally by the author, and I don't plan to commit any code that I don't personally understand.
 
