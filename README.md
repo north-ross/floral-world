@@ -39,3 +39,50 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 - [ ] Show a list of species in selected area-family
 - [ ] Number of endemic species to each area
   - [ ] Will need to make small islands more visible
+
+## Development and validation
+
+Install Node.js 20+ and Python 3.12+, then install dependencies in a virtual environment:
+
+```sh
+npm ci
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+npm test
+python -m unittest discover -s tests -v
+npm run build
+```
+
+The tests use small, offline fixtures and run on pushes and pull requests. The
+WCVP loader runs during builds; do not commit `src/data/family-area-sr.json`, as
+an existing file takes precedence over the Observable loader. Observable caches
+loader output; use `npm run clean` before a fresh data build.
+
+To validate a downloaded current WCVP archive without downloading it again:
+
+```sh
+python src/data/family-area-sr.json.py --archive /path/to/wcvp.zip > /tmp/family-area-sr.json
+WCVP_ARCHIVE=/path/to/wcvp.zip python -m unittest discover -s tests -v
+```
+
+Without `--archive`, the loader downloads Kew's current archive. It counts unique
+accepted species with native distributions (`introduced == 0`), retaining the
+existing treatment of extinct and doubtful localities. Global counts include
+all accepted species, including those without native distribution records.
+Localities recorded only at continent or region level have no level 3 code and
+are excluded from area counts, while their species remain in global counts.
+Every family contains integer richness for every code in `level3.json`, with
+zero for absent species. Twenty WCVP codes are absent from the bundled map; the
+loader explicitly lists these in `UNMAPPED_CODES`, reports them on stderr, and
+excludes their localities from area counts without affecting global counts.
+Updating the map is a separate task. Other unknown native distribution codes or
+conflicting accepted species records fail the build instead of silently changing counts.
+Climate is the most frequent nonempty description; ties use the first value
+alphabetically, and missing climates become `null`.
+
+The current WCVP names archive contains no family-rank records, so `ipni_id` is
+`null`. Species or genus IPNI identifiers must not be used as family identifiers;
+family IDs require a separate authoritative source in a future enrichment change.
+All-zero family rankings likewise use `null` for the undefined percentage above
+the mean, consistent with the existing nullable percentage field.

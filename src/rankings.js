@@ -27,7 +27,8 @@ export function rankFamily(entries) {
 
     for (let k = i; k < j; k++) {
       const row = sorted[k];
-      const pct = (row.richness - mean) / mean;
+      // An all-zero family has no meaningful percentage above its mean.
+      const pct = mean === 0 ? null : (row.richness - mean) / mean;
       out[k] = {
         ...row,
         rank: avgRank,
