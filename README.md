@@ -1,7 +1,6 @@
 # Floral World
 An app to explore global vascular plant biodiversity using data from the [World Checklist for Vascular Plants](https://www.tdwg.org/standards/wgsrpd/). A map shows the species richness for each "botanical country" (WGSRPD level 3 division) and can be filtered by family. Tables let the user discover the "unique families" of each area, and what percentage of global biodiversity they contain.
 
-
 This is an [Observable Framework](https://observablehq.com/framework/) app. For more, see <https://observablehq.com/framework/getting-started>.
 
 ## About
@@ -11,8 +10,8 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 
 ## Planned features
 ### Priority
-- [ ] Add data loader to keep site up-to-date
-  - [ ] Test that it work properly
+- [x] Add data loader to keep site up-to-date
+  - [x] Test that it work properly
   - [x] Fix it so it builds json correctly, and write code to get derived values (ties etc) in js
   - [x] Add data loader for common names
 - [x] Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
@@ -24,21 +23,35 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - [x] How does this taxa compare to global average? Maybe pick the family with the largest % difference between here and average.
   - [x] For countries that have multiple families where they're #1, include the number of them
 - [x] Selecting a family from the countries table updates the selected family reactively
+- [ ] Adapt the page to have a basic level of functionality on mobile
+  - [ ] Map should at least stretch to full page width
+  - [ ] Add an area selector dropdown/search bar
+  - [ ] Maybe even remove the selected area overlay map for mobile, and set persisted area from a vanilla Observable view() element on the plot
 - [ ] Selecting a new family or area updates the table select options
+  - [x] Families table
+  - [ ] Areas table
 
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
 - [ ] Fix the flickering when selecting a country from the map
 - [ ] Pan/zoom map and change projection
-  - (This is probably not possible anymore now that I've built it with two overlaying maps)
-- [ ] Add some higher-level categories like "ferns"
+  - This is probably not possible anymore now that I've built it with two overlaying maps
+- [ ] Add some higher-level categories like "ferns", or even all taxonomic levels if it doesn't make things too janky
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
-- [ ] Filter data to include introduced ranges or exclude extinct species
+- [ ] Allow the user to apply filters data to include introduced ranges or exclude extinct species
 - [ ] Chart of preferred climate for each species by family
 - [ ] Line chart of species richness by latitude
-- [ ] Show a list of species in selected area-family
 - [ ] Number of endemic species to each area
-  - [ ] Will need to make small islands more visible
+  - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
+- [ ] Get a list of species in selected area-family
+  - [ ] Perhaps on a separate page, since this will involve querying the entire 200MB WCVP
+
+## Use of AI
+The purpose of this project was mostly out of the personal interest of the lead developer (North Ross, myself), but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understand everything that's gone into the project, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.
+
+While I recognize the irony of using a computationally resource-intensive product to make an app highlighting the global biodiversity under threat from such development, I would absolutely not have been able to put this together in the same timeframe if I hadn't used this. Another 40+ hours of my life spent working on this app would certainly incur its own resource costs, which I expect might be higher than the computation costs incurred.
+
+That being said, this is an open source project and some of the contributors may have used AI coding agents more liberally than myself. However, all code from contributors has still been reviewed personally by the author, and I don't plan to commit any code that I don't personally understand.
 
 ## Development and validation
 

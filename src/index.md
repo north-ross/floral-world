@@ -1,6 +1,6 @@
 ---
 title: Vascular Plant Diversity
-toc: false
+toc: true
 ---
 
 ```js echo
@@ -408,18 +408,44 @@ if (areaTableSelect !== null) setPersistedArea(
 
 </div>
 </div>
+<div class="wide">
 
 ## About
 
 The World Checklist for Vascular Plants[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
+The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**. The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
-<details><summary>What does this map really show?</summary>
+## What does this map really show?
+<details><summary>Read more</summary>
 
-Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much more scientific approach. However, my approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
+Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing "true" centers of biodiversity or distribution. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much computational approach, although showing similar patterns, although other studies have used these boundaries for statistical analysis, controlling for area and climatic diversity within the boundaries[^3].
+</details><br>
 
-</details>
-<br>
+## Why are some areas more diverse than others?
+<details><summary>Read more</summary>
+
+This is a central and still unresolved question in biogeography, sometimes called the Latitudinal Diversity Gradient (LDG, [my notes](https://dismal-sariola.vercel.app/ecology-notes/macroecology/latitudinal-diversity-gradient/) ). The general pattern is that species richness tends to be higher around the equator and lower around the poles. It seems to be a relatively recent phenomenon which began after the end of the Cretaceous period, 30 or 40 million years ago. Before this, Earth usually had a much wider tropical band, and species richness was probably not much lower around the poles than at the equator. A planned feature for this site is a chart to visualize this LDG next to the map for each family.
+
+One paper ([Tietje et al. 2022](https://www.researchgate.net/publication/361631933_Global_variation_in_diversification_rate_and_species_richness_are_unlinked_in_plants)[^3]) used this same dataset (filtered to seed plants) to try and explore some different hypotheses on this question. They found that one of the most important factors contributing to an area's plant species richness are temperature and precipitation. However, they also found that the diversification rate was generally lower in these areas and higher in dry, northern areas that experienced more climate change in the past 30 million years. They conclude that the reason why tropical areas have more diverse plants is not because of higher rates of diversification, but that they have conserved more species from the Earth's deep tropical past. Something to consdier when exploring the map!
+
+As for why different families have different distributions than each other - this is a very complex question, but I believe it is related to:
+- The LDG - tropical areas tend to be more diverse as a rule
+- Environmental diversity or geodiversity of an area 
+  - areas with lots of different microclimates, soil types or altitudes will have more diversity
+- the evolutionary history of the family and its interactions with continental drift
+  - some families evolved quite recently in isolated areas, or have gone extinct everywhere expect for these areas
+  - New Caledonia is an example of this, containing a few families of "basal angiosperms" that have gone extinct everywhere else. ${Inputs.button("Select New Caledonia on the map", {reduce: () => setPersistedArea(codeToFeature["NWC"])})} 
+
+I previously assumed the reason why some families are very diverse in one area and present in small numbers in the rest of the world is because their center of diversity is the same as their point of evolutionary origin. However, this seems to not be true in every case. For example:
+
+${Inputs.button("Select Onagraceae on the map", {reduce: () => setSelectedFam("Onagraceae")})}
+
+Onagraceae (the "evening primrose" or fireweed family), is present around the world but extremely diverse in California. However, the earliest fossils we have are from Paleocene Colombia (as per [Paleobiology Database](https://paleobiodb.org)), and its evolutionary history is much more complex, with its most diverse lineages originating in California, but with other genera originating in South America, eastern North America, and *Chamanerion* appearing to originate in the northern temporal zone[^4].
+
+I hope this helps you dive into lots of rabbit holes!
+
+</details><br>
 
 ## What should I look at?
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
@@ -432,16 +458,18 @@ Here are a few plant families with interesting distributions you could check out
 - The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean.
   - ${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
 - ${Inputs.button("Sarraceniaceae (pitcher plants)", {reduce: () => setSelectedFam("Sarraceniaceae")})}
-- Roussaceae, a New Caledonian family with a cool distribution
-  - ${Inputs.button("Rousseaceae", {reduce: () => setSelectedFam("Rousseaceae")})}
 
 
-## Source
+## Source code
 
 This is an open source project. Check out the source and planned features, or make your own fork or contribution on [GitHub](https://github.com/north-ross/floral-world).
 
-[^1]: Govaerts, R., Nic Lughadha, E. et al. The World Checklist of Vascular Plants, a continuously updated resource for exploring global plant diversity. Sci Data 8, 215 (2021). [https://doi.org/10.1038/s41597-021-00997-6]
+</div>
+
+[^1]: Govaerts, R., Nic Lughadha, E. et al. The World Checklist of Vascular Plants, a continuously updated resource for exploring global plant diversity. Sci Data 8, 215 (2021). https://doi.org/10.1038/s41597-021-00997-6
 
 [^2]: Sabatini, F.M., Jiménez-Alfaro, B., Jandt, U. et al. Global patterns of vascular plant alpha diversity. Nat Commun 13, 4683 (2022). https://doi.org/10.1038/s41467-022-32063-z
 
+[^3]: Tietje, Melanie & Antonelli, Alexandre & Baker, William & Govaerts, Rafaël & Smith, Stephen & Eiserhardt, Wolf. (2022). Global variation in diversification rate and species richness are unlinked in plants. Proceedings of the National Academy of Sciences. 119. https://doi.org/10.1073/pnas.2120662119. 
 
+[^4]: Katinas L, Crisci JV, Wagner WL, Hoch PC. Geographical diversification of tribes Epilobieae, Gongylocarpeae, and Onagreae (Onagraceae) in North America, based on parsimony analysis of endemicity and track compatibility analysis. Ann Mo Bot Gard. 2004;91(1):159–85. https://repository.si.edu/server/api/core/bitstreams/8deb0998-cb59-412f-9369-96add8cf4641/content.
