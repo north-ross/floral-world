@@ -336,15 +336,14 @@ const akaHtml = (cmnNamesFiltered[persistedFam]?.length > 1)
 persistedFam != null
   ? html`${akaHtml}<p><strong>Preferred climate:</strong> ${sr[persistedFam]?.['climate']}</p>
 <p>Contains ${sr[persistedFam]?.['global']} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
-  <details>
-  <summary>About</summary>
-  <img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
-  Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
-  </details>
   `
   : html` `
 ```
-
+<details>
+<summary>About</summary>
+<img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
+Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
+</details>
 
 ```js
 // Show a table of species richness by area for selected family
@@ -367,7 +366,7 @@ const famEntries = Object.entries(sr[persistedFam]?.['sr'] || {}).map(([areaCode
 
 const famRanked = rankFamily(famEntries);
 
-const areaTableSelect = view(Inputs.table(famEntries, {
+const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0), {
   columns: ["areaName", "richness", "percentGlobal"],
   header: {
     areaName: "Area",
