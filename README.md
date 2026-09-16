@@ -16,6 +16,8 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - [x] Add data loader for common names
 - [x] Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
   - [ ] Maybe replace this with the more complete dataset from [Catalogue of Life API](https://www.checklistbank.org/about/formats#data-content)
+- [ ] Fix the WGSRPD map data so that it doesn't remove some of the tiny islands during topojson simplification
+  - [ ] Run the WGSRPD shapefile through mapshaper again and experiment with the options to avoid removing records
 - [ ] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
   - [ ] Embed an image from wikidata, and maybe the heading of the Wikipedia page in a collapsable summary box
 - [ ] Add some text about the "specialty" family for each area
