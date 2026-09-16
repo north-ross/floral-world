@@ -16,8 +16,6 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - [x] Add data loader for common names
 - [x] Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
   - [ ] Maybe replace this with the more complete dataset from [Catalogue of Life API](https://www.checklistbank.org/about/formats#data-content)
-- [ ] Fix the WGSRPD map data so that it doesn't remove some of the tiny islands during topojson simplification
-  - [ ] Run the WGSRPD shapefile through mapshaper again and experiment with the options to avoid removing records
 - [ ] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
   - [ ] Embed an image from wikidata, and maybe the heading of the Wikipedia page in a collapsable summary box
 - [ ] Add some text about the "specialty" family for each area
@@ -29,24 +27,22 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
   - [ ] Map should at least stretch to full page width
   - [ ] Add an area selector dropdown/search bar
   - [ ] Maybe even remove the selected area overlay map for mobile, and set persisted area from a vanilla Observable view() element on the plot
-- [ ] Selecting a new family or area updates the table select options
-  - [x] Families table
-  - [ ] Areas table
 
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
 - [ ] Fix the flickering when selecting a country from the map
-- [ ] Pan/zoom map and change projection
-  - This is probably not possible anymore now that I've built it with two overlaying maps
+- [ ] Change map projection, maybe pan/zoom d3 style if possible
 - [ ] Add some higher-level categories like "ferns", or even all taxonomic levels if it doesn't make things too janky
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
 - [ ] Allow the user to apply filters data to include introduced ranges or exclude extinct species
 - [ ] Chart of preferred climate for each species by family
-- [ ] Line chart of species richness by latitude
-- [ ] Number of endemic species to each area
+- [ ] Line chart of species richness by latitude (LDG)
+- [ ] Map number of endemic species to each area
   - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
 - [ ] Get a list of species in selected area-family
   - [ ] Perhaps on a separate page, since this will involve querying the entire 200MB WCVP
+- [ ] Selecting a new family or area updates the table select options
+  - This was causing some slowdown issues and bugs when I implemented it as a mutable, might try another technique later
 
 ## Use of AI
 The purpose of this project was mostly out of the personal interest of the lead developer (North Ross, myself), but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understand everything that's gone into the project, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.

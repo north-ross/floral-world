@@ -14,7 +14,6 @@ toc: true
 import { rankFamily} from "./rankings.js";
 ```
 
-
 ```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
@@ -33,7 +32,7 @@ const cmnNamesFiltered = Object.fromEntries(
 
 ```js
 // Pack into topojson feature
-const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.mapshaper)
+const wgsrpd = topojson.feature(wgsrpdTopo, wgsrpdTopo.objects.level3)
 ```
 
 ```js
@@ -144,7 +143,7 @@ const selArea = Generators.input(selAreaMap);
 ```
 
 ```js
-// Set mutable for selected area
+// Set mutable for selected area, separate one for table
 const persistedArea = Mutable(null);
 const setPersistedArea = (v) => {persistedArea.value = v;};
 ```
@@ -157,7 +156,7 @@ selAreaMap.addEventListener(
     event.stopPropagation(); // stop Plot's own pointerdown (sticky toggle) from running
     requestAnimationFrame(() => requestAnimationFrame(() => { // skip two frames to avoid premature result
       if (selArea !== null) setPersistedArea(selArea);
-      // TODO: Reset the areaTableSelect
+      // TODO: Set area table value to null
     }));
   },
   { capture: true }
@@ -249,8 +248,7 @@ const famTableInput = view(Inputs.table(areaRanked.filter((d) => d.richness>0), 
     // display the formatted tie label field instead of average rank
     rank: (d, i) => areaRanked[i]?.tieLabel ?? "—", 
   },
-  multiple: false,
-  value: areaRanked.filter((d) => (d.family === tableSelectedFam))[0] ?? null
+  multiple: false
 }))
 ```
 
@@ -258,14 +256,6 @@ const famTableInput = view(Inputs.table(areaRanked.filter((d) => d.richness>0), 
 // Set mutable for selected family
 const selectedFam = Mutable(null);
 const setSelectedFam = (v) => {selectedFam.value = v;};
-```
-
-```js
-// Set mutable for selected family in table
-// This needs to be separate from selected fam so the table doesn't infinitely reload
-const tableSelectedFam = Mutable(null);
-const setTableSelectedFam = (v) => {tableSelectedFam.value = v;};
-
 ```
 
 ```js
@@ -306,8 +296,7 @@ function commitFamily() {
   const resolved = familyLookup.get(raw);
   if (resolved) {
     setSelectedFam(resolved);
-    setTableSelectedFam(resolved);
-    console.log(tableSelectedFam)
+    // TODO: Update table selection?
   }
   // else: optionally flash an "not found" state — up to you
 }
@@ -361,7 +350,7 @@ Coming soon - this will have text and an image from Wikipedia plus links to iNat
 
 // 1. Convert array to lookup object: { "ABT": "Alberta", ... }
 const codeToName = Object.fromEntries(
-  wgsrpdTopo.objects.mapshaper.geometries.map(feature => [
+  wgsrpdTopo.objects.level3.geometries.map(feature => [
     feature.properties.LEVEL3_COD,
     feature.properties.LEVEL3_NAM
   ])
