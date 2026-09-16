@@ -286,10 +286,12 @@ const familySearchBox = html`<div style="display:flex; gap:4px;">
     ${searchOptions.map(name => html`<option value="${name}">`)}
   </datalist>
   <button id="famSubmit">Go</button>
+  <button id="clearSelection">Clear selection</button>
 </div>`;
 
 const inputEl = familySearchBox.querySelector("#famInput");
-const buttonEl = familySearchBox.querySelector("#famSubmit");
+const goButtonEl = familySearchBox.querySelector("#famSubmit");
+const clButtonEl = familySearchBox.querySelector("#clearSelection");
 
 function commitFamily() {
   const raw = inputEl.value.trim().toLowerCase();
@@ -301,10 +303,16 @@ function commitFamily() {
   // else: optionally flash an "not found" state — up to you
 }
 
-buttonEl.addEventListener("click", commitFamily);
+goButtonEl.addEventListener("click", commitFamily);
+clButtonEl.addEventListener("click", () => setSelectedFam(null));
 inputEl.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     event.preventDefault();
+    commitFamily();
+  }
+});
+inputEl.addEventListener("input", () => {
+  if (familyLookup.has(inputEl.value.trim().toLowerCase())) {
     commitFamily();
   }
 });
@@ -395,7 +403,6 @@ if (areaTableSelect !== null) setPersistedArea(
   codeToFeature[areaTableSelect.areaCode]
 );
 ```
-
 
 </div>
 </div>
