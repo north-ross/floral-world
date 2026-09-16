@@ -93,6 +93,8 @@ def main():
         with urlopen(WCVP_URL, timeout=120) as response:
             result = load_archive(BytesIO(response.read()), map_codes())
     json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
+    # with open('src/data/family-area-sr.json', 'w') as f:
+    #     json.dump(result, f, allow_nan=False, sort_keys=True)
     sys.stdout.write("\n")
 
 
