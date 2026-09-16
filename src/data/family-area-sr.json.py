@@ -3,6 +3,7 @@
 Run without arguments as an Observable loader, or pass --archive for an offline
 validation of a downloaded WCVP ZIP. Diagnostics go to stderr; stdout is JSON.
 """
+#%%
 import argparse
 from io import BytesIO
 import json
@@ -10,6 +11,8 @@ from pathlib import Path
 import sys
 from urllib.request import urlopen
 from zipfile import ZipFile
+import pywikibot
+from pywikibot import pagegenerators as pg
 
 import pandas as pd
 
@@ -29,7 +32,38 @@ def map_codes(path=MAP_PATH):
                    for obj in topology["objects"].values()
                    for geometry in obj["geometries"]})
 
+def fetch_wikidata_info(family_names):
+    """One SPARQL query for all families; returns dict keyed by family name."""
+    q = r"""
+        SELECT ?familyLabel ?family ?image ?commonNameLabel ?colId ?inatId ?ipniId ?powoId ?paleobioId ?wikipediaUrl WHERE {
+        VALUES ?familyLabel {"""+ " ".join(family_names) +"""}
 
+        ?family wdt:P225 ?familyLabel ;
+                wdt:P105 wd:Q35409 .
+
+        OPTIONAL { ?family wdt:P18 ?image. }
+        OPTIONAL {
+            ?family p:P1843 ?commonNameStatement.
+            ?commonNameStatement ps:P1843 ?commonNameLabel.
+            FILTER(LANG(?commonNameLabel) = "en")
+        }
+        OPTIONAL { ?family wdt:P10585 ?colId. }
+        OPTIONAL { ?family wdt:P3151 ?inatId. }
+        OPTIONAL { ?family wdt:P961 ?ipniId. }
+        OPTIONAL { ?family wdt:P5037 ?powoId. }
+        OPTIONAL { ?family wdt:P10907 ?paleobioId. }
+        OPTIONAL {
+            ?wikipediaUrl schema:about ?family ;
+                        schema:isPartOf <https://en.wikipedia.org/> .
+        }
+        }
+    """
+    wikidata_site = pywikibot.Site("wikidata", "wikidata")
+    generator = pg.WikidataSPARQLPageGenerator(q, site=wikidata_site)
+
+    # Convert generator into dict with ?familyLabel as key
+    return None
+#%%
 def build_richness(names, distributions, area_codes):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
     species = names.loc[(names.taxon_status == "Accepted") &
@@ -54,11 +88,15 @@ def build_richness(names, distributions, area_codes):
     if unmapped:
         print(f"WCVP areas absent from level3.json (excluded from area counts): {sorted(unmapped)}", file=sys.stderr)
     counts = native.groupby(["family", "area_code_l3"]).plant_name_id.nunique()
+
+    # Get info from wikidata
+    # wikidata_info = fetch_wikidata_info(species.family.unique())
     result = {}
     for family, group in species.groupby("family", sort=True):
         # pandas mode sorts ties; choose the first, or null when all are missing.
         climates = group.climate_description.dropna()
         modes = climates[climates != ""].mode()
+        # wd = wikidata_info.get(family, {})
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
             # WCVP names contains no family-rank records. Species IPNI IDs are
@@ -66,10 +104,13 @@ def build_richness(names, distributions, area_codes):
             "ipni_id": None,
             "global": int(group.plant_name_id.nunique()),
             "climate": str(modes.iloc[0]) if not modes.empty else None,
+            #"commonNames": wd.get("commonNames", []),
+            #"links": wd.get("links", {}),
+            #"image": wd.get("image"),
         }
     return result
 
-
+#%%
 def load_archive(archive, area_codes):
     with ZipFile(archive) as zf:
         with zf.open("wcvp_names.csv") as source:
@@ -78,7 +119,7 @@ def load_archive(archive, area_codes):
             distributions = pd.read_csv(source, sep="|", usecols=DISTRIBUTION_COLUMNS, dtype="string")
     return build_richness(names, distributions, area_codes)
 
-
+#%%
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--archive", type=Path, help="Use a local WCVP ZIP instead of downloading")
