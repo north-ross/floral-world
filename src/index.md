@@ -54,7 +54,7 @@ const colorOptions = {
   domain: richnessExtent,
   interpolate: "rgb",
   unknown: "#FFF", // since we replaced null with zero
-  label: `Species richness — ${selectedFam}`
+  label: `Species richness — ${selectedFam ?? "Vascular plants"}`
 };
 ```
 
@@ -187,7 +187,7 @@ html`<div>
   ${persistedArea === null
     ? html`<p>Select a botanical country from the map or right table.</p>`
     : html`
-        <h1 style="font-family: 'serif';">${persistedArea.properties.LEVEL3_NAM}</h1>
+        <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
         <p>Contains ${areaRanked.filter((d) => d.richness>0).length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
         ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
       `
@@ -248,7 +248,7 @@ const famTableInput = view(Inputs.table(areaRanked.filter((d) => d.richness>0), 
     // display the formatted tie label field instead of average rank
     rank: (d, i) => areaRanked[i]?.tieLabel ?? "—", 
   },
-  multiple: false
+  multiple: false, rows:13.5
 }))
 ```
 
@@ -281,7 +281,7 @@ const searchOptions = Array.from(familyLookup.keys());
 
 ```js
 const familySearchBox = html`<div style="display:flex; gap:4px;">
-  <input id="famInput" list="famOptions" placeholder="Type a family or common name and press enter" style="flex:1;">
+  <input id="famInput" list="famOptions" placeholder="Type a family or common name" style="flex:1;">
   <datalist id="famOptions">
     ${searchOptions.map(name => html`<option value="${name}">`)}
   </datalist>
@@ -320,11 +320,15 @@ inputEl.addEventListener("keydown", (event) => {
 selectedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1 style="font-family: 'serif';">${selectedFam} ${cmnNamesFiltered[selectedFam]?.[0] ? "\("+cmnNamesFiltered[selectedFam][0]+"\)" : ""}</h1></div>
+        <div><h1 style="font-family: 'serif';font-weight: normal;">${selectedFam} ${cmnNamesFiltered[selectedFam]?.[0] ? "\("+cmnNamesFiltered[selectedFam][0]+"\)" : ""}</h1></div>
         `
 ```
 
-<div>${familySearchBox}</div>
+<div>${familySearchBox}<br></div>
+
+<details>
+<summary><b>About this family (click here)</b></summary>
+<img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
 
 ```js
 const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
@@ -339,9 +343,7 @@ selectedFam != null
   `
   : html` `
 ```
-<details>
-<summary><b>Family info</b></summary>
-<img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
+
 Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
 </details>
 
@@ -397,13 +399,25 @@ if (areaTableSelect !== null) setPersistedArea(
 
 </div>
 </div>
+<style>
+.wide p,
+.wide h1,
+.wide h2,
+.wide h3,
+.wide h4,
+.wide h5,
+.wide h6,
+.wide .katex-display {
+  max-width: none;
+}
+</style>
 <div class="wide">
 
 ## About
 
-The World Checklist for Vascular Plants[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
+The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
-The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**. The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
+The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**, updated weekly from WCVP. The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
 ## What does this map really show?
 <details><summary>Read more</summary>
@@ -436,11 +450,11 @@ I hope this helps you dive into lots of rabbit holes!
 
 </details><br>
 
-## What should I look at?
+## How to use 
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
 
 Here are a few plant families with interesting distributions you could check out as well:
-- Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the rest of the world
+- Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the variation in rest of the world better
   - ${Inputs.button("Select Ericaceae", {reduce: () => setSelectedFam("Ericaceae")})} 
 - Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
   - ${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
