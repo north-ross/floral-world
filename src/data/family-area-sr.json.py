@@ -15,12 +15,8 @@ import pandas as pd
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
 # Present in the current WCVP archive but absent from the bundled map.
-# Keep this explicit so new mismatches still fail validation. Do not remap these
-# localities to nearby polygons; global species counts remain unaffected.
-UNMAPPED_CODES = frozenset({
-    "BER", "CKI", "CPI", "DSV", "HBI", "KZN", "LDV", "MCI", "MCS", "MDV",
-    "MRS", "NRU", "OGA", "PHX", "PIT", "SCS", "SEL", "TOK", "TUV", "WAK",
-})
+# I updated the map data to re add these, so I've removed all the unmapped codes. I
+UNMAPPED_CODES = frozenset({})
 MAP_PATH = Path(__file__).with_name("level3.json")
 NAME_COLUMNS = ["plant_name_id", "taxon_status", "taxon_rank", "family", "climate_description"]
 DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced"]

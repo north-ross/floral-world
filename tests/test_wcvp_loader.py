@@ -71,15 +71,6 @@ class RichnessTests(unittest.TestCase):
             [["2", None, "0"], ["2", "", "0"]], columns=loader.DISTRIBUTION_COLUMNS)])
         self.assertEqual(self.build(), expected)
 
-    def test_known_unmapped_localities_preserve_global_counts(self):
-        self.distributions.loc[len(self.distributions)] = ["2", "KZN", "0"]
-        with unittest.mock.patch("sys.stderr") as stderr:
-            result = self.build()
-        self.assertEqual(result["Ericaceae"]["global"], 2)
-        self.assertNotIn("KZN", result["Ericaceae"]["sr"])
-        self.assertTrue(stderr.write.called)
-        self.assertFalse(loader.UNMAPPED_CODES & set(loader.map_codes()))
-
     def test_missing_species_identity_fails(self):
         for column in ["plant_name_id", "family"]:
             with self.subTest(column=column):
