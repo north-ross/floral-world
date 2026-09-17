@@ -4,9 +4,11 @@ An app to explore global vascular plant biodiversity using data from the [World 
 This is an [Observable Framework](https://observablehq.com/framework/) app. For more, see <https://observablehq.com/framework/getting-started>.
 
 ## About
-The World Checklist for Vascular Plants divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
+The World Checklist for Vascular Plants divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into about 400 families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
 Since the boundaries used for aggregation are somewhat arbitrary, this visualization can't be taken too seriously as representing centers of biodiversity. See [this article](https://www.nature.com/articles/s41467-022-32063-z) for a much more scientific approach. However, this approach is much less computationally intensive, and the overall patterns still hold true. I've found it very interesting to explore different families and find the unique "specialty" families from different parts of the world.
+
+Based on an earlier simple project to generate static maps of plant diversity: [Plant Family Mapping](https://github.com/north-ross/PlantFamilyMapping)
 
 ## Planned features
 ### Priority
@@ -41,6 +43,8 @@ Since the boundaries used for aggregation are somewhat arbitrary, this visualiza
 
 ## Use of AI
 The purpose of this project was mostly out of my personal interest, but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understood all the code that's gone into the project on some level, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.
+
+No AI was used in my original [simpler code](https://github.com/north-ross/PlantFamilyMapping) to generate static maps, only after I added a lot of complexity and made it into this web app.
 
 While I recognize the irony of using a computationally resource-intensive product to make an app highlighting the global biodiversity under threat from such development, I would absolutely not have been able to put this together in the same timeframe if I hadn't used it. Another 40+ hours of my life spent working on this app would certainly incur its own resource costs, which I expect might be higher than the computation costs.
 
