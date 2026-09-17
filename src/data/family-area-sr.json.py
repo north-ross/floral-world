@@ -24,6 +24,7 @@ NAME_COLUMNS = ["plant_name_id", "taxon_status", "taxon_rank", "family", "climat
 DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 QUERY_PATH = Path(__file__).with_name("wikidata-sparql-query.rq")
+COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
 with open(QUERY_PATH) as f:
     SPARQL_TEMPLATE = f.read()
 #%%
@@ -66,6 +67,38 @@ def bindings_to_dict(bindings):
         parsed = {var: val["value"] for var, val in row.items() if var != "taxonname"}
         result.setdefault(family, []).append(parsed)
     return result
+
+def fetch_commons_info(filename, width=300):
+    """Get thumbnail image and attribution for the images fetched from wikidata
+
+    Args:
+        filename (_type_): wikimedia comons URL
+        width (int, optional): max requested image width
+
+    Returns:
+        dict: dictionary of terms for displaying new img on site
+    """
+    params = {
+        "action": "query",
+        "titles": f"File:{filename}",
+        "prop": "imageinfo",
+        "iiprop": "url|extmetadata",
+        "iiurlwidth": width,
+        "format": "json",
+    }
+    headers = {"User-Agent": "floral-world/1.0 (https://github.com/north-ross/floral-world)"}
+    response = requests.get(COMMONS_API_URL, params=params, headers=headers, timeout=30)
+    response.raise_for_status()
+    pages = response.json()["query"]["pages"]
+    page = next(iter(pages.values()))  # single-page lookup, dict keyed by page ID
+    if "imageinfo" not in page:
+        return None  # file missing/deleted since Wikidata was last edited
+    info = page["imageinfo"][0]
+    return {
+        "thumbUrl": info.get("thumburl"),  # present because of iiurlwidth
+        "descriptionUrl": info["descriptionurl"],  # the Commons file page itself
+        "extmetadata": info.get("extmetadata", {}),
+    }
 #%%
 def build_richness(names, distributions, area_codes):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
@@ -107,6 +140,10 @@ def build_richness(names, distributions, area_codes):
         modes = climates[climates != ""].mode()
         wd = wikidata_info.get(family, {})[0]
 
+        if wd.get("image", None): # Seems to not be catching, test
+            img_dict = fetch_commons_info(wd.get("image"))
+        else: img_dict = None
+
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
             # WCVP names contains no family-rank records. Species IPNI IDs are
@@ -119,7 +156,7 @@ def build_richness(names, distributions, area_codes):
                 'colId': wd.get('colId', None),
                 'powoId': wd.get('powoId', None)
                 },
-            "image": wd.get("image", None)
+            "image": img_dict
         }
     return result
 
@@ -142,9 +179,9 @@ def main():
     else:
         with urlopen(WCVP_URL, timeout=120) as response:
             result = load_archive(BytesIO(response.read()), map_codes())
-    json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
-    # with open('src/data/family-area-sr.json', 'w') as f:
-    #     json.dump(result, f, allow_nan=False, sort_keys=True)
+    # json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
+    with open('src/data/family-area-sr.json', 'w') as f:
+        json.dump(result, f, allow_nan=False, sort_keys=True)
     sys.stdout.write("\n")
 
 

@@ -336,18 +336,29 @@ selectedFam == null
 
 <details>
 <summary><b>About this family (click here)</b></summary>
-<img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
 
 ```js
+// display image
+view(sr[selectedFam])
+html`<img align="right" src="${imgUrl}">`
+```
+
+```js
+const imgUrl = sr[selectedFam]['image']['thumbUrl']
 const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
   ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[selectedFam].slice(1).join(", ")}.</p>`
   : html` `
+const wikiUrl = "https://en.wikipedia.org/wiki/" + selectedFam ?? "";
+const inatUrl = "https://www.inaturalist.org/taxa/" + sr[selectedFam]?.['ids']['inatId'] ?? "";
+// Add catalogue of life
+const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']['powoId'] ?? "";
+
 ```
 
 ```js
 selectedFam != null
   ? html`${akaHtml}
-  <p><b>Read more: </b><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">Wikipedia</a></p>
+  <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${powoUrl}" target="_blank">POWO</a></p> 
   <p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
   <p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
   `
