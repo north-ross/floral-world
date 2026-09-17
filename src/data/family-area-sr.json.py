@@ -11,10 +11,9 @@ from pathlib import Path
 import sys
 from urllib.request import urlopen
 from zipfile import ZipFile
-import pywikibot
-from pywikibot import pagegenerators as pg
-
 import pandas as pd
+import requests
+
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
 # Present in the current WCVP archive but absent from the bundled map.
@@ -23,7 +22,11 @@ UNMAPPED_CODES = frozenset({})
 MAP_PATH = Path(__file__).with_name("level3.json")
 NAME_COLUMNS = ["plant_name_id", "taxon_status", "taxon_rank", "family", "climate_description"]
 DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced"]
-
+WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+QUERY_PATH = Path(__file__).with_name("wikidata-sparql-query.rq")
+with open(QUERY_PATH) as f:
+    SPARQL_TEMPLATE = f.read()
+#%%
 
 def map_codes(path=MAP_PATH):
     with open(path) as source:
@@ -31,44 +34,38 @@ def map_codes(path=MAP_PATH):
     return sorted({geometry["properties"]["LEVEL3_COD"]
                    for obj in topology["objects"].values()
                    for geometry in obj["geometries"]})
-
-def fetch_wikidata_info(family_names):
-    """One SPARQL query for all families; returns dict keyed by family name."""
-    q = r"""
-        SELECT ?item ?taxonname 
-            (SAMPLE(?_image) AS ?image)  
-            (SAMPLE(?_inatId) AS ?inatId) 
-            (SAMPLE(?_colId) AS ?colId) 
-            (SAMPLE(?_powoId) AS ?powoId)
-            (SAMPLE(?_wikipediaUrl) AS ?wikipediaURL) WHERE {
-        VALUES ?taxonname { "Ericaceae" "Poaceae" "Onagraceae" "Fabaceae" "Pinaceae" "Salicaceae"}
+#%%
+def fetch_wikidata_info(family_names, chunk_size=100):
+    headers = {
+        "Accept": "application/sparql-results+json",
+        "User-Agent": "floral-world/1.0 (https://github.com/north-ross/floral-world)",
+    }
+    all_bindings = []
+    for i in range(0, len(family_names), chunk_size):
+        chunk = family_names[i:i + chunk_size]
+        values_clause = " ".join(f'"{name}"' for name in chunk)
+        query = SPARQL_TEMPLATE.replace("$familiesList$", values_clause)
+        print(f"Requesting query {i} ({chunk_size})")
+        response = requests.get(
+            WIKIDATA_SPARQL_URL,
+            params={"query": query},
+            headers=headers,
+            timeout=90,
+        )
+        response.raise_for_status()
+        all_bindings.extend(response.json()["results"]["bindings"])
         
-        ?item wdt:P31 wd:Q16521 ;
-                wdt:P105 wd:Q35409 ;
-        #         wdt:P171* wd:Q27133 ; # filter by parent taxa to vascular plants - causes slowdown
-                # is there another way to just filter to plants?
-                wdt:P225 ?taxonname .
-        OPTIONAL { ?item wdt:P18 ?_image. }
-        
-        OPTIONAL { ?item wdt:P3151 ?_inatId. } # check if these exist for all results - if so, remove optional
-        OPTIONAL { ?item wdt:P10585 ?_colId. }
-        OPTIONAL { ?item wdt:P5037 ?_powoId. }
-            # add paleobio iD? slows things down and doesnt exist much
-        
-        OPTIONAL {
-            ?_wikipediaUrl schema:about ?item ;
-                        schema:isPartOf <https://en.wikipedia.org/> .
-        }
-
-        
-        } 
-        GROUP BY ?item ?taxonname 
-    """
-    wikidata_site = pywikibot.Site("wikidata", "wikidata")
-    generator = pg.WikidataSPARQLPageGenerator(q, site=wikidata_site)
-
-    # Convert generator into dict with ?familyLabel as key
-    return None
+    return bindings_to_dict(all_bindings)
+    # return all_bindings
+#%%
+def bindings_to_dict(bindings):
+    """Group SPARQL rows by family name; each row -> plain dict with missing OPTIONALs as None."""
+    result = {}
+    for row in bindings:
+        family = row["taxonname"]["value"]
+        parsed = {var: val["value"] for var, val in row.items() if var != "taxonname"}
+        result.setdefault(family, []).append(parsed)
+    return result
 #%%
 def build_richness(names, distributions, area_codes):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
@@ -96,13 +93,20 @@ def build_richness(names, distributions, area_codes):
     counts = native.groupby(["family", "area_code_l3"]).plant_name_id.nunique()
 
     # Get info from wikidata
-    # wikidata_info = fetch_wikidata_info(species.family.unique())
+    family_names = species.family.unique()
+    wikidata_info = fetch_wikidata_info(family_names)
+    # Log taxa with no wikidata page
+    taxa_notfound = [x for x in family_names if x not in wikidata_info.keys()]
+    if taxa_notfound:
+        print(f"Families not found in wikidata query: {sorted(taxa_notfound)}")
+
     result = {}
     for family, group in species.groupby("family", sort=True):
         # pandas mode sorts ties; choose the first, or null when all are missing.
         climates = group.climate_description.dropna()
         modes = climates[climates != ""].mode()
-        # wd = wikidata_info.get(family, {})
+        wd = wikidata_info.get(family, {})[0]
+
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
             # WCVP names contains no family-rank records. Species IPNI IDs are
@@ -110,9 +114,12 @@ def build_richness(names, distributions, area_codes):
             "ipni_id": None,
             "global": int(group.plant_name_id.nunique()),
             "climate": str(modes.iloc[0]) if not modes.empty else None,
-            #"commonNames": wd.get("commonNames", []),
-            #"links": wd.get("links", {}),
-            #"image": wd.get("image"),
+            "ids": {
+                'inatId': wd.get('inatId', None),
+                'colId': wd.get('colId', None),
+                'powoId': wd.get('powoId', None)
+                },
+            "image": wd.get("image", None)
         }
     return result
 
