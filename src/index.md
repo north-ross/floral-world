@@ -328,7 +328,7 @@ inputEl.addEventListener("input", () => {
 selectedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1 style="font-family: 'serif';font-weight: normal;">${selectedFam} ${cmnNamesFiltered[selectedFam]?.[0] ? "\("+cmnNamesFiltered[selectedFam][0]+"\)" : ""}</h1></div>
+        <div><h1 style="font-family: 'serif';font-weight: normal;"><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">${selectedFam} ${cmnNamesFiltered[selectedFam]?.[0] ? "\("+cmnNamesFiltered[selectedFam][0]+"\)" : ""}</a></h1></div>
         `
 ```
 
@@ -346,8 +346,10 @@ const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
 
 ```js
 selectedFam != null
-  ? html`${akaHtml}<p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
-<p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+  ? html`${akaHtml}
+  <p><b>Read more: </b><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">Wikipedia</a></p>
+  <p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
+  <p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
   `
   : html` `
 ```
