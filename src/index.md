@@ -84,7 +84,7 @@ const richnessExtent = d3.extent(richnessByArea.values());
 
 ```js
 // Map
-const mapWidth = 0.8 * width;
+const mapWidth = Math.max(0.8 * width, 500); // set to 80% of width, or min 500px
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth", domain: wgsrpd },
