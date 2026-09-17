@@ -112,12 +112,12 @@ const selAreaMap = Plot.plot({
 
 // Plot sets this explicitly from width + projection aspect ratio —
 // available immediately, no need to wait for DOM layout.
-const mapHeight = +selAreaMap.getAttribute("height");
 
-// view(selAreaMap)
-// console.log("reloaded map")
+// console.log("reloaded main map")
 ```
-
+```js
+const mapHeight = +selAreaMap.getAttribute("height");
+```
 ```js
 // Lightweight overlay — same width/height/projection domain as the base map,
 // Only this updates with persistedArea
@@ -128,7 +128,7 @@ const highlightOverlay = Plot.plot({
   marks: [
     Plot.sphere({stroke:"var(--theme-foreground)"}),
     Plot.geo(
-      persistedArea ? [persistedArea] : [],
+      codeToFeature[mutAreaTableSelection?.areaCode] ? [codeToFeature[mutAreaTableSelection.areaCode]] : [],
       { stroke: "#662200", strokeWidth: 2.5, fill: "none" }
     )
   ],
@@ -138,30 +138,35 @@ const highlightOverlay = Plot.plot({
 ```
 
 ```js
-// Generator input for selArea
-const selArea = Generators.input(selAreaMap);
-```
-
-```js
 // Set mutable for selected area, separate one for table
 const persistedArea = Mutable(null);
 const setPersistedArea = (v) => {persistedArea.value = v;};
 ```
+```js
+// Reset signal for table select
+const mutAreaTableSelection = Mutable(null);
+const setMutAreaTableSelection = (v) => {mutAreaTableSelection.value = v;}
+```
 
 ```js
-// When map is clicked, update persistent area mutable
-selAreaMap.addEventListener(
-  "pointerdown",
-  (event) => {
-    event.stopPropagation(); // stop Plot's own pointerdown (sticky toggle) from running
-    requestAnimationFrame(() => requestAnimationFrame(() => { // skip two frames to avoid premature result
-      if (selArea !== null) setPersistedArea(selArea);
-      // TODO: Set area table value to null
-    }));
-  },
-  { capture: true }
-);
+// TODO: This is detecting an input when the table select is updated
+// Restrict inputs to only mouse events?
+const selArea = Generators.observe((notify) => {
+  const inputted = () => {
+    // console.log("map input",selAreaMap.value?.properties.LEVEL3_COD)
+    notify(selAreaMap.value)
+    // Reset table selection
+    setMutAreaTableSelection(null);
+  };
+  inputted();
+  selAreaMap.addEventListener("input", inputted, {capture: true});
+  return () => selAreaMap.removeEventListener("input", inputted,{capture: true});
+});
 ```
+```js
+if (selArea !== null) setPersistedArea(selArea);
+```
+
 
 ```js
 // Standalone legend, rendered separately in normal document flow
@@ -384,7 +389,8 @@ const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0)
     percentGlobal: "% of Global"
   },
   multiple: false,
-  sort: "richness", reverse: true
+  sort: "richness", reverse: true,
+  value: mutAreaTableSelection
   
 }))
 ```
@@ -399,11 +405,15 @@ const codeToFeature = Object.fromEntries(
   ])
 )
 // Set persistent area
-if (areaTableSelect !== null) setPersistedArea(
-  codeToFeature[areaTableSelect.areaCode]
-);
-```
+if (areaTableSelect !== null) {
+  setPersistedArea(
+    codeToFeature[areaTableSelect.areaCode]
+  )
 
+  setMutAreaTableSelection(areaTableSelect)
+  // "unfreeze" or hide tip?
+};
+```
 </div>
 </div>
 <style>
