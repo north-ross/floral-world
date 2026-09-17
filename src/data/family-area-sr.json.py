@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import sys
 from urllib.request import urlopen
+import re
 from zipfile import ZipFile
 import pandas as pd
 import requests
@@ -92,12 +93,21 @@ def fetch_commons_info(filename, width=300):
     pages = response.json()["query"]["pages"]
     page = next(iter(pages.values()))  # single-page lookup, dict keyed by page ID
     if "imageinfo" not in page:
-        return None  # file missing/deleted since Wikidata was last edited
+        print("imageNotFound", filename)
+        # I should catch these in a list
+        return None
     info = page["imageinfo"][0]
+
+    extmeta = info.get("extmetadata", {})
+    def clean(field):
+        val = extmeta.get(field, {}).get("value")
+        return re.sub("<[^>]+>", "", val).strip() if val else None  # strip HTML from Artist field
+
     return {
         "thumbUrl": info.get("thumburl"),  # present because of iiurlwidth
         "descriptionUrl": info["descriptionurl"],  # the Commons file page itself
-        "extmetadata": info.get("extmetadata", {}),
+        "author": clean("Artist"),
+        "license": clean("LicenseShortName"),
     }
 #%%
 def build_richness(names, distributions, area_codes):
@@ -140,9 +150,9 @@ def build_richness(names, distributions, area_codes):
         modes = climates[climates != ""].mode()
         wd = wikidata_info.get(family, {})[0]
 
-        if wd.get("image", None): # Seems to not be catching, test
-            img_dict = fetch_commons_info(wd.get("image"))
-        else: img_dict = None
+        if wd.get("image", None): 
+            img_dict = fetch_commons_info(Path(wd.get("image")).name)
+        else: img_dict = None # I should be catching these in a list
 
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
@@ -182,8 +192,9 @@ def main():
     # json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
     with open('src/data/family-area-sr.json', 'w') as f:
         json.dump(result, f, allow_nan=False, sort_keys=True)
+        print("wrote to file")
     sys.stdout.write("\n")
-
+    
 
 if __name__ == "__main__":
     main()

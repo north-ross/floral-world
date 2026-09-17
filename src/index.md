@@ -337,14 +337,13 @@ selectedFam == null
 <details>
 <summary><b>About this family (click here)</b></summary>
 
-```js
-// display image
-view(sr[selectedFam])
-html`<img align="right" src="${imgUrl}">`
-```
+
+
+${imgUrl ? html`<img align="right" src="${imgUrl}">` : html``}
+<!-- Add image attribution -->
 
 ```js
-const imgUrl = sr[selectedFam]['image']['thumbUrl']
+const imgUrl = sr[selectedFam]['image']?.['thumbUrl'] ?? null
 const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
   ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[selectedFam].slice(1).join(", ")}.</p>`
   : html` `
@@ -358,14 +357,12 @@ const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']
 ```js
 selectedFam != null
   ? html`${akaHtml}
-  <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${powoUrl}" target="_blank">POWO</a></p> 
   <p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
   <p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+  <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${powoUrl}" target="_blank">POWO</a></p> 
   `
   : html` `
 ```
-
-Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
 </details>
 
 ```js
