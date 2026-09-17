@@ -35,28 +35,34 @@ def map_codes(path=MAP_PATH):
 def fetch_wikidata_info(family_names):
     """One SPARQL query for all families; returns dict keyed by family name."""
     q = r"""
-        SELECT ?familyLabel ?family ?image ?commonNameLabel ?colId ?inatId ?ipniId ?powoId ?paleobioId ?wikipediaUrl WHERE {
-        VALUES ?familyLabel {"""+ " ".join(family_names) +"""}
-
-        ?family wdt:P225 ?familyLabel ;
-                wdt:P105 wd:Q35409 .
-
-        OPTIONAL { ?family wdt:P18 ?image. }
+        SELECT ?item ?taxonname 
+            (SAMPLE(?_image) AS ?image)  
+            (SAMPLE(?_inatId) AS ?inatId) 
+            (SAMPLE(?_colId) AS ?colId) 
+            (SAMPLE(?_powoId) AS ?powoId)
+            (SAMPLE(?_wikipediaUrl) AS ?wikipediaURL) WHERE {
+        VALUES ?taxonname { "Ericaceae" "Poaceae" "Onagraceae" "Fabaceae" "Pinaceae" "Salicaceae"}
+        
+        ?item wdt:P31 wd:Q16521 ;
+                wdt:P105 wd:Q35409 ;
+        #         wdt:P171* wd:Q27133 ; # filter by parent taxa to vascular plants - causes slowdown
+                # is there another way to just filter to plants?
+                wdt:P225 ?taxonname .
+        OPTIONAL { ?item wdt:P18 ?_image. }
+        
+        OPTIONAL { ?item wdt:P3151 ?_inatId. } # check if these exist for all results - if so, remove optional
+        OPTIONAL { ?item wdt:P10585 ?_colId. }
+        OPTIONAL { ?item wdt:P5037 ?_powoId. }
+            # add paleobio iD? slows things down and doesnt exist much
+        
         OPTIONAL {
-            ?family p:P1843 ?commonNameStatement.
-            ?commonNameStatement ps:P1843 ?commonNameLabel.
-            FILTER(LANG(?commonNameLabel) = "en")
-        }
-        OPTIONAL { ?family wdt:P10585 ?colId. }
-        OPTIONAL { ?family wdt:P3151 ?inatId. }
-        OPTIONAL { ?family wdt:P961 ?ipniId. }
-        OPTIONAL { ?family wdt:P5037 ?powoId. }
-        OPTIONAL { ?family wdt:P10907 ?paleobioId. }
-        OPTIONAL {
-            ?wikipediaUrl schema:about ?family ;
+            ?_wikipediaUrl schema:about ?item ;
                         schema:isPartOf <https://en.wikipedia.org/> .
         }
-        }
+
+        
+        } 
+        GROUP BY ?item ?taxonname 
     """
     wikidata_site = pywikibot.Site("wikidata", "wikidata")
     generator = pg.WikidataSPARQLPageGenerator(q, site=wikidata_site)
