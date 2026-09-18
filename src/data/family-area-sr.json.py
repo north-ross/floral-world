@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import sys
 from urllib.request import urlopen
+from urllib.parse import urlparse, unquote
 import re
 from zipfile import ZipFile
 import pandas as pd
@@ -70,15 +71,13 @@ def bindings_to_dict(bindings):
     return result
 
 def fetch_commons_info(filename, width=300):
-    """Get thumbnail image and attribution for the images fetched from wikidata
-
-    Args:
-        filename (_type_): wikimedia comons URL
-        width (int, optional): max requested image width
-
-    Returns:
-        dict: dictionary of terms for displaying new img on site
-    """
+    """Get thumbnail image and attribution for filename fetched from wikidata
+        So it can be displayed properly on the site.
+        Returns (info_dict_or_None, error_str_or_None)."""
+        # TODO: can I get the wikipedia user if no artist tag?
+        # Seems like there are some other author values this isnt returning. 
+        # I'd also like to get the "depicts" wikidata property for the caption
+        # SOme pages seem to have it listd under Attribution in the licence
     params = {
         "action": "query",
         "titles": f"File:{filename}",
@@ -88,28 +87,50 @@ def fetch_commons_info(filename, width=300):
         "format": "json",
     }
     headers = {"User-Agent": "floral-world/1.0 (https://github.com/north-ross/floral-world)"}
-    response = requests.get(COMMONS_API_URL, params=params, headers=headers, timeout=30)
-    response.raise_for_status()
-    pages = response.json()["query"]["pages"]
-    page = next(iter(pages.values()))  # single-page lookup, dict keyed by page ID
+    try:
+        response = requests.get(COMMONS_API_URL, params=params, headers=headers, timeout=30)
+        response.raise_for_status()
+        payload = response.json()
+    except (requests.RequestException, ValueError) as e:
+        return None, f"request failed: {e}"
+
+    pages = payload.get("query", {}).get("pages", {})
+    if not pages:
+        return None, "no 'pages' in response"
+    page = next(iter(pages.values()))
+    if "missing" in page:
+        return None, "file missing on Commons (renamed/deleted since Wikidata edit?)"
     if "imageinfo" not in page:
-        print("imageNotFound", filename)
-        # I should catch these in a list
-        return None
+        return None, f"no imageinfo (page keys: {list(page.keys())})"
+
     info = page["imageinfo"][0]
+    if "thumburl" not in info:
+        return None, "imageinfo present but no thumburl (non-image file type?)"
 
     extmeta = info.get("extmetadata", {})
     def clean(field):
         val = extmeta.get(field, {}).get("value")
-        return re.sub("<[^>]+>", "", val).strip() if val else None  # strip HTML from Artist field
+        # TODO: Clean up the &amp values
+        return val if val else None
 
     return {
-        "thumbUrl": info.get("thumburl"),  # present because of iiurlwidth
-        "descriptionUrl": info["descriptionurl"],  # the Commons file page itself
+        "thumbUrl": info["thumburl"],
+        "imageDescription": info['ImageDescription'],
+        "descriptionUrl": info["descriptionurl"],
         "author": clean("Artist"),
         "license": clean("LicenseShortName"),
-    }
+        "licenseUrl": clean("LicenseUrl"), # set this one up as a dict to save space?
+        "objectName": clean("ObjectName")
+    }, None
 #%%
+
+def commons_url_to_filename(image_url):
+    """Wikidata P18 gives a Special:FilePath URL; Commons API needs the raw title."""
+    if not image_url:
+        return None
+    encoded_name = urlparse(image_url).path.rsplit("/", 1)[-1]
+    return unquote(encoded_name)
+
 def build_richness(names, distributions, area_codes):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
     species = names.loc[(names.taxon_status == "Accepted") &
@@ -144,15 +165,22 @@ def build_richness(names, distributions, area_codes):
         print(f"Families not found in wikidata query: {sorted(taxa_notfound)}")
 
     result = {}
+    image_failures = []
+
     for family, group in species.groupby("family", sort=True):
-        # pandas mode sorts ties; choose the first, or null when all are missing.
         climates = group.climate_description.dropna()
         modes = climates[climates != ""].mode()
-        wd = wikidata_info.get(family, {})[0]
+        wd_list = wikidata_info.get(family, [])
+        wd = wd_list[0] if wd_list else {}
 
-        if wd.get("image", None): 
-            img_dict = fetch_commons_info(Path(wd.get("image")).name)
-        else: img_dict = None # I should be catching these in a list
+        img_dict = None
+        raw_image = wd.get("image")
+        if raw_image:
+            filename = commons_url_to_filename(raw_image)
+            img_dict, error = fetch_commons_info(filename)
+            if error:
+                image_failures.append({"family": family, "raw_image": raw_image,
+                                        "filename": filename, "error": error})
 
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
@@ -168,6 +196,11 @@ def build_richness(names, distributions, area_codes):
                 },
             "image": img_dict
         }
+
+    if image_failures:
+        print(f"Image lookup failed for {len(image_failures)} families:", file=sys.stderr)
+        for f in image_failures:
+            print(f"  {f['family']}: {f['error']} (filename={f['filename']!r})", file=sys.stderr)
     return result
 
 #%%
@@ -189,9 +222,9 @@ def main():
     else:
         with urlopen(WCVP_URL, timeout=120) as response:
             result = load_archive(BytesIO(response.read()), map_codes())
-    # json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
-    with open('src/data/family-area-sr.json', 'w') as f:
-        json.dump(result, f, allow_nan=False, sort_keys=True)
+    json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
+    with open('src/data/family-area-sr.json', 'w') as outfile:
+        json.dump(result, outfile, allow_nan=False, sort_keys=True)
         print("wrote to file")
     sys.stdout.write("\n")
     

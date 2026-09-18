@@ -3,7 +3,7 @@ SELECT ?item ?taxonname
     (SAMPLE(?_inatId) AS ?inatId) 
     (SAMPLE(?_colId) AS ?colId) 
     (SAMPLE(?_powoId) AS ?powoId)
-    (SAMPLE(?_wikipediaUrl) AS ?wikipediaURL) WHERE {
+WHERE {
   VALUES ?taxonname { $familiesList$ }
   
   {?item wdt:P31 wd:Q16521  ;
