@@ -89,7 +89,7 @@ def fetch_wikidata_info(family_names, chunk_size=50, delay_between_chunks=2):
         chunk = family_names[i:i + chunk_size]
         values_clause = " ".join(f'"{name}"' for name in chunk)
         query = SPARQL_TEMPLATE.replace("$familiesList$", values_clause)
-        print(f"Requesting wikidata query for families {i} - {i+chunk_size}")
+        # print(f"Requesting wikidata query for families {i} - {i+chunk_size}")
         wd_chunk = fetch_wikidata_chunk(query, headers)
         all_bindings.extend(wd_chunk)
         if i + chunk_size < len(family_names):
@@ -205,7 +205,7 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     # Log taxa with no wikidata page
     taxa_notfound = [x for x in family_names if x not in wikidata_info.keys()]
     if taxa_notfound:
-        print(f"Families not found in wikidata query: {sorted(taxa_notfound)}")
+        print(f"Families not found in wikidata query: {sorted(taxa_notfound)}", file=sys.stderr)
 
     result = {}
     image_cache = load_image_cache()
@@ -249,8 +249,8 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
         for fail in image_failures:
             print(f"  {fail['family']}: {fail['error']} (filename={fail['filename']!r})", file=sys.stderr)
     
-    licenses_set = {x['image']['license'] for x in result.values() if x['image']}
-    print(licenses_set)
+    # licenses_set = {x['image']['license'] for x in result.values() if x['image']}
+    # print(licenses_set)
     return result
 
 #%%
