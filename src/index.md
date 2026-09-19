@@ -356,7 +356,7 @@ ${imgUrl != null ?
     ${licenseHtml}
   </figcaption>
 </figure>`
-  : html`<p>No images available</p>`
+  : html`<p>No images available. Consider adding one on <a href="https://www.wikidata.org/wiki/${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
 }
 
 ```js
@@ -377,9 +377,9 @@ const depictsHtml = depicts
 const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
   ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[selectedFam].slice(1).join(", ")}.</p>`
   : html` `
-const licenseUrl = sr[selectedFam]?.['image']['licenseUrl']
+const licenseUrl = sr[selectedFam]?.['image']?.['licenseUrl']
 const licenseHtml = licenseUrl != null
-    ? html`<a href="${licenseUrl}", target="_blank">${sr[selectedFam]?.['image']['license']}</a>. `
+    ? html`<a href="${licenseUrl}", target="_blank">${sr[selectedFam]?.['image']?.['license']}</a>. `
     : html`${sr[selectedFam]?.['image']?.['license']}. `
 const wikiUrl = "https://en.wikipedia.org/wiki/" + selectedFam ?? "";
 const inatUrl = "https://www.inaturalist.org/taxa/" + sr[selectedFam]?.['ids']['inatId'] ?? "";
