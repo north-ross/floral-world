@@ -23,6 +23,7 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [ ] Adapt the page to have a basic level of functionality on mobile
   - [x] Map should at least stretch to full page width
   - [ ] Add an area selector dropdown/search bar
+  - [ ] Grid cards should not match height on mobile
   - [ ] Maybe even remove the selected area overlay map for mobile, and set persisted area from a vanilla Observable view() element on the plot
 
 ### Lower priority
