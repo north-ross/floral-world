@@ -84,7 +84,7 @@ const richnessExtent = d3.extent(richnessByArea.values());
 
 ```js
 // Map
-const mapWidth = Math.max(0.8 * width, 500); // set to 80% of width, or min 500px
+const mapWidth = (0.8*width < 600) ? width : 0.8*width; // set to 80% of width, or min 500px
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth", domain: wgsrpd },
@@ -188,7 +188,7 @@ html`<div>
     ? html`<p>Select a botanical country from the map or right table.</p>`
     : html`
         <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
-        <p>Contains ${areaRanked.filter((d) => d.richness>0).length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
+        <p>Contains ${areaRanked.length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
         ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
       `
   }
@@ -228,14 +228,14 @@ const areaEntries = persistedArea
   : [];
 
 // Sort by the family's global rank (best/lowest rank number first)
-const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank));
+const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank)).filter((d) => d.richness>0);
 const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
 // starter code for number of endemic families
 // replace selectedFam with all families. 
 // If this country has all the global species, and the second highest country has zero, it's endemic.
 // if (sr[selectedFam]['global'] === sr[selectedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
 
-const famTableInput = view(Inputs.table(areaRanked.filter((d) => d.richness>0), {
+const famTableInput = view(Inputs.table(areaRanked, {
   columns: ["family", "richness", "rank", "pctAboveAvg"],
   header: {
     family: "Plant Family",
@@ -328,33 +328,74 @@ inputEl.addEventListener("input", () => {
 selectedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1 style="font-family: 'serif';font-weight: normal;"><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">${selectedFam} ${cmnNamesFiltered[selectedFam]?.[0] ? "\("+cmnNamesFiltered[selectedFam][0]+"\)" : ""}</a></h1></div>
+        <div><h1 style="font-family: 'serif';font-weight: normal;"><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">${selectedFam}</a></h1>
+          <h2 style="font-family: 'serif';">${cmnNamesFiltered[selectedFam]?.[0] ? " "+cmnNamesFiltered[selectedFam][0]+" " : ""}</h2>
+        </div>
         `
 ```
 
 <div>${familySearchBox}<br></div>
-
-<details>
-<summary><b>About this family (click here)</b></summary>
-<img align="right" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Illustration_Notholaena_marantae.jpg/250px-Illustration_Notholaena_marantae.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail">
+<details open>
+<summary><b>About this family</b></summary>
+${imgUrl != null ? 
+  html`<figure style="
+      float: right;
+      width: 220px;
+      margin: 0 0 1em 1.5em;
+      border: 1px solid var(--theme-foreground-fainter);
+      background: var(--theme-background);
+      padding: 0.4em;
+      font-size: 0.85em;
+      text-align: center;
+    ">
+  <a href="${imgSrcUrl}" target="_blank">
+  <img src="${imgUrl}" style="width: 100%; height: auto; display: block;"></a>
+  <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
+    ${depictsHtml}
+    ${imgAuthorText}
+    ${licenseHtml}
+  </figcaption>
+</figure>`
+  : html`<p>No images available. Consider adding one on <a href="https://www.wikidata.org/wiki/${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
+}
 
 ```js
+// TODO: fix wide images not showing?
+const imgUrl = sr[selectedFam]?.['image']?.['thumbUrl'] ?? null
+const imgSrcUrl = sr[selectedFam]?.['image']?.['descriptionUrl'] ?? null
+
+const imgAuthor =  sr[selectedFam]?.['image']?.['author'] ?? null 
+const imgAuthorText = 
+  (imgAuthor?.[0] === "uploader") 
+  ? "Uploader: " + imgAuthor[1] + " | "  
+  : imgAuthor?.[1] + " | " ?? null
+
+const depicts = sr[selectedFam]?.['image']?.['depicts']
+const depictsHtml = depicts 
+  ? html`<a href="https://en.wikipedia.org/wiki/${depicts?.replace(" ","_")}" target="_blank"><i>${depicts}</i></a><br>`
+  : html``
 const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
   ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[selectedFam].slice(1).join(", ")}.</p>`
   : html` `
+const licenseUrl = sr[selectedFam]?.['image']?.['licenseUrl']
+const licenseHtml = licenseUrl != null
+    ? html`<a href="${licenseUrl}", target="_blank">${sr[selectedFam]?.['image']?.['license']}</a>. `
+    : html`${sr[selectedFam]?.['image']?.['license']}. `
+const wikiUrl = "https://en.wikipedia.org/wiki/" + selectedFam ?? "";
+const inatUrl = "https://www.inaturalist.org/taxa/" + sr[selectedFam]?.['ids']['inatId'] ?? "";
+const colUrl = "https://www.catalogueoflife.org/data/taxon/" + sr[selectedFam]?.['ids']['colId'] ?? "";
+const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']['powoId'] ?? "";
 ```
 
 ```js
 selectedFam != null
   ? html`${akaHtml}
-  <p><b>Read more: </b><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">Wikipedia</a></p>
   <p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
   <p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+  <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${colUrl}" target="_blank">Catalogue of Life</a> | <a href="${powoUrl}" target="_blank">POWO</a> </p>
   `
   : html` `
 ```
-
-Coming soon - this will have text and an image from Wikipedia plus links to iNat, Catalogue of Life, POWO and Paleobio database.
 </details>
 
 ```js

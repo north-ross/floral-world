@@ -14,15 +14,16 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 ### Priority
 - [x] Add data loader to keep site up-to-date
 - [x] Get common names for families (from [iNat taxonomy DarwinCore archive](https://www.inaturalist.org/pages/developers))
-  - [ ] Maybe replace this with the more complete dataset from [Catalogue of Life API](https://www.checklistbank.org/about/formats#data-content)
 - [x] Selecting a family from the countries table updates the selected family reactively
-- [ ] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
-  - [ ] Embed an image from wikidata, and maybe the heading of the Wikipedia page in a collapsable summary box
+- [x] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
+  - [x] Embed an image from wikidata
+- [ ] When no area is selected, show a table of global SR by plant families (no global rank or % above avg)
 - [ ] Add some text about the "specialty" family for each area
   - [ ] From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
 - [ ] Adapt the page to have a basic level of functionality on mobile
-  - [ ] Map should at least stretch to full page width
+  - [x] Map should at least stretch to full page width
   - [ ] Add an area selector dropdown/search bar
+  - [ ] Grid cards should not match height on mobile
   - [ ] Maybe even remove the selected area overlay map for mobile, and set persisted area from a vanilla Observable view() element on the plot
 
 ### Lower priority
@@ -38,8 +39,7 @@ Based on an earlier simple project to generate static maps of plant diversity: [
   - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
 - [ ] Get a list of species in selected area-family
   - [ ] Perhaps on a separate page, since this will involve querying the entire 200MB WCVP
-- [ ] Selecting a new family or area updates the table select options
-  - This was causing some slowdown issues and bugs when I implemented it as a mutable, might try another technique later
+- [ ] Embed wikipedia text
 
 ## Use of AI
 The purpose of this project was mostly out of my personal interest, but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understood all the code that's gone into the project on some level, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.

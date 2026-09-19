@@ -1,0 +1,31 @@
+SELECT ?item ?taxonname 
+    (SAMPLE(?_image) AS ?image)  
+    (SAMPLE(?_imageDepictsLabel) AS ?imageDepictsLabel)  
+    (SAMPLE(?_inatId) AS ?inatId) 
+    (SAMPLE(?_colId) AS ?colId) 
+    (SAMPLE(?_powoId) AS ?powoId)
+WHERE {
+  VALUES ?taxonname { $familiesList$ }
+  
+  {?item wdt:P31 wd:Q16521  ;
+         wdt:P105 wd:Q35409 ;
+         wdt:P225 ?taxonname .} UNION
+  {?item wdt:P31 wd:Q310890;
+         wdt:P105 wd:Q35409 ;
+         wdt:P225 ?taxonname .}
+         
+  OPTIONAL { 
+    ?item p:P18 ?imageStatement .
+    ?imageStatement ps:P18 ?_image .
+    OPTIONAL { 
+      ?imageStatement pq:P180 ?_imageDepictsItem. 
+      ?_imageDepictsItem rdfs:label ?_imageDepictsLabel.
+      FILTER(LANG(?_imageDepictsLabel) = "en")
+    }
+  }
+  
+  OPTIONAL { ?item wdt:P3151 ?_inatId. } # check if these exist for all results - if so, remove optional
+  OPTIONAL { ?item wdt:P10585 ?_colId. }
+  OPTIONAL { ?item wdt:P5037 ?_powoId. }
+} 
+GROUP BY ?item ?taxonname 

@@ -31,18 +31,19 @@ class RichnessTests(unittest.TestCase):
         self.codes = ["ABT", "ALA", "ANT"]
 
     def build(self):
-        return loader.build_richness(self.names, self.distributions, self.codes)
+        return loader.build_richness(
+            self.names, self.distributions, self.codes,
+            wikidata_fetcher=lambda names: {},  # no Wikidata data in fixture tests
+        )
 
     def test_native_unique_species_and_global_counts(self):
         result = self.build()
-        self.assertEqual(result["Ericaceae"], {
-            "sr": {"ABT": 1, "ALA": 1, "ANT": 0}, "global": 2,
-            "climate": "Temperate", "ipni_id": None,
-        })
-        self.assertEqual(result["Polemoniaceae"], {
-            "sr": {"ABT": 0, "ALA": 0, "ANT": 0}, "global": 1,
-            "climate": None, "ipni_id": None,
-        })
+        self.assertEqual(result["Ericaceae"]["sr"], {"ABT": 1, "ALA": 1, "ANT": 0})
+        self.assertEqual(result["Ericaceae"]["global"], 2)
+        self.assertEqual(result["Ericaceae"]["climate"], "Temperate")
+        self.assertEqual(result["Polemoniaceae"]["sr"], {"ABT": 0, "ALA": 0, "ANT": 0})
+        self.assertEqual(result["Polemoniaceae"]["global"], 1)
+        self.assertIsNone(result["Polemoniaceae"]["climate"])
         self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
         for family in result.values():
             self.assertTrue(all(type(n) is int and 0 <= n <= family["global"]
@@ -85,7 +86,9 @@ class RichnessTests(unittest.TestCase):
 
     def test_order_independence(self):
         self.assertEqual(self.build(), loader.build_richness(
-            self.names.iloc[::-1], self.distributions.iloc[::-1], self.codes[::-1]))
+            self.names.iloc[::-1], self.distributions.iloc[::-1], self.codes[::-1],
+            wikidata_fetcher=lambda names: {},
+        ))
 
     def test_zip_csv_path_and_map_compatibility(self):
         archive = BytesIO()
@@ -93,7 +96,10 @@ class RichnessTests(unittest.TestCase):
             zf.writestr("wcvp_names.csv", self.names.to_csv(sep="|", index=False))
             zf.writestr("wcvp_distribution.csv", self.distributions.to_csv(sep="|", index=False))
         archive.seek(0)
-        self.assertEqual(loader.load_archive(archive, self.codes), self.build())
+        self.assertEqual(
+            loader.load_archive(archive, self.codes, wikidata_fetcher=lambda names: {}),
+            self.build(),
+        )
         self.assertTrue(set(self.codes) <= set(loader.map_codes()))
 
 
@@ -106,13 +112,12 @@ class ArchiveTests(unittest.TestCase):
         json.dumps(result, allow_nan=False)
         for family, record in result.items():
             with self.subTest(family=family):
-                self.assertEqual(set(record), {"sr", "global", "climate", "ipni_id"})
+                self.assertEqual(set(record), {"sr", "global", "climate", "ids", "image"})
                 self.assertEqual(set(record["sr"]), set(codes))
                 self.assertGreater(record["global"], 0)
                 self.assertTrue(all(type(n) is int and 0 <= n <= record["global"]
                                     for n in record["sr"].values()))
-                self.assertTrue(record["climate"] is None or isinstance(record["climate"], str))
-                self.assertIsNone(record["ipni_id"])
+                self.assertTrue(record["climate"] is None or isinstance(record["climate"], str))\
 
 
 if __name__ == "__main__":

@@ -33,6 +33,7 @@ export default {
 Geographic System for Recording Plant Distributions</a>, with species distributions from \
 the <a href=\"https://powo.science.kew.org/about-wcvp\">World Checklist of Vascular Plants</a> (updated weekly). \
 English common names are from the <a href=\"https://forum.inaturalist.org/t/list-of-sources-for-common-names-wiki/10249\">iNaturalist Community</a>, downloaded <a href=\"https://www.inaturalist.ca/pages/developers\">here</a>. \
+Additional data and images from <a href=\"https://www.wikidata.org\">Wikidata</a>. \
 Built with Observable. Some AI was used to assist develpment. \
 <a href=\"https://github.com/north-ross/floral-world#use-of-ai\">Read more</a>", // what to show in the footer (HTML)
   // sidebar: true, // whether to show the sidebar
