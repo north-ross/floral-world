@@ -27,6 +27,7 @@ DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 QUERY_PATH = Path(__file__).with_name("wikidata-sparql-query.rq")
 COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
+IMAGE_CACHE_PATH = Path(__file__).with_name("commons-image-cache.json")
 with open(QUERY_PATH) as f:
     SPARQL_TEMPLATE = f.read()
 #%%
@@ -38,6 +39,29 @@ def map_codes(path=MAP_PATH):
                    for obj in topology["objects"].values()
                    for geometry in obj["geometries"]})
 #%%
+
+def load_image_cache():
+    """Load cache of image URL and metadata from wiki commons API query"""
+    if IMAGE_CACHE_PATH.exists():
+        with open(IMAGE_CACHE_PATH) as f:
+            return json.load(f)
+    return {}
+
+def save_image_cache(cache):
+    """save cache of image URL and metadata"""
+    with open(IMAGE_CACHE_PATH, "w") as f:
+        json.dump(cache, f, indent=2, sort_keys=True)
+
+def get_commons_info_cached(raw_image_url, cache):
+    """Read wikimedia commons info from cache"""
+    if raw_image_url in cache:
+        return cache[raw_image_url], None  # cache hit, no error to report
+    filename = commons_url_to_filename(raw_image_url)
+    result, error = fetch_commons_info(filename)
+    if result is not None:
+        cache[raw_image_url] = result  # only cache successes
+    return result, error
+
 def fetch_wikidata_info(family_names, chunk_size=100):
     headers = {
         "Accept": "application/sparql-results+json",
@@ -48,7 +72,7 @@ def fetch_wikidata_info(family_names, chunk_size=100):
         chunk = family_names[i:i + chunk_size]
         values_clause = " ".join(f'"{name}"' for name in chunk)
         query = SPARQL_TEMPLATE.replace("$familiesList$", values_clause)
-        print(f"Requesting query {i} ({chunk_size})")
+        print(f"Requesting wikidata query for families {i} - {i+chunk_size}")
         response = requests.get(
             WIKIDATA_SPARQL_URL,
             params={"query": query},
@@ -69,7 +93,7 @@ def bindings_to_dict(bindings):
         parsed = {var: val["value"] for var, val in row.items() if var != "taxonname"}
         result.setdefault(family, []).append(parsed)
     return result
-
+#%%
 def fetch_commons_info(filename, width=300):
     """Get thumbnail image and attribution for filename fetched from wikidata
         So it can be displayed properly on the site.
@@ -81,8 +105,8 @@ def fetch_commons_info(filename, width=300):
     params = {
         "action": "query",
         "titles": f"File:{filename}",
-        "prop": "imageinfo",
-        "iiprop": "url|extmetadata",
+        "prop": "imageinfo|sdc",
+        "iiprop": "url|extmetadata|user",
         "iiurlwidth": width,
         "format": "json",
     }
@@ -110,17 +134,24 @@ def fetch_commons_info(filename, width=300):
     extmeta = info.get("extmetadata", {})
     def clean(field):
         val = extmeta.get(field, {}).get("value")
-        # TODO: Clean up the &amp values
-        return val if val else None
+        return re.sub("<[^>]+>", "", val).strip().replace("&amp;", "&") if val else None
 
+    artist = clean("Artist")
+    uploader = info.get("user")
+    if artist:
+        credit, credit_kind = artist, "artist"
+    elif uploader:
+        credit, credit_kind = uploader, "uploader"
+    else:
+        credit, credit_kind = None, None
     return {
         "thumbUrl": info["thumburl"],
-        "imageDescription": info['ImageDescription'],
+        # "imageDescription": clean('ImageDescription'),
         "descriptionUrl": info["descriptionurl"],
-        "author": clean("Artist"),
+        "author": [credit_kind, credit],
         "license": clean("LicenseShortName"),
         "licenseUrl": clean("LicenseUrl"), # set this one up as a dict to save space?
-        "objectName": clean("ObjectName")
+        # "category0": clean("Categories").split('|')[0]
     }, None
 #%%
 
@@ -165,6 +196,8 @@ def build_richness(names, distributions, area_codes):
         print(f"Families not found in wikidata query: {sorted(taxa_notfound)}")
 
     result = {}
+    image_cache = load_image_cache()
+
     image_failures = []
 
     for family, group in species.groupby("family", sort=True):
@@ -176,17 +209,18 @@ def build_richness(names, distributions, area_codes):
         img_dict = None
         raw_image = wd.get("image")
         if raw_image:
+            img_dict, error = get_commons_info_cached(raw_image, image_cache)
             filename = commons_url_to_filename(raw_image)
             img_dict, error = fetch_commons_info(filename)
+
+            # Add tag for image depicts label
+            img_dict['depicts'] = wd.get('imageDepictsLabel', None)
             if error:
                 image_failures.append({"family": family, "raw_image": raw_image,
                                         "filename": filename, "error": error})
 
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
-            # WCVP names contains no family-rank records. Species IPNI IDs are
-            # not family IDs; leave this unavailable until an authority is added.
-            "ipni_id": None,
             "global": int(group.plant_name_id.nunique()),
             "climate": str(modes.iloc[0]) if not modes.empty else None,
             "ids": {
@@ -196,11 +230,15 @@ def build_richness(names, distributions, area_codes):
                 },
             "image": img_dict
         }
+    save_image_cache(image_cache)
 
     if image_failures:
         print(f"Image lookup failed for {len(image_failures)} families:", file=sys.stderr)
         for f in image_failures:
             print(f"  {f['family']}: {f['error']} (filename={f['filename']!r})", file=sys.stderr)
+    
+    licenses_set = {x['image']['license'] for x in result.values() if x['image']}
+    print(licenses_set)
     return result
 
 #%%
