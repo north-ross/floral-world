@@ -15,6 +15,7 @@ import re
 from zipfile import ZipFile
 import pandas as pd
 import requests
+import time
 
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
@@ -62,7 +63,23 @@ def get_commons_info_cached(raw_image_url, cache):
         cache[raw_image_url] = result  # only cache successes
     return result, error
 
-def fetch_wikidata_info(family_names, chunk_size=100):
+def fetch_wikidata_chunk(query, headers, retries=3, base_delay=5):
+    for attempt in range(retries):
+        try:
+            response = requests.get(
+                WIKIDATA_SPARQL_URL, params={"query": query},
+                headers=headers, timeout=60,
+            )
+            response.raise_for_status()
+            return response.json()["results"]["bindings"]
+        except requests.exceptions.ReadTimeout:
+            if attempt == retries - 1:
+                raise
+            wait = base_delay * (2 ** attempt)  # 5s, 10s, 20s
+            print(f"Timeout, retrying in {wait}s (attempt {attempt+1}/{retries})", file=sys.stderr)
+            time.sleep(wait)
+
+def fetch_wikidata_info(family_names, chunk_size=50, delay_between_chunks=2):
     headers = {
         "Accept": "application/sparql-results+json",
         "User-Agent": "floral-world/1.0 (https://github.com/north-ross/floral-world)",
@@ -73,17 +90,13 @@ def fetch_wikidata_info(family_names, chunk_size=100):
         values_clause = " ".join(f'"{name}"' for name in chunk)
         query = SPARQL_TEMPLATE.replace("$familiesList$", values_clause)
         print(f"Requesting wikidata query for families {i} - {i+chunk_size}")
-        response = requests.get(
-            WIKIDATA_SPARQL_URL,
-            params={"query": query},
-            headers=headers,
-            timeout=90,
-        )
-        response.raise_for_status()
-        all_bindings.extend(response.json()["results"]["bindings"])
-        
+        wd_chunk = fetch_wikidata_chunk(query, headers)
+        all_bindings.extend(wd_chunk)
+        if i + chunk_size < len(family_names):
+            time.sleep(delay_between_chunks)
+
     return bindings_to_dict(all_bindings)
-    # return all_bindings
+
 #%%
 def bindings_to_dict(bindings):
     """Group SPARQL rows by family name; each row -> plain dict with missing OPTIONALs as None."""
@@ -98,7 +111,6 @@ def fetch_commons_info(filename, width=300):
     """Get thumbnail image and attribution for filename fetched from wikidata
         So it can be displayed properly on the site.
         Returns (info_dict_or_None, error_str_or_None)."""
-        # TODO: can I get the wikipedia user if no artist tag?
         # Seems like there are some other author values this isnt returning. 
         # I'd also like to get the "depicts" wikidata property for the caption
         # SOme pages seem to have it listd under Attribution in the licence
@@ -211,7 +223,6 @@ def build_richness(names, distributions, area_codes):
         if raw_image:
             img_dict, error = get_commons_info_cached(raw_image, image_cache)
             filename = commons_url_to_filename(raw_image)
-            img_dict, error = fetch_commons_info(filename)
 
             # Add tag for image depicts label
             img_dict['depicts'] = wd.get('imageDepictsLabel', None)
@@ -224,6 +235,7 @@ def build_richness(names, distributions, area_codes):
             "global": int(group.plant_name_id.nunique()),
             "climate": str(modes.iloc[0]) if not modes.empty else None,
             "ids": {
+                'wikidata': wd.get('item', None),
                 'inatId': wd.get('inatId', None),
                 'colId': wd.get('colId', None),
                 'powoId': wd.get('powoId', None)
@@ -234,8 +246,8 @@ def build_richness(names, distributions, area_codes):
 
     if image_failures:
         print(f"Image lookup failed for {len(image_failures)} families:", file=sys.stderr)
-        for f in image_failures:
-            print(f"  {f['family']}: {f['error']} (filename={f['filename']!r})", file=sys.stderr)
+        for fail in image_failures:
+            print(f"  {fail['family']}: {fail['error']} (filename={fail['filename']!r})", file=sys.stderr)
     
     licenses_set = {x['image']['license'] for x in result.values() if x['image']}
     print(licenses_set)
@@ -261,9 +273,9 @@ def main():
         with urlopen(WCVP_URL, timeout=120) as response:
             result = load_archive(BytesIO(response.read()), map_codes())
     json.dump(result, sys.stdout, allow_nan=False, sort_keys=True)
-    with open('src/data/family-area-sr.json', 'w') as outfile:
-        json.dump(result, outfile, allow_nan=False, sort_keys=True)
-        print("wrote to file")
+    # with open('src/data/family-area-sr.json', 'w') as outfile:
+    #     json.dump(result, outfile, allow_nan=False, sort_keys=True)
+    #     print("wrote to file")
     sys.stdout.write("\n")
     
 
