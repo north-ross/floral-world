@@ -31,7 +31,10 @@ class RichnessTests(unittest.TestCase):
         self.codes = ["ABT", "ALA", "ANT"]
 
     def build(self):
-        return loader.build_richness(self.names, self.distributions, self.codes)
+        return loader.build_richness(
+            self.names, self.distributions, self.codes,
+            wikidata_fetcher=lambda names: {},  # no Wikidata data in fixture tests
+        )
 
     def test_native_unique_species_and_global_counts(self):
         result = self.build()

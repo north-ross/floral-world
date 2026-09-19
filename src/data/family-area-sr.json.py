@@ -174,7 +174,7 @@ def commons_url_to_filename(image_url):
     encoded_name = urlparse(image_url).path.rsplit("/", 1)[-1]
     return unquote(encoded_name)
 
-def build_richness(names, distributions, area_codes):
+def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wikidata_info):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
     species = names.loc[(names.taxon_status == "Accepted") &
                         (names.taxon_rank == "Species"), NAME_COLUMNS].drop_duplicates()
@@ -201,7 +201,7 @@ def build_richness(names, distributions, area_codes):
 
     # Get info from wikidata
     family_names = species.family.unique()
-    wikidata_info = fetch_wikidata_info(family_names)
+    wikidata_info = wikidata_fetcher(family_names)
     # Log taxa with no wikidata page
     taxa_notfound = [x for x in family_names if x not in wikidata_info.keys()]
     if taxa_notfound:
