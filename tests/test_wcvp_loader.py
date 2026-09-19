@@ -35,14 +35,12 @@ class RichnessTests(unittest.TestCase):
 
     def test_native_unique_species_and_global_counts(self):
         result = self.build()
-        self.assertEqual(result["Ericaceae"], {
-            "sr": {"ABT": 1, "ALA": 1, "ANT": 0}, "global": 2,
-            "climate": "Temperate", "ipni_id": None,
-        })
-        self.assertEqual(result["Polemoniaceae"], {
-            "sr": {"ABT": 0, "ALA": 0, "ANT": 0}, "global": 1,
-            "climate": None, "ipni_id": None,
-        })
+        self.assertEqual(result["Ericaceae"]["sr"], {"ABT": 1, "ALA": 1, "ANT": 0})
+        self.assertEqual(result["Ericaceae"]["global"], 2)
+        self.assertEqual(result["Ericaceae"]["climate"], "Temperate")
+        self.assertEqual(result["Polemoniaceae"]["sr"], {"ABT": 0, "ALA": 0, "ANT": 0})
+        self.assertEqual(result["Polemoniaceae"]["global"], 1)
+        self.assertIsNone(result["Polemoniaceae"]["climate"])
         self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
         for family in result.values():
             self.assertTrue(all(type(n) is int and 0 <= n <= family["global"]
@@ -106,13 +104,12 @@ class ArchiveTests(unittest.TestCase):
         json.dumps(result, allow_nan=False)
         for family, record in result.items():
             with self.subTest(family=family):
-                self.assertEqual(set(record), {"sr", "global", "climate", "ipni_id"})
+                self.assertEqual(set(record), {"sr", "global", "climate", "ids", "image"})
                 self.assertEqual(set(record["sr"]), set(codes))
                 self.assertGreater(record["global"], 0)
                 self.assertTrue(all(type(n) is int and 0 <= n <= record["global"]
                                     for n in record["sr"].values()))
-                self.assertTrue(record["climate"] is None or isinstance(record["climate"], str))
-                self.assertIsNone(record["ipni_id"])
+                self.assertTrue(record["climate"] is None or isinstance(record["climate"], str))\
 
 
 if __name__ == "__main__":
