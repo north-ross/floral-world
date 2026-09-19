@@ -335,29 +335,6 @@ selectedFam == null
 ```
 
 <div>${familySearchBox}<br></div>
-<details open>
-<summary><b>About this family</b></summary>
-${imgUrl != null ? 
-  html`<figure style="
-      float: right;
-      width: 220px;
-      margin: 0 0 1em 1.5em;
-      border: 1px solid var(--theme-foreground-fainter);
-      background: var(--theme-background);
-      padding: 0.4em;
-      font-size: 0.85em;
-      text-align: center;
-    ">
-  <a href="${imgSrcUrl}" target="_blank">
-  <img src="${imgUrl}" style="width: 100%; height: auto; display: block;"></a>
-  <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
-    ${depictsHtml}
-    ${imgAuthorText}
-    ${licenseHtml}
-  </figcaption>
-</figure>`
-  : html`<p>No images available. Consider adding one on <a href="https://www.wikidata.org/wiki/${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
-}
 
 ```js
 // TODO: fix wide images not showing?
@@ -389,14 +366,37 @@ const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']
 
 ```js
 selectedFam != null
-  ? html`${akaHtml}
+  ? html`
+  <details open>
+  <summary><b>About this family</b></summary>
+  ${imgUrl != null 
+    ? html`<figure style="
+        float: right;
+        width: 220px;
+        margin: 0 0 1em 1.5em;
+        border: 1px solid var(--theme-foreground-fainter);
+        background: var(--theme-background);
+        padding: 0.4em;
+        font-size: 0.85em;
+        text-align: center;
+      ">
+      <a href="${imgSrcUrl}" target="_blank">
+      <img src="${imgUrl}" style="width: 100%; height: auto; display: block;"></a>
+      <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
+        ${depictsHtml}
+        ${imgAuthorText}
+        ${licenseHtml}</figcaption>
+      </figure>`
+    : html`<p>No images available. Consider adding one on <a href="https://www.wikidata.org/wiki/${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
+  }
+  ${akaHtml}
   <p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
   <p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
   <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${colUrl}" target="_blank">Catalogue of Life</a> | <a href="${powoUrl}" target="_blank">POWO</a> </p>
+  </details>
   `
   : html` `
 ```
-</details>
 
 ```js
 // Show a table of species richness by area for selected family
