@@ -12,10 +12,11 @@ import sys
 from urllib.request import urlopen
 from urllib.parse import urlparse, unquote
 import re
+import time
+from datetime import datetime, timezone
 from zipfile import ZipFile
 import pandas as pd
 import requests
-import time
 
 
 WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
@@ -29,6 +30,7 @@ WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 QUERY_PATH = Path(__file__).with_name("wikidata-sparql-query.rq")
 COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
 IMAGE_CACHE_PATH = Path(__file__).with_name("commons-image-cache.json")
+WIKIDATA_SNAPSHOT_PATH = Path(__file__).with_name("wikidata-info-snapshot.json")
 with open(QUERY_PATH) as f:
     SPARQL_TEMPLATE = f.read()
 #%%
@@ -63,7 +65,32 @@ def get_commons_info_cached(raw_image_url, cache):
         cache[raw_image_url] = result  # only cache successes
     return result, error
 
-def fetch_wikidata_chunk(query, headers, retries=3, base_delay=5):
+def save_wikidata_snapshot(wikidata_info):
+    payload = {"fetched_at": datetime.now(timezone.utc).isoformat(), "data": wikidata_info}
+    with open(WIKIDATA_SNAPSHOT_PATH, "w") as f:
+        json.dump(payload, f, sort_keys=True)
+
+def load_wikidata_snapshot():
+    if WIKIDATA_SNAPSHOT_PATH.exists():
+        with open(WIKIDATA_SNAPSHOT_PATH) as f:
+            payload = json.load(f)
+        print(f"Using Wikidata snapshot from {payload['fetched_at']}", file=sys.stderr)
+        return payload["data"]
+    return None
+
+def fetch_wikidata_info_with_fallback(family_names, chunk_size=50, delay_between_chunks=2):
+    try:
+        result = fetch_wikidata_info(family_names, chunk_size, delay_between_chunks)
+        save_wikidata_snapshot(result)
+        return result
+    except (requests.exceptions.ReadTimeout, requests.exceptions.HTTPError) as e:
+        print(f"Wikidata fetch failed ({e}); falling back to last snapshot", file=sys.stderr)
+        snapshot = load_wikidata_snapshot()
+        if snapshot is None:
+            raise RuntimeError("Wikidata fetch failed and no prior snapshot exists") from e
+        return snapshot
+
+def fetch_wikidata_chunk(query, headers, retries=4, base_delay=10):
     for attempt in range(retries):
         try:
             response = requests.get(
@@ -72,11 +99,14 @@ def fetch_wikidata_chunk(query, headers, retries=3, base_delay=5):
             )
             response.raise_for_status()
             return response.json()["results"]["bindings"]
-        except requests.exceptions.ReadTimeout:
-            if attempt == retries - 1:
+        except (requests.exceptions.ReadTimeout, requests.exceptions.HTTPError) as e:
+            is_retryable_status = isinstance(e, requests.exceptions.ReadTimeout) or (
+                e.response is not None and e.response.status_code in (502, 503, 504)
+            )
+            if not is_retryable_status or attempt == retries - 1:
                 raise
-            wait = base_delay * (2 ** attempt)  # 5s, 10s, 20s
-            print(f"Timeout, retrying in {wait}s (attempt {attempt+1}/{retries})", file=sys.stderr)
+            wait = base_delay * (2 ** attempt)
+            print(f"{type(e).__name__}, retrying in {wait}s (attempt {attempt+1}/{retries})", file=sys.stderr)
             time.sleep(wait)
 
 def fetch_wikidata_info(family_names, chunk_size=50, delay_between_chunks=2):
@@ -174,7 +204,7 @@ def commons_url_to_filename(image_url):
     encoded_name = urlparse(image_url).path.rsplit("/", 1)[-1]
     return unquote(encoded_name)
 
-def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wikidata_info):
+def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wikidata_info_with_fallback):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
     species = names.loc[(names.taxon_status == "Accepted") &
                         (names.taxon_rank == "Species"), NAME_COLUMNS].drop_duplicates()
@@ -254,7 +284,7 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     return result
 
 #%%
-def load_archive(archive, area_codes, wikidata_fetcher=fetch_wikidata_info):
+def load_archive(archive, area_codes, wikidata_fetcher=fetch_wikidata_info_with_fallback):
     with ZipFile(archive) as zf:
         with zf.open("wcvp_names.csv") as source:
             names = pd.read_csv(source, sep="|", usecols=NAME_COLUMNS, dtype="string")
