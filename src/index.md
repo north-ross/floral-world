@@ -351,7 +351,7 @@ ${imgUrl != null ?
   <a href="${imgSrcUrl}" target="_blank">
   <img src="${imgUrl}" style="width: 100%; height: auto; display: block;"></a>
   <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
-    ${depictsHtml}
+    <!-- ${depictsHtml} -->
     ${imgAuthorText}
     ${licenseHtml}
   </figcaption>
@@ -370,10 +370,10 @@ const imgAuthorText =
   ? "Uploader: " + imgAuthor[1] + " | "  
   : imgAuthor?.[1] + " | " ?? null
 
-const depicts = sr[selectedFam]?.['image']?.['depicts']
-const depictsHtml = depicts 
-  ? html`<a href="https://en.wikipedia.org/wiki/${depicts?.replace(" ","_")}" target="_blank"><i>${depicts}</i></a><br>`
-  : html``
+// const depicts = sr[selectedFam]?.['image']?.['depicts']
+// const depictsHtml = depicts 
+//   ? html`<a href="https://en.wikipedia.org/wiki/${depicts?.replace(" ","_")}" target="_blank"><i>${depicts}</i></a><br>`
+//   : html``
 const akaHtml = (cmnNamesFiltered[selectedFam]?.length > 1)
   ? html`<p><strong>Also known as:</strong> ${cmnNamesFiltered[selectedFam].slice(1).join(", ")}.</p>`
   : html` `

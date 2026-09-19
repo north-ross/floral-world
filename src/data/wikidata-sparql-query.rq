@@ -1,6 +1,6 @@
 SELECT ?item ?taxonname 
     (SAMPLE(?_image) AS ?image)  
-    (SAMPLE(?_imageDepictsLabel) AS ?imageDepictsLabel)  
+    # (SAMPLE(?_imageDepictsLabel) AS ?imageDepictsLabel)  
     (SAMPLE(?_inatId) AS ?inatId) 
     (SAMPLE(?_colId) AS ?colId) 
     (SAMPLE(?_powoId) AS ?powoId)
@@ -17,11 +17,12 @@ WHERE {
   OPTIONAL { 
     ?item p:P18 ?imageStatement .
     ?imageStatement ps:P18 ?_image .
-    OPTIONAL { 
-      ?imageStatement pq:P180 ?_imageDepictsItem. 
-      ?_imageDepictsItem rdfs:label ?_imageDepictsLabel.
-      FILTER(LANG(?_imageDepictsLabel) = "en")
-    }
+    # Getting depicts for images slows down the query a lot, removing for now.
+    # OPTIONAL { 
+    #  ?imageStatement pq:P180 ?_imageDepictsItem. 
+    #  ?_imageDepictsItem rdfs:label ?_imageDepictsLabel.
+    #  FILTER(LANG(?_imageDepictsLabel) = "en")
+    # }
   }
   
   OPTIONAL { ?item wdt:P3151 ?_inatId. } # check if these exist for all results - if so, remove optional
