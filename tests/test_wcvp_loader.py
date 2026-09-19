@@ -86,7 +86,9 @@ class RichnessTests(unittest.TestCase):
 
     def test_order_independence(self):
         self.assertEqual(self.build(), loader.build_richness(
-            self.names.iloc[::-1], self.distributions.iloc[::-1], self.codes[::-1]))
+            self.names.iloc[::-1], self.distributions.iloc[::-1], self.codes[::-1],
+            wikidata_fetcher=lambda names: {},
+        ))
 
     def test_zip_csv_path_and_map_compatibility(self):
         archive = BytesIO()
@@ -94,7 +96,10 @@ class RichnessTests(unittest.TestCase):
             zf.writestr("wcvp_names.csv", self.names.to_csv(sep="|", index=False))
             zf.writestr("wcvp_distribution.csv", self.distributions.to_csv(sep="|", index=False))
         archive.seek(0)
-        self.assertEqual(loader.load_archive(archive, self.codes), self.build())
+        self.assertEqual(
+            loader.load_archive(archive, self.codes, wikidata_fetcher=lambda names: {}),
+            self.build(),
+        )
         self.assertTrue(set(self.codes) <= set(loader.map_codes()))
 
 

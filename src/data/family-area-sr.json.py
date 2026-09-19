@@ -254,13 +254,13 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     return result
 
 #%%
-def load_archive(archive, area_codes):
+def load_archive(archive, area_codes, wikidata_fetcher=fetch_wikidata_info):
     with ZipFile(archive) as zf:
         with zf.open("wcvp_names.csv") as source:
             names = pd.read_csv(source, sep="|", usecols=NAME_COLUMNS, dtype="string")
         with zf.open("wcvp_distribution.csv") as source:
             distributions = pd.read_csv(source, sep="|", usecols=DISTRIBUTION_COLUMNS, dtype="string")
-    return build_richness(names, distributions, area_codes)
+    return build_richness(names, distributions, area_codes, wikidata_fetcher=wikidata_fetcher)
 
 #%%
 def main():
