@@ -2,12 +2,6 @@
 title: Vascular Plant Diversity
 toc: true
 ---
-
-```js echo
-// DEMO: site is still under construction
-// It really does not work on mobile especially
-```
-
 # Floral World: ${selectedFam ?? "Vascular Plants"}
 
 ```js
@@ -50,7 +44,7 @@ const logscale = Generators.input(logscaleInput);
 // Define the color scale options once, shared between the plot and the standalone legend
 const colorOptions = {
   type: logscale,
-  range: ["#FAF7C7", "#688816", "#1C3D28"], // TODO: one day - add white at the start, then a lot of intermdiate colors so it only shows for 0?
+  range: ["#FAF7C7", "#688816", "#1C3D28"], 
   domain: richnessExtent,
   interpolate: "rgb",
   unknown: "#FFF", // since we replaced null with zero
@@ -84,7 +78,8 @@ const richnessExtent = d3.extent(richnessByArea.values());
 
 ```js
 // Map
-const mapWidth = (0.8*width < 600) ? width : 0.8*width; // set to 80% of width, or min 500px
+// set width min 900px, max 1200 px, or 80% of width in between
+const mapWidth = (width < 800) ? 800 : Math.min(width, 1000); 
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth", domain: wgsrpd },
@@ -149,8 +144,7 @@ const setMutAreaTableSelection = (v) => {mutAreaTableSelection.value = v;}
 ```
 
 ```js
-// TODO: This is detecting an input when the table select is updated
-// Restrict inputs to only mouse events?
+// On map input, set table select to none
 const selArea = Generators.observe((notify) => {
   const inputted = () => {
     // console.log("map input",selAreaMap.value?.properties.LEVEL3_COD)
@@ -305,7 +299,7 @@ function commitFamily() {
     setSelectedFam(resolved);
     // TODO: Update table selection?
   }
-  // else: optionally flash an "not found" state — up to you
+  // else: optionally flash an "not found" state
 }
 
 goButtonEl.addEventListener("click", commitFamily);
@@ -385,8 +379,8 @@ selectedFam != null
         font-size: 0.85em;
         text-align: center;
       ">
-      <a href="${imgSrcUrl}" target="_blank">
-      <img src="${imgUrl}" style="width: 100%; height: auto; display: block;"></a>
+      <a href="${imgSrcUrl}"  target="_blank">
+      <img src="${imgUrl}" alt="Representative image from Wikimedia Commons." style="width: 100%; height: auto; display: block;"></a>
       <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
         ${depictsHtml}
         ${imgAuthorText}
@@ -424,6 +418,7 @@ const famEntries = Object.entries(sr[selectedFam]?.['sr'] || {}).map(([areaCode,
 
 const famRanked = rankFamily(famEntries);
 
+// TODO: After an area is selected, the table immediately stops displaying it, even though value is not null ?
 const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0), {
   columns: ["areaName", "richness", "percentGlobal"],
   header: {
@@ -439,7 +434,6 @@ const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0)
 ```
 
 ```js
-// Set persistent area based on table selection
 // Lookup feature from country code
 const codeToFeature = Object.fromEntries(
   wgsrpd.features.map(feature => [
@@ -447,6 +441,8 @@ const codeToFeature = Object.fromEntries(
     feature
   ])
 )
+```
+```js
 // Set persistent area
 if (areaTableSelect !== null) {
   setPersistedArea(
@@ -477,7 +473,7 @@ if (areaTableSelect !== null) {
 
 The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
-The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**, updated weekly from WCVP. The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
+The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**, updated weekly from WCVP. After each update, images and The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
 ## How to use 
 <details><summary>Read more</summary>
