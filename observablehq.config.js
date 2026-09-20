@@ -27,7 +27,7 @@ export default {
   markdownIt: (md) => md.use(MarkdownItFootnote),
 
   // Some additional configuration options and their defaults:
-  theme: ["parchment"], //, "coffee"],
+  theme: ["parchment", "coffee"],
   // header: "", // what to show in the header (HTML)
   footer: "Map data adapted from <a href=\"https://www.tdwg.org/standards/wgsrpd/\">World\
 Geographic System for Recording Plant Distributions</a>, with species distributions from \

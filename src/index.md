@@ -400,12 +400,12 @@ const colUrl = "https://www.catalogueoflife.org/data/taxon/" + sr[selectedFam]?.
 const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']['powoId'] ?? "";
 ```
 
+<details open><summary><b>About this family</b></summary>
+
 ```js
 // TODO: Make the "open" tag persist when a new family is picked
 selectedFam != null
   ? html`
-  <details open>
-  <summary><b>About this family</b></summary>
   ${imgUrl != null 
     ? html`<figure style="
         float: right;
@@ -430,10 +430,11 @@ selectedFam != null
   <!--<p><strong>Preferred climate:</strong> ${Object.keys(sr[selectedFam]?.['climate'])[0]}</p> -->
   <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
   <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${colUrl}" target="_blank">Catalogue of Life</a> | <a href="${powoUrl}" target="_blank">POWO</a> </p>
-  </details>
   `
   : html` `
 ```
+
+</details>
 
 ```js
 // Show a table of species richness by area for selected family
@@ -486,9 +487,9 @@ if (areaTableSelect !== null) setPersistedArea(
 
 
 </div>
-<div class="card"><h1>Distribution and diversity</h1>
+<div class="card"><h1>Diversity and Distribution</h1>
 
-This chart compares the distribution (number of areas, *x*) with global species richness (log scale, *y*). ${selectedFam ? html`Selected family is <mark style="background-color: #688816;">highlighted</mark>.`: html` `}
+Comparison of the distribution (number of areas, *x*) with global species richness (log scale, *y*) for each family. ${selectedFam ? html`Selected family is <mark style="background-color: #688816;">highlighted</mark>.`: html` `}
 
 ```js
 const globalSrPlot = view(Plot.plot({
@@ -506,27 +507,43 @@ const globalSrPlot = view(Plot.plot({
 </div>
 
 <div class="card"><h1>Diversity and Climate</h1>
+For the selected family, break down the species richness by climate.
 
 ```js
-//TODO: Null guard
-const climateEntries = Object.entries(sr[selectedFam]['climate']).map(
-  ([climate, val]) => ({
-    climate: climate, 
-    val: Math.round(val)
-  }));
+const climateEntries = selectedFam 
+  ? Object.entries(sr[selectedFam]['climate']).map(
+      ([climate, species]) => ({
+        climate: climate, 
+        species: Math.round(species)
+      })
+    )
+  : null;
 
-// view(Object.values(colorMap))
-if (selectedFam != null) {
-  view(Plot.plot({
+if (selectedFam != null) {view(Plot.plot({
+      marginBottom: 80,
+    x: {
+      tickRotate: -20,
+      domain: Object.keys(colorMap) //.filter(d => climateEntries.some(entry => entry.climate === d))
+    },
     color: {
       type: "categorical",
       domain: Object.keys(colorMap),
       range: Object.values(colorMap),
-      unknown: "#CCC"
+      unknown: "var(--theme-foreground)"
       },
-    marks: [Plot.barY(climateEntries, {x: "climate", y: "val", fill: "climate", tip: true})]
+    marks: [
+      Plot.barY(climateEntries, {
+          x: "climate", 
+          y: "species", 
+          fill: "climate"
+        }),
+      Plot.tip(climateEntries, Plot.pointerX({x: "climate", y: "species", title: "species"}))
+      ]
     }))
+}else{
+  display(html`<p><i>Select a plant family from the table or search bar.</i></p>`)
 }
+
 ```
 
 </div>

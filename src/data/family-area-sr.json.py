@@ -245,6 +245,14 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     for family, group in species.groupby("family", sort=True):
         climates = group.climate_description.dropna()
         climates_dict = climates.groupby(climates).count().to_dict()
+        # Combine the rare "subtropical or tropical" value into "subtropical"
+        if climates_dict.get("subtropical or tropical", None):
+            climates_dict["subtropical"] += climates_dict["subtropical or tropical"]
+            climates_dict.pop("subtropical or tropical", None)
+        # And similarly add "temperate, subtropical or tropical" into "temperate"
+        if climates_dict.get("temperate, subtropical or tropical", None):
+            climates_dict["temperate"] += climates_dict["temperate, subtropical or tropical"]
+            climates_dict.pop("subtropical or tropical", None)
         wd_list = wikidata_info.get(family, [])
         wd = wd_list[0] if wd_list else {}
 
