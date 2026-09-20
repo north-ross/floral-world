@@ -19,6 +19,7 @@ import { rankFamily} from "./rankings.js";
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
 const sr = FileAttachment('./data/family-area-sr.json').json();
 const cmnNames = FileAttachment('./data/taxa-inat-darwincore.json').json();
+const colorMap = FileAttachment('./data/climate-colors-map.json').json();
 const dark = Generators.dark();
 ```
 
@@ -171,7 +172,7 @@ const colorLegend = Plot.legend({ color: colorOptions });
 ```js
 // TODO: Align to center, maybe limit height to a fraction of the screen?
 html`<div>
-  <div class="grid grid-cols-2">
+  <div class="grid grid-cols-2" >
     <div>${colorLegend}</div> <div>${logscaleInput}</div>
   </div>
   <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
@@ -181,17 +182,37 @@ html`<div>
 </div>`
 ```
 
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
 <div class="card">
 
   ${persistedArea === null
-    ? html`<p>Select a botanical country from the map or right table.</p>`
+    ? html`
+      <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
+      <p>Explore the ${globalSrSum.toLocaleString()} accepted vascular plant species by their families and distributions across ${wgsrpd.features.length} botanical countries.</p>
+      <p>Select a family from the table below, or a botanical country from the map or right table.</p>
+      `
     : html`
         <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
-        <p>Contains ${areaRanked.length} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD]} species.</p>
+        <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
         ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
       `
   }
+
+```js
+// Get global SR by family
+const globalFamilyEntries = Object.keys(sr).map((family) => {
+  return {
+    family, 
+    cmnName: cmnNamesFiltered[family]?.[0],
+    globalSr: sr[family]['global'],
+    nAreas: Object.values(sr[family]['sr']).filter((d) => d > 0).length
+  }
+});
+// Get total global species richness
+const globalSrSum = globalFamilyEntries.reduce(
+  (a,b) => a + b['globalSr'], 0
+);
+```
 
 ```js
 const globalRankCache = new Map();
@@ -234,22 +255,36 @@ const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
 // replace selectedFam with all families. 
 // If this country has all the global species, and the second highest country has zero, it's endemic.
 // if (sr[selectedFam]['global'] === sr[selectedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
+```
 
-const famTableInput = view(Inputs.table(areaRanked, {
-  columns: ["family", "richness", "rank", "pctAboveAvg"],
-  header: {
-    family: "Plant Family",
-    richness: "Species Richness",
-    rank: "Global Rank",
-    pctAboveAvg: "% Above Average"
-  },
-  format: {
-    pctAboveAvg: (d) => d == null ? "—" : `${(d).toFixed(1)}%`,
-    // display the formatted tie label field instead of average rank
-    rank: (d, i) => areaRanked[i]?.tieLabel ?? "—", 
-  },
-  multiple: false, rows:13.5
-}))
+```js
+const famTableInput = (persistedArea != null)
+  ? view(Inputs.table(areaRanked, {
+    columns: ["family", "richness", "rank", "pctAboveAvg"],
+    header: {
+      family: "Plant Family",
+      richness: "Species Richness",
+      rank: "Global Rank",
+      pctAboveAvg: "% Above Average"
+    },
+    format: {
+      pctAboveAvg: (d) => d == null ? "—" : `${(d).toFixed(1)}%`,
+      // display the formatted tie label field instead of average rank
+      rank: (d, i) => areaRanked[i]?.tieLabel ?? "—", 
+    },
+    multiple: false, rows:13.5
+  }))
+  : view(Inputs.table(globalFamilyEntries, {
+    columns: ["family", "cmnName", "globalSr", "nAreas"],
+    header: {
+      family: "Plant Family", 
+      cmnName: "Common Name",
+      globalSr: "Species Richness",
+      nAreas: "Areas present"
+      },
+    sort: "globalSr", reverse: true,
+    multiple: false, rows:13.5
+  }))
 ```
 
 ```js
@@ -328,8 +363,9 @@ inputEl.addEventListener("input", () => {
 selectedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1 style="font-family: 'serif';font-weight: normal;"><a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">${selectedFam}</a></h1>
-          <h2 style="font-family: 'serif';">${cmnNamesFiltered[selectedFam]?.[0] ? " "+cmnNamesFiltered[selectedFam][0]+" " : ""}</h2>
+        <div><h1 style="font-family: 'serif';font-weight: normal;">
+          <a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">${selectedFam}</a>
+        </h1><h2 style="font-family: 'serif';">${cmnNamesFiltered[selectedFam]?.[0] ? " "+cmnNamesFiltered[selectedFam][0]+" " : ""}</h2>
         </div>
         `
 ```
@@ -365,6 +401,7 @@ const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']
 ```
 
 ```js
+// TODO: Make the "open" tag persist when a new family is picked
 selectedFam != null
   ? html`
   <details open>
@@ -390,8 +427,8 @@ selectedFam != null
     : html`<p>No images available. Consider adding one on <a href="https://www.wikidata.org/wiki/${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
   }
   ${akaHtml}
-  <p><strong>Preferred climate:</strong> ${sr[selectedFam]?.['climate']}</p>
-  <p>Contains ${sr[selectedFam]?.['global'] ?? "—"} species globally, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+  <!--<p><strong>Preferred climate:</strong> ${Object.keys(sr[selectedFam]?.['climate'])[0]}</p> -->
+  <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
   <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${colUrl}" target="_blank">Catalogue of Life</a> | <a href="${powoUrl}" target="_blank">POWO</a> </p>
   </details>
   `
@@ -447,8 +484,54 @@ if (areaTableSelect !== null) setPersistedArea(
 );
 ```
 
+
+</div>
+<div class="card"><h1>Distribution and diversity</h1>
+
+This chart compares the distribution (number of areas, *x*) with global species richness (log scale, *y*). ${selectedFam ? html`Selected family is <mark style="background-color: #688816;">highlighted</mark>.`: html` `}
+
+```js
+const globalSrPlot = view(Plot.plot({
+  y: {type: "log"},
+  marks: [
+    Plot.dot(globalFamilyEntries.filter((d) => d.family == selectedFam), {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
+    Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
+    Plot.tip(globalFamilyEntries, Plot.pointer({x: "nAreas", y: "globalSr", title: (d) => [d.family, d.cmnName].join("\n")}))
+  ]
+}));
+// const globalSrPlotInput = Generators.input(globalSrPlot)
+// TODO: Add another select on click tip
+```
+
+</div>
+
+<div class="card"><h1>Diversity and Climate</h1>
+
+```js
+//TODO: Null guard
+const climateEntries = Object.entries(sr[selectedFam]['climate']).map(
+  ([climate, val]) => ({
+    climate: climate, 
+    val: Math.round(val)
+  }));
+
+// view(Object.values(colorMap))
+if (selectedFam != null) {
+  view(Plot.plot({
+    color: {
+      type: "categorical",
+      domain: Object.keys(colorMap),
+      range: Object.values(colorMap),
+      unknown: "#CCC"
+      },
+    marks: [Plot.barY(climateEntries, {x: "climate", y: "val", fill: "climate", tip: true})]
+    }))
+}
+```
+
 </div>
 </div>
+
 <style>
 .wide p,
 .wide h1,
@@ -465,9 +548,9 @@ if (areaTableSelect !== null) setPersistedArea(
 
 ## About
 
-The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length -1} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
+The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
-The data on this site **includes extinct species** and "doubtfully present" locations, while **excluding introduced ranges**, updated weekly from WCVP. The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
+The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
 ## How to use 
 <details><summary>Read more</summary>

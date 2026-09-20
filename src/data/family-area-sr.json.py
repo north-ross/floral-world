@@ -244,7 +244,7 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
 
     for family, group in species.groupby("family", sort=True):
         climates = group.climate_description.dropna()
-        modes = climates[climates != ""].mode()
+        climates_dict = climates.groupby(climates).count().to_dict()
         wd_list = wikidata_info.get(family, [])
         wd = wd_list[0] if wd_list else {}
 
@@ -263,7 +263,7 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
             "global": int(group.plant_name_id.nunique()),
-            "climate": str(modes.iloc[0]) if not modes.empty else None,
+            "climate": climates_dict if not climates.empty else None,
             "ids": {
                 'wikidata': wd.get('item', None),
                 'inatId': wd.get('inatId', None),
