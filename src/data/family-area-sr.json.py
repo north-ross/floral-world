@@ -243,7 +243,7 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     image_failures = []
 
     for family, group in species.groupby("family", sort=True):
-        climates = group.climate_description.dropna()
+        climates = group.climate_description.dropna().str.lower()
         climates_dict = climates.groupby(climates).count().to_dict()
         # Combine the rare "subtropical or tropical" value into "subtropical"
         if climates_dict.get("subtropical or tropical", None):
@@ -256,17 +256,18 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
         wd_list = wikidata_info.get(family, [])
         wd = wd_list[0] if wd_list else {}
 
-        img_dict = None
+        img_dict = {}
         raw_image = wd.get("image")
         if raw_image:
             img_dict, error = get_commons_info_cached(raw_image, image_cache)
             filename = commons_url_to_filename(raw_image)
 
-            # Add tag for image depicts label
-            img_dict['depicts'] = wd.get('imageDepictsLabel', None)
             if error:
                 image_failures.append({"family": family, "raw_image": raw_image,
                                         "filename": filename, "error": error})
+
+        # Add tag for image depicts label
+        img_dict['depicts'] = wd.get('imageDepictsLabel', None)
 
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},

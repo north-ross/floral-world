@@ -40,10 +40,10 @@ class RichnessTests(unittest.TestCase):
         result = self.build()
         self.assertEqual(result["Ericaceae"]["sr"], {"ABT": 1, "ALA": 1, "ANT": 0})
         self.assertEqual(result["Ericaceae"]["global"], 2)
-        # self.assertEqual(result["Ericaceae"]["climate"], "Temperate")
+        self.assertEqual(result["Ericaceae"]["climate"], {"Temperate": 1, "Tropical": 1})
         self.assertEqual(result["Polemoniaceae"]["sr"], {"ABT": 0, "ALA": 0, "ANT": 0})
         self.assertEqual(result["Polemoniaceae"]["global"], 1)
-        # self.assertIsNone(result["Polemoniaceae"]["climate"])
+        self.assertEqual(result["Polemoniaceae"]["climate"], {})
         self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
         for family in result.values():
             self.assertTrue(all(type(n) is int and 0 <= n <= family["global"]
@@ -117,7 +117,8 @@ class ArchiveTests(unittest.TestCase):
                 self.assertGreater(record["global"], 0)
                 self.assertTrue(all(type(n) is int and 0 <= n <= record["global"]
                                     for n in record["sr"].values()))
-                self.assertTrue(record["climate"] is None or isinstance(record["climate"], str))\
+                self.assertTrue(record["climate"] is None or isinstance(record["climate"], dict))
+                self.assertTrue(all(isinstance(v, int) for v in record["climate"].values()))\
 
 
 if __name__ == "__main__":
