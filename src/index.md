@@ -641,7 +641,10 @@ Here are a few plant families with interesting distributions you could check out
   - ${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
 - The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean.
   - ${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
-- ${Inputs.button("Sarraceniaceae (pitcher plants)", {reduce: () => setSelectedFam("Sarraceniaceae")})}
+- Sarraceniaceae (new world pitcher plants) are a cool family with an interesting distribution, highest around Florida and Venezuela.
+  - ${Inputs.button("Select Sarraceniaceae", {reduce: () => setSelectedFam("Sarraceniaceae")})}
+- The gentian family has an interesting climate breakdown, the majority of species are found in "subalpine or subarctic" climate, which is very unusual.
+  - ${Inputs.button("Select Gentianaceae", {reduce: () => setSelectedFam("Gentianaceae")})}
 </details><br>
 
 ## What does this map really show?
