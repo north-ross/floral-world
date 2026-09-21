@@ -23,13 +23,13 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [ ] Adapt the page to have a basic level of functionality on mobile
   - [x] Map should at least stretch to full page width
   - [ ] Add an area selector dropdown/search bar
-  - [ ] Autofill suggestions not working on mobile
-  - [ ] Grid cards should not match height on mobile
-  - [ ] Maybe even remove the selected area overlay map for mobile, and set persisted area from a vanilla Observable view() element on the plot
+  - [x] Autofill suggestions not working on mobile
+    - Turns out this is just a limitation of firefox on android
+  - [x] Grid cards should not match height on mobile
 
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
-- [ ] Fix the flickering when selecting a country from the map
+- [x] Fix the flickering when selecting a country from the map
 - [ ] Add option to change map projection, maybe pan/zoom d3 style if possible
 - [ ] Add some higher-level categories like "ferns", or even all taxonomic levels if it doesn't make things too janky
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
