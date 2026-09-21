@@ -180,22 +180,51 @@ html`<div>
 <div class="grid grid-cols-2" style="grid-auto-rows: auto;">
 <div class="card">
 
-  ${persistedArea === null
-    ? html`
-      <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
-      <p>Explore the ${globalSrSum.toLocaleString()} accepted vascular plant species by their families and distributions across ${wgsrpd.features.length} botanical countries.</p>
-      <p>Select a family from the table below, or a botanical country from the map or right table.</p>
-      `
-    : html`
-        <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
-        <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
-        ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
-      `
-  }
+${persistedArea === null
+  ? html`
+    <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
+    `
+  : html`
+      <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
+    `
+}
 
 ```js
-// TODO: Add Inputs.select() for area which behaves similar to the table select below
+// TODO: Set input to null when something else changes
+// TODO: Map is not updating based on this
+// TODO: Put the two inputs into an html element next to each other with Generators.input
+const areaNameToFeature = Object.fromEntries(
+  wgsrpd.features.map(feature => [
+    feature.properties.LEVEL3_NAM,
+    feature
+  ])
+)
+const areaSelectDropdown = view(Inputs.select([null].concat(Object.keys(areaNameToFeature)),{
+  label: "Selected area",
+  value: null
+}))
+const areaClearButton = view(Inputs.button("Clear selected area", {reduce: () => setPersistedArea(null)}))
 ```
+
+```js
+// Set persistent area from table
+if (areaSelectDropdown !== null) {
+  setPersistedArea(areaNameToFeature[areaSelectDropdown]);
+  setMutAreaTableSelection(areaNameToFeature[areaSelectDropdown]);
+};
+```
+
+
+${persistedArea === null
+  ? html`
+    <p>Explore the ${globalSrSum.toLocaleString()} accepted vascular plant species by their families and distributions across ${wgsrpd.features.length} botanical countries.</p>
+    <p>Select a family from the table below, or a botanical country from the map or right table.</p>
+    `
+  : html`
+      <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
+      ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
+    `
+}
 
 ```js
 // Get global SR by family
@@ -320,19 +349,19 @@ const familySearchBox = html`<div style="display:flex; gap:4px;">
     ${searchOptions.map(name => html`<option value="${name}">`)}
   </datalist>
   <button id="famSubmit">Go</button>
-  <button id="clearSelection">Clear selection</button>
+  <button id="clearFamSelection">Clear selection</button>
 </div>`;
 
 const inputEl = familySearchBox.querySelector("#famInput");
 const goButtonEl = familySearchBox.querySelector("#famSubmit");
-const clButtonEl = familySearchBox.querySelector("#clearSelection");
+const clButtonEl = familySearchBox.querySelector("#clearFamSelection");
 
 function commitFamily() {
   const raw = inputEl.value.trim().toLowerCase();
   const resolved = familyLookup.get(raw);
   if (resolved) {
     setSelectedFam(resolved);
-    // TODO: Update table selection?
+    // TODO: Clear table selection?
   }
   // else: optionally flash an "not found" state
 }
@@ -350,7 +379,6 @@ inputEl.addEventListener("input", () => {
     commitFamily();
   }
 });
-// TODO: reset the table selection
 ```
 </div>
 
@@ -402,7 +430,6 @@ const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']
 <details open><summary><b>About this family</b></summary>
 
 ```js
-// TODO: Make the "open" tag persist when a new family is picked
 selectedFam != null
   ? html`
   ${imgUrl != null 
@@ -508,7 +535,8 @@ const globalSrPlot = view(Plot.plot({
   ]
 }));
 // const globalSrPlotInput = Generators.input(globalSrPlot)
-// TODO: Add another select on click tip
+// TODO: Add another select on click tip so you can change selected family from here
+// Actually setting selectedFam from this view() would be too intense, so only on click
 ```
 
 </div>
