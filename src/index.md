@@ -493,7 +493,8 @@ Comparison of the distribution (number of areas, *x*) with global species richne
 
 ```js
 const globalSrPlot = view(Plot.plot({
-  y: {type: "log"},
+  x: {label: "number of areas present"},
+  y: {type: "log", label: "Species richness"},
   marks: [
     Plot.dot(globalFamilyEntries.filter((d) => d.family == selectedFam), {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
     Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
@@ -507,7 +508,7 @@ const globalSrPlot = view(Plot.plot({
 </div>
 
 <div class="card"><h1>Diversity and Climate</h1>
-For the selected family, break down the species richness by climate.
+For the selected family, breakdown of the species richness by climate.
 
 ```js
 const climateEntries = selectedFam 
@@ -522,9 +523,12 @@ const climateEntries = selectedFam
 if (selectedFam != null) {view(Plot.plot({
       marginBottom: 80,
     x: {
-      tickRotate: -20,
+      label: null,
+      lineWidth: 1,
+      tickRotate: -30,
       domain: Object.keys(colorMap) //.filter(d => climateEntries.some(entry => entry.climate === d))
     },
+    y: {label: "Species richness"},
     color: {
       type: "categorical",
       domain: Object.keys(colorMap),
