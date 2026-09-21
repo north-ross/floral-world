@@ -3,10 +3,31 @@ title: Vascular Plant Diversity
 toc: true
 ---
 
-```js echo
-// DEMO: site is still under construction
-// It really does not work on mobile especially
-```
+<style>
+.wide p,
+.wide h1,
+.wide h2,
+.wide h3,
+.wide h4,
+.wide h5,
+.wide h6,
+.wide .katex-display {
+  max-width: none;
+}
+@media (max-width: 640px) {
+  .grid.grid-cols-2 {
+    display: block;
+  }
+  .grid.grid-cols-2 > .card {
+    margin-bottom: 1rem; /* grid-gap doesn't apply in block mode, so add spacing manually */
+  }
+}
+.inputs-3a86ea-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+</style>
 
 # Floral World: ${selectedFam ?? "Vascular Plants"}
 
@@ -51,7 +72,7 @@ const logscale = Generators.input(logscaleInput);
 // Define the color scale options once, shared between the plot and the standalone legend
 const colorOptions = {
   type: logscale,
-  range: ["#FAF7C7", "#688816", "#1C3D28"], // TODO: one day - add white at the start, then a lot of intermdiate colors so it only shows for 0?
+  range: ["#FAF7C7", "#688816", "#1C3D28"], 
   domain: richnessExtent,
   interpolate: "rgb",
   unknown: "#FFF", // since we replaced null with zero
@@ -85,7 +106,9 @@ const richnessExtent = d3.extent(richnessByArea.values());
 
 ```js
 // Map
-const mapWidth = (0.8*width < 600) ? width : 0.8*width; // set to 80% of width, or min 500px
+// set width min 900px, max 1200 px, or 80% of width in between
+// Mayb add a slider to let the user pick the map width?
+const mapWidth = (width < 800) ? 800 : Math.min(width, 1000); 
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth", domain: wgsrpd },
@@ -106,41 +129,25 @@ const selAreaMap = Plot.plot({
         return `${d.properties.LEVEL3_NAM}: ${val ?? 0}`; // show zero for null. In any case where its null it should probably be zero anyways
       },
       stroke: "#662200",
+      strokeWidth: 2,
       tip: {fill: dark ? "#662200" : "var(--theme-background)",}
-    }))
+    })),
+    // Overlay updated based on table selection
+    Plot.geo(
+      codeToFeature[mutAreaTableSelection] ? [codeToFeature[mutAreaTableSelection]] : [],
+      { stroke: "#662200", strokeWidth: 2, fill: "none"}
+      // Give this a tip label as well?
+    )
   ]
 });
 
 // Plot sets this explicitly from width + projection aspect ratio —
 // available immediately, no need to wait for DOM layout.
+
+// console.log("reloaded main map")
+```
+```js
 const mapHeight = +selAreaMap.getAttribute("height");
-
-// view(selAreaMap)
-// console.log("reloaded map")
-```
-
-```js
-// Lightweight overlay — same width/height/projection domain as the base map,
-// Only this updates with persistedArea
-const highlightOverlay = Plot.plot({
-  projection: { type: "equal-earth", domain: wgsrpd },
-  width: mapWidth,
-  height: mapHeight,
-  marks: [
-    Plot.sphere({stroke:"var(--theme-foreground)"}),
-    Plot.geo(
-      persistedArea ? [persistedArea] : [],
-      { stroke: "#662200", strokeWidth: 2.5, fill: "none" }
-    )
-  ],
-  style: { backgroundColor: "transparent" }
-});
-// console.log("reloaded light map")
-```
-
-```js
-// Generator input for selArea
-const selArea = Generators.input(selAreaMap);
 ```
 
 ```js
@@ -148,21 +155,37 @@ const selArea = Generators.input(selAreaMap);
 const persistedArea = Mutable(null);
 const setPersistedArea = (v) => {persistedArea.value = v;};
 ```
+```js
+// Reset signal for table select
+const mutAreaTableSelection = Mutable(null);
+const setMutAreaTableSelection = (v) => {mutAreaTableSelection.value = v;}
+```
 
 ```js
-// When map is clicked, update persistent area mutable
-selAreaMap.addEventListener(
-  "pointerdown",
-  (event) => {
-    event.stopPropagation(); // stop Plot's own pointerdown (sticky toggle) from running
-    requestAnimationFrame(() => requestAnimationFrame(() => { // skip two frames to avoid premature result
-      if (selArea !== null) setPersistedArea(selArea);
-      // TODO: Set area table value to null
-    }));
-  },
-  { capture: true }
-);
+// On map input, set table select to none
+const selArea = Generators.observe((notify) => {
+  let lastCode = undefined; // plain closure var — NOT reactive, just local bookkeeping
+  const inputted = () => {
+    // console.log("input")
+    const current = selAreaMap.value;
+    notify(current);
+    const currentCode = current?.properties?.LEVEL3_COD;
+    if (currentCode !== lastCode) {
+      lastCode = currentCode;
+      // Only touch the Mutable when the hovered area actually changes,
+      // and only if something is even selected in the table right now
+      if (mutAreaTableSelection !== null) setMutAreaTableSelection(null);
+    }
+  };
+  inputted();
+  selAreaMap.addEventListener("input", inputted, {capture: true});
+  return () => selAreaMap.removeEventListener("input", inputted, {capture: true});
+});
 ```
+```js
+if (selArea !== null) setPersistedArea(selArea);
+```
+
 
 ```js
 // Standalone legend, rendered separately in normal document flow
@@ -170,14 +193,13 @@ const colorLegend = Plot.legend({ color: colorOptions });
 ```
 
 ```js
-// TODO: Align to center, maybe limit height to a fraction of the screen?
+// TODO: Align to center, add LDG plot on the right
 html`<div>
   <div class="grid grid-cols-2" >
     <div>${colorLegend}</div> <div>${logscaleInput}</div>
   </div>
   <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
     <div style="position: absolute; top: 0; left: 0;">${selAreaMap}</div>
-    <div style="position: absolute; top: 0; left: 0; pointer-events: none;">${highlightOverlay}</div>
   </div>
 </div>`
 ```
@@ -185,18 +207,60 @@ html`<div>
 <div class="grid grid-cols-2" style="grid-auto-rows: auto;">
 <div class="card">
 
-  ${persistedArea === null
-    ? html`
-      <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
-      <p>Explore the ${globalSrSum.toLocaleString()} accepted vascular plant species by their families and distributions across ${wgsrpd.features.length} botanical countries.</p>
-      <p>Select a family from the table below, or a botanical country from the map or right table.</p>
-      `
-    : html`
-        <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
-        <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
-        ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
-      `
-  }
+${persistedArea === null
+  ? html`
+    <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
+    `
+  : html`
+      <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
+    `
+}
+
+```js
+// TODO: Set input to null when something else changes
+const areaNameToFeature = Object.fromEntries(
+  wgsrpd.features.map(feature => [
+    feature.properties.LEVEL3_NAM,
+    feature
+  ])
+)
+```
+```js
+const areaSelectDropdownInput = Inputs.select([null].concat(Object.keys(areaNameToFeature)),{
+  label: "Select area from list",
+  value: null,
+  width: 260
+});
+
+const areaClearButtonInput = Inputs.button("Clear", {reduce: () => setPersistedArea(null)});
+```
+```js
+const areaSelectDropdown = Generators.input(areaSelectDropdownInput);
+const areaClearButton = Generators.input(areaClearButtonInput);
+```
+```js
+// Set persistent area from table
+if (areaSelectDropdown !== null) {
+  const areaSelFeature = areaNameToFeature[areaSelectDropdown]
+  setPersistedArea(areaSelFeature);
+  setMutAreaTableSelection(areaSelFeature.properties.LEVEL3_COD);
+};
+```
+
+<div style="display:flex; gap:4px; align-items:center;">
+  ${areaSelectDropdownInput}
+  ${areaClearButtonInput}
+</div>
+
+${persistedArea === null
+  ? html`
+    <p>Select a family from the table below, or a botanical country from the map or right table.</p>
+    `
+  : html`
+      <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
+      ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
+    `
+}
 
 ```js
 // Get global SR by family
@@ -321,21 +385,21 @@ const familySearchBox = html`<div style="display:flex; gap:4px;">
     ${searchOptions.map(name => html`<option value="${name}">`)}
   </datalist>
   <button id="famSubmit">Go</button>
-  <button id="clearSelection">Clear selection</button>
+  <button id="clearFamSelection">Clear selection</button>
 </div>`;
 
 const inputEl = familySearchBox.querySelector("#famInput");
 const goButtonEl = familySearchBox.querySelector("#famSubmit");
-const clButtonEl = familySearchBox.querySelector("#clearSelection");
+const clButtonEl = familySearchBox.querySelector("#clearFamSelection");
 
 function commitFamily() {
   const raw = inputEl.value.trim().toLowerCase();
   const resolved = familyLookup.get(raw);
   if (resolved) {
     setSelectedFam(resolved);
-    // TODO: Update table selection?
+    // TODO: Clear table selection?
   }
-  // else: optionally flash an "not found" state — up to you
+  // else: optionally flash an "not found" state
 }
 
 goButtonEl.addEventListener("click", commitFamily);
@@ -351,7 +415,6 @@ inputEl.addEventListener("input", () => {
     commitFamily();
   }
 });
-// TODO: reset the table selection
 ```
 </div>
 
@@ -403,7 +466,6 @@ const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']
 <details open><summary><b>About this family</b></summary>
 
 ```js
-// TODO: Make the "open" tag persist when a new family is picked
 selectedFam != null
   ? html`
   ${imgUrl != null 
@@ -417,8 +479,8 @@ selectedFam != null
         font-size: 0.85em;
         text-align: center;
       ">
-      <a href="${imgSrcUrl}" target="_blank">
-      <img src="${imgUrl}" style="width: 100%; height: auto; display: block;"></a>
+      <a href="${imgSrcUrl}"  target="_blank">
+      <img src="${imgUrl}" alt="Representative image from Wikimedia Commons." style="width: 100%; height: auto; display: block;"></a>
       <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
         ${depictsHtml}
         ${imgAuthorText}
@@ -457,6 +519,7 @@ const famEntries = Object.entries(sr[selectedFam]?.['sr'] || {}).map(([areaCode,
 
 const famRanked = rankFamily(famEntries);
 
+
 const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0), {
   columns: ["areaName", "richness", "percentGlobal"],
   header: {
@@ -466,12 +529,10 @@ const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0)
   },
   multiple: false,
   sort: "richness", reverse: true
-  
 }))
 ```
 
 ```js
-// Set persistent area based on table selection
 // Lookup feature from country code
 const codeToFeature = Object.fromEntries(
   wgsrpd.features.map(feature => [
@@ -479,11 +540,19 @@ const codeToFeature = Object.fromEntries(
     feature
   ])
 )
-// Set persistent area
-if (areaTableSelect !== null) setPersistedArea(
-  codeToFeature[areaTableSelect.areaCode]
-);
 ```
+```js
+// Set persistent area from table
+if (areaTableSelect !== null) {
+  setPersistedArea(
+    codeToFeature[areaTableSelect.areaCode]
+  );
+  // selAreaMap.value = null;
+  // selAreaMap.dispatchEvent(new Event("input", {bubbles: true}));
+  setMutAreaTableSelection(areaTableSelect.areaCode);
+};
+```
+
 
 
 </div>
@@ -502,7 +571,8 @@ const globalSrPlot = view(Plot.plot({
   ]
 }));
 // const globalSrPlotInput = Generators.input(globalSrPlot)
-// TODO: Add another select on click tip
+// TODO: Add another select on click tip so you can change selected family from here
+// Actually setting selectedFam from this view() would be too intense, so only on click
 ```
 
 </div>
@@ -549,27 +619,14 @@ if (selectedFam != null) {view(Plot.plot({
 }
 
 ```
-
 </div>
 </div>
 
-<style>
-.wide p,
-.wide h1,
-.wide h2,
-.wide h3,
-.wide h4,
-.wide h5,
-.wide h6,
-.wide .katex-display {
-  max-width: none;
-}
-</style>
 <div class="wide">
 
 ## About
 
-The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
+The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${globalSrSum.toLocaleString()} species in ${Object.keys(sr).length} families. It also tracks their distributions into ${wgsrpd.features.length} "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
 The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
