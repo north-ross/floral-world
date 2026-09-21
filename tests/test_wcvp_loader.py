@@ -18,11 +18,11 @@ spec.loader.exec_module(loader)
 class RichnessTests(unittest.TestCase):
     def setUp(self):
         self.names = pd.DataFrame([
-            ["1", "Accepted", "Species", "Ericaceae", "Temperate"],
-            ["2", "Accepted", "Species", "Ericaceae", "Tropical"],
+            ["1", "Accepted", "Species", "Ericaceae", "temperate"],
+            ["2", "Accepted", "Species", "Ericaceae", "tropical"],
             ["3", "Accepted", "Species", "Polemoniaceae", None],
-            ["4", "Synonym", "Species", "Ericaceae", "Tropical"],
-            ["5", "Accepted", "Genus", "Ericaceae", "Tropical"],
+            ["4", "Synonym", "Species", "Ericaceae", "tropical"],
+            ["5", "Accepted", "Genus", "Ericaceae", "tropical"],
         ], columns=loader.NAME_COLUMNS)
         self.distributions = pd.DataFrame([
             ["1", "ABT", "0"], ["1", "ABT", "0"], ["1", "ALA", "0"],
@@ -40,7 +40,7 @@ class RichnessTests(unittest.TestCase):
         result = self.build()
         self.assertEqual(result["Ericaceae"]["sr"], {"ABT": 1, "ALA": 1, "ANT": 0})
         self.assertEqual(result["Ericaceae"]["global"], 2)
-        self.assertEqual(result["Ericaceae"]["climate"], {"Temperate": 1, "Tropical": 1})
+        self.assertEqual(result["Ericaceae"]["climate"], {"temperate": 1, "tropical": 1})
         self.assertEqual(result["Polemoniaceae"]["sr"], {"ABT": 0, "ALA": 0, "ANT": 0})
         self.assertEqual(result["Polemoniaceae"]["global"], 1)
         self.assertEqual(result["Polemoniaceae"]["climate"], {})
