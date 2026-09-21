@@ -20,7 +20,7 @@ class RichnessTests(unittest.TestCase):
         self.names = pd.DataFrame([
             ["1", "Accepted", "Species", "Ericaceae", "temperate"],
             ["2", "Accepted", "Species", "Ericaceae", "tropical"],
-            ["3", "Accepted", "Species", "Polemoniaceae", {}],
+            ["3", "Accepted", "Species", "Polemoniaceae", None],
             ["4", "Synonym", "Species", "Ericaceae", "tropical"],
             ["5", "Accepted", "Genus", "Ericaceae", "tropical"],
         ], columns=loader.NAME_COLUMNS)
@@ -117,7 +117,7 @@ class ArchiveTests(unittest.TestCase):
                 self.assertGreater(record["global"], 0)
                 self.assertTrue(all(type(n) is int and 0 <= n <= record["global"]
                                     for n in record["sr"].values()))
-                self.assertTrue(record["climate"] is None or isinstance(record["climate"], dict))
+                self.assertTrue(isinstance(record["climate"], dict))
                 self.assertTrue(all(isinstance(v, int) for v in record["climate"].values()))\
 
 
