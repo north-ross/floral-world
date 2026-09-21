@@ -117,7 +117,7 @@ class ArchiveTests(unittest.TestCase):
                 self.assertGreater(record["global"], 0)
                 self.assertTrue(all(type(n) is int and 0 <= n <= record["global"]
                                     for n in record["sr"].values()))
-                self.assertTrue(record["climate"] is None or isinstance(record["climate"], dict))
+                self.assertTrue(isinstance(record["climate"], dict))
                 self.assertTrue(all(isinstance(v, int) for v in record["climate"].values()))\
 
 

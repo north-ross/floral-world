@@ -272,7 +272,7 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
             "global": int(group.plant_name_id.nunique()),
-            "climate": climates_dict if not climates.empty else None,
+            "climate": climates_dict,
             "ids": {
                 'wikidata': wd.get('item', None),
                 'inatId': wd.get('inatId', None),
