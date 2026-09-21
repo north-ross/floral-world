@@ -243,27 +243,36 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     image_failures = []
 
     for family, group in species.groupby("family", sort=True):
-        climates = group.climate_description.dropna()
-        modes = climates[climates != ""].mode()
+        climates = group.climate_description.dropna().str.lower()
+        climates_dict = climates.groupby(climates).count().to_dict()
+        # Combine the rare "subtropical or tropical" value into "subtropical"
+        if climates_dict.get("subtropical or tropical", None):
+            climates_dict["subtropical"] += climates_dict["subtropical or tropical"]
+            climates_dict.pop("subtropical or tropical", None)
+        # And similarly add "temperate, subtropical or tropical" into "temperate"
+        if climates_dict.get("temperate, subtropical or tropical", None):
+            climates_dict["temperate"] += climates_dict["temperate, subtropical or tropical"]
+            climates_dict.pop("subtropical or tropical", None)
         wd_list = wikidata_info.get(family, [])
         wd = wd_list[0] if wd_list else {}
 
-        img_dict = None
+        img_dict = {}
         raw_image = wd.get("image")
         if raw_image:
             img_dict, error = get_commons_info_cached(raw_image, image_cache)
             filename = commons_url_to_filename(raw_image)
 
-            # Add tag for image depicts label
-            img_dict['depicts'] = wd.get('imageDepictsLabel', None)
             if error:
                 image_failures.append({"family": family, "raw_image": raw_image,
                                         "filename": filename, "error": error})
 
+        # Add tag for image depicts label
+        img_dict['depicts'] = wd.get('imageDepictsLabel', None)
+
         result[family] = {
             "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
             "global": int(group.plant_name_id.nunique()),
-            "climate": str(modes.iloc[0]) if not modes.empty else None,
+            "climate": climates_dict if not climates.empty else None,
             "ids": {
                 'wikidata': wd.get('item', None),
                 'inatId': wd.get('inatId', None),

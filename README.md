@@ -17,12 +17,13 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [x] Selecting a family from the countries table updates the selected family reactively
 - [x] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
   - [x] Embed an image from wikidata
-- [ ] When no area is selected, show a table of global SR by plant families (no global rank or % above avg)
+- [x] When no area is selected, show a table of global SR by plant families (no global rank or % above avg)
 - [ ] Add some text about the "specialty" family for each area
   - [ ] From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
 - [ ] Adapt the page to have a basic level of functionality on mobile
   - [x] Map should at least stretch to full page width
   - [ ] Add an area selector dropdown/search bar
+  - [ ] Autofill suggestions not working on mobile
   - [ ] Grid cards should not match height on mobile
   - [ ] Maybe even remove the selected area overlay map for mobile, and set persisted area from a vanilla Observable view() element on the plot
 
@@ -33,7 +34,7 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [ ] Add some higher-level categories like "ferns", or even all taxonomic levels if it doesn't make things too janky
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
 - [ ] Allow the user to apply filters data to include introduced ranges or exclude extinct species
-- [ ] Chart of preferred climate for each species by family
+- [x] Chart of preferred climate for each species by family
 - [ ] Line chart of species richness by latitude (LDG)
 - [ ] Map number of endemic species to each area
   - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
@@ -42,11 +43,11 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [ ] Embed wikipedia text
 
 ## Use of AI
-The purpose of this project was mostly out of my personal interest, but I also hoped to learn more about reactive javascript development and the Observable Framework package/ecosystem. Since I had little experience with this previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understood all the code that's gone into the project on some level, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.
+I started this project as a [small Python script](https://github.com/north-ross/PlantFamilyMapping) to make static species richness maps, without use of AI, for my own personal interest and for contributing to Wikipedia. I was so fascinated by the unexpected patterns of diversity that I decided to make it into a shareable web app for exploring the data.
 
-No AI was used in my original [simpler code](https://github.com/north-ross/PlantFamilyMapping) to generate static maps, only after I added a lot of complexity and made it into this web app.
+Since I had little javascript or web developmnt experience previously, I occasionally relied on an LLM (Claude Sonet 5) to give me advice and feedback on the project, especially for optimization and debugging. I'd hesitate to call this "vibe-coding", since I think I understood all the code that's gone into the project on some level, and you can rest assured that any "slop" or "jank" inherent to this app is purely human and the result of my own inexperience.
 
-While I recognize the irony of using a computationally resource-intensive product to make an app highlighting the global biodiversity under threat from such development, I would absolutely not have been able to put this together in the same timeframe if I hadn't used it. Another 40+ hours of my life spent working on this app would certainly incur its own resource costs, which I expect might be higher than the computation costs.
+While I recognize the irony of using a computationally resource-intensive product to make an app highlighting the global biodiversity under threat from such development, I would absolutely not have been able to put this together in the same timeframe if I hadn't used it. Another 40+ hours of my life spent working on this app would certainly incur its own resource costs as well.
 
 That being said, this is an open source project and some of the contributors may have used AI coding agents more liberally than myself. However, all code from contributors has still been reviewed personally by the author, and I don't plan to commit any code that I don't personally understand.
 
