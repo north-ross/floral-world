@@ -1,9 +1,9 @@
 {
     "subalpine or subarctic": "#7a7a7a",
-    "temperate": "#0a581b",
-    "subtropical": "#319663",
-    "seasonally dry tropical": "#92ce33",
-    "wet tropical": "#3faca3",
-    "montane tropical": "#35b876",
-    "desert or dry shrubland":  "#793024"
+    "temperate": "#386641",
+    "subtropical": "#6A994E",
+    "seasonally dry tropical": "#E0C98F",
+    "wet tropical": "#A7C957",
+    "montane tropical": "#6F8B2D",
+    "desert or dry shrubland":  "#BC4749"
 }
