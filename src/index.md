@@ -75,7 +75,7 @@ const colorOptions = {
   range: ["#FAF7C7", "#688816", "#1C3D28"], 
   domain: richnessExtent,
   interpolate: "rgb",
-  unknown: "#FFF", // since we replaced null with zero
+  unknown: "#f5f4e8", // since we replaced null with zero
   label: `Species richness — ${selectedFam ?? "Vascular plants"}`
 };
 ```
@@ -115,7 +115,7 @@ const selAreaMap = Plot.plot({
   width: mapWidth,
   color: { ...colorOptions, legend: false },
   marks: [
-    Plot.sphere({fill: "#A8CAD4", fillOpacity: 0.4}),
+    Plot.sphere({fill: "#8db3be", fillOpacity: 0.7}),
     Plot.graticule(),
     Plot.geo(wgsrpd, {
       fill: (d) => richnessByArea.get(d.properties.LEVEL3_COD),
@@ -134,7 +134,7 @@ const selAreaMap = Plot.plot({
     })),
     // Overlay updated based on table selection
     Plot.geo(
-      codeToFeature[mutAreaTableSelection] ? [codeToFeature[mutAreaTableSelection]] : [],
+      codeToFeature[mutAreaTableSelection] ?? [],
       { stroke: "#662200", strokeWidth: 2, fill: "none"}
       // Give this a tip label as well?
     )
@@ -359,8 +359,13 @@ const setSelectedFam = (v) => {selectedFam.value = v;};
 
 ```js
 // Update selected family from table when table clicked
-if (famTableInput !== null) setSelectedFam(famTableInput.family);
-// TODO: Now reset the search bar
+if (famTableInput !== null) {
+  setSelectedFam(famTableInput.family);
+  // Set mutTableArea to the current selected family so it persists on map reload
+  if (mutAreaTableSelection == null && persistedArea != null) setMutAreaTableSelection(persistedArea.properties.LEVEL3_COD);
+  // TODO: Now reset the search bar text
+}
+
 ```
 
 ```js
