@@ -20,27 +20,27 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [x] When no area is selected, show a table of global SR by plant families (no global rank or % above avg)
 - [ ] Add some text about the "specialty" family for each area
   - [ ] From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
-- [ ] Adapt the page to have a basic level of functionality on mobile
+- [x] Adapt the page to have a basic level of functionality on mobile
   - [x] Map should at least stretch to full page width
-  - [ ] Add an area selector dropdown/search bar
+  - [x] Add an area selector dropdown/search bar
   - [x] Autofill suggestions not working on mobile
     - Turns out this is just a limitation of firefox on android
   - [x] Grid cards should not match height on mobile
 
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
+- [ ] Line chart of species richness by latitude (LDG)
+- [ ] Embed wikipedia text
 - [x] Fix the flickering when selecting a country from the map
 - [ ] Add option to change map projection, maybe pan/zoom d3 style if possible
-- [ ] Add some higher-level categories like "ferns", or even all taxonomic levels if it doesn't make things too janky
+- [ ] Add higher-level categories (well-known ones like monocots, ferns etc) or some taxonomic tree view integration
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
 - [ ] Allow the user to apply filters data to include introduced ranges or exclude extinct species
 - [x] Chart of preferred climate for each species by family
-- [ ] Line chart of species richness by latitude (LDG)
 - [ ] Map number of endemic species to each area
   - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
 - [ ] Get a list of species in selected area-family
   - [ ] Perhaps on a separate page, since this will involve querying the entire 200MB WCVP
-- [ ] Embed wikipedia text
 
 ## Use of AI
 I started this project as a [small Python script](https://github.com/north-ross/PlantFamilyMapping) to make static species richness maps, without use of AI, for my own personal interest and for contributing to Wikipedia. I was so fascinated by the unexpected patterns of diversity that I decided to make it into a shareable web app for exploring the data.

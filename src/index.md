@@ -2,6 +2,33 @@
 title: Vascular Plant Diversity
 toc: true
 ---
+
+<style>
+.wide p,
+.wide h1,
+.wide h2,
+.wide h3,
+.wide h4,
+.wide h5,
+.wide h6,
+.wide .katex-display {
+  max-width: none;
+}
+@media (max-width: 640px) {
+  .grid.grid-cols-2 {
+    display: block;
+  }
+  .grid.grid-cols-2 > .card {
+    margin-bottom: 1rem; /* grid-gap doesn't apply in block mode, so add spacing manually */
+  }
+}
+.inputs-3a86ea-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+</style>
+
 # Floral World: ${selectedFam ?? "Vascular Plants"}
 
 ```js
@@ -107,7 +134,7 @@ const selAreaMap = Plot.plot({
     })),
     // Overlay updated based on table selection
     Plot.geo(
-      codeToFeature[mutAreaTableSelection?.areaCode] ? [codeToFeature[mutAreaTableSelection.areaCode]] : [],
+      codeToFeature[mutAreaTableSelection] ? [codeToFeature[mutAreaTableSelection]] : [],
       { stroke: "#662200", strokeWidth: 2, fill: "none"}
       // Give this a tip label as well?
     )
@@ -191,33 +218,42 @@ ${persistedArea === null
 
 ```js
 // TODO: Set input to null when something else changes
-// TODO: Map is not updating based on this
-// TODO: Put the two inputs into an html element next to each other with Generators.input
 const areaNameToFeature = Object.fromEntries(
   wgsrpd.features.map(feature => [
     feature.properties.LEVEL3_NAM,
     feature
   ])
 )
-const areaSelectDropdown = view(Inputs.select([null].concat(Object.keys(areaNameToFeature)),{
-  label: "Selected area",
-  value: null
-}))
-const areaClearButton = view(Inputs.button("Clear selected area", {reduce: () => setPersistedArea(null)}))
 ```
+```js
+const areaSelectDropdownInput = Inputs.select([null].concat(Object.keys(areaNameToFeature)),{
+  label: "Select area from list",
+  value: null,
+  width: 260
+});
 
+const areaClearButtonInput = Inputs.button("Clear", {reduce: () => setPersistedArea(null)});
+```
+```js
+const areaSelectDropdown = Generators.input(areaSelectDropdownInput);
+const areaClearButton = Generators.input(areaClearButtonInput);
+```
 ```js
 // Set persistent area from table
 if (areaSelectDropdown !== null) {
-  setPersistedArea(areaNameToFeature[areaSelectDropdown]);
-  setMutAreaTableSelection(areaNameToFeature[areaSelectDropdown]);
+  const areaSelFeature = areaNameToFeature[areaSelectDropdown]
+  setPersistedArea(areaSelFeature);
+  setMutAreaTableSelection(areaSelFeature.properties.LEVEL3_COD);
 };
 ```
 
+<div style="display:flex; gap:4px; align-items:center;">
+  ${areaSelectDropdownInput}
+  ${areaClearButtonInput}
+</div>
 
 ${persistedArea === null
   ? html`
-    <p>Explore the ${globalSrSum.toLocaleString()} accepted vascular plant species by their families and distributions across ${wgsrpd.features.length} botanical countries.</p>
     <p>Select a family from the table below, or a botanical country from the map or right table.</p>
     `
   : html`
@@ -513,7 +549,7 @@ if (areaTableSelect !== null) {
   );
   // selAreaMap.value = null;
   // selAreaMap.dispatchEvent(new Event("input", {bubbles: true}));
-  setMutAreaTableSelection(areaTableSelect);
+  setMutAreaTableSelection(areaTableSelect.areaCode);
 };
 ```
 
@@ -586,31 +622,11 @@ if (selectedFam != null) {view(Plot.plot({
 </div>
 </div>
 
-<style>
-.wide p,
-.wide h1,
-.wide h2,
-.wide h3,
-.wide h4,
-.wide h5,
-.wide h6,
-.wide .katex-display {
-  max-width: none;
-}
-@media (max-width: 640px) {
-  .grid.grid-cols-2 {
-    display: block;
-  }
-  .grid.grid-cols-2 > .card {
-    margin-bottom: 1rem; /* grid-gap doesn't apply in block mode, so add spacing manually */
-  }
-}
-</style>
 <div class="wide">
 
 ## About
 
-The World Checklist for Vascular Plants (WCVP)[^1] divides the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${Object.keys(sr).length} families and aggregates their distributions into "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
+The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${globalSrSum.toLocaleString()} species in ${Object.keys(sr).length} families. It also tracks their distributions into ${wgsrpd.features.length} "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
 The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
