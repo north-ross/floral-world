@@ -20,7 +20,7 @@ class RichnessTests(unittest.TestCase):
         self.names = pd.DataFrame([
             ["1", "Accepted", "Species", "Ericaceae", "temperate"],
             ["2", "Accepted", "Species", "Ericaceae", "tropical"],
-            ["3", "Accepted", "Species", "Polemoniaceae", {}],
+            ["3", "Accepted", "Species", "Polemoniaceae", None],
             ["4", "Synonym", "Species", "Ericaceae", "tropical"],
             ["5", "Accepted", "Genus", "Ericaceae", "tropical"],
         ], columns=loader.NAME_COLUMNS)
