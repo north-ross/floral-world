@@ -80,6 +80,7 @@ const richnessExtent = d3.extent(richnessByArea.values());
 ```js
 // Map
 // set width min 900px, max 1200 px, or 80% of width in between
+// Mayb add a slider to let the user pick the map width?
 const mapWidth = (width < 800) ? 800 : Math.min(width, 1000); 
 
 const selAreaMap = Plot.plot({
@@ -101,8 +102,15 @@ const selAreaMap = Plot.plot({
         return `${d.properties.LEVEL3_NAM}: ${val ?? 0}`; // show zero for null. In any case where its null it should probably be zero anyways
       },
       stroke: "#662200",
+      strokeWidth: 2,
       tip: {fill: dark ? "#662200" : "var(--theme-background)",}
-    }))
+    })),
+    // Overlay updated based on table selection
+    Plot.geo(
+      codeToFeature[mutAreaTableSelection?.areaCode] ? [codeToFeature[mutAreaTableSelection.areaCode]] : [],
+      { stroke: "#662200", strokeWidth: 2, fill: "none"}
+      // Give this a tip label as well?
+    )
   ]
 });
 
@@ -113,24 +121,6 @@ const selAreaMap = Plot.plot({
 ```
 ```js
 const mapHeight = +selAreaMap.getAttribute("height");
-```
-```js
-// Lightweight overlay — same width/height/projection domain as the base map,
-// Only this updates with persistedArea
-const highlightOverlay = Plot.plot({
-  projection: { type: "equal-earth", domain: wgsrpd },
-  width: mapWidth,
-  height: mapHeight,
-  marks: [
-    Plot.sphere({stroke:"var(--theme-foreground)"}),
-    Plot.geo(
-      codeToFeature[mutAreaTableSelection?.areaCode] ? [codeToFeature[mutAreaTableSelection.areaCode]] : [],
-      { stroke: "#662200", strokeWidth: 2.5, fill: "none" }
-    )
-  ],
-  style: { backgroundColor: "transparent" }
-});
-// console.log("reloaded light map")
 ```
 
 ```js
@@ -147,15 +137,22 @@ const setMutAreaTableSelection = (v) => {mutAreaTableSelection.value = v;}
 ```js
 // On map input, set table select to none
 const selArea = Generators.observe((notify) => {
+  let lastCode = undefined; // plain closure var — NOT reactive, just local bookkeeping
   const inputted = () => {
-    // console.log("map input",selAreaMap.value?.properties.LEVEL3_COD)
-    notify(selAreaMap.value)
-    // Reset table selection
-    setMutAreaTableSelection(null);
+    // console.log("input")
+    const current = selAreaMap.value;
+    notify(current);
+    const currentCode = current?.properties?.LEVEL3_COD;
+    if (currentCode !== lastCode) {
+      lastCode = currentCode;
+      // Only touch the Mutable when the hovered area actually changes,
+      // and only if something is even selected in the table right now
+      if (mutAreaTableSelection !== null) setMutAreaTableSelection(null);
+    }
   };
   inputted();
   selAreaMap.addEventListener("input", inputted, {capture: true});
-  return () => selAreaMap.removeEventListener("input", inputted,{capture: true});
+  return () => selAreaMap.removeEventListener("input", inputted, {capture: true});
 });
 ```
 ```js
@@ -169,14 +166,13 @@ const colorLegend = Plot.legend({ color: colorOptions });
 ```
 
 ```js
-// TODO: Align to center, maybe limit height to a fraction of the screen?
+// TODO: Align to center, add LDG plot on the right
 html`<div>
   <div class="grid grid-cols-2" >
     <div>${colorLegend}</div> <div>${logscaleInput}</div>
   </div>
   <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
     <div style="position: absolute; top: 0; left: 0;">${selAreaMap}</div>
-    <div style="position: absolute; top: 0; left: 0; pointer-events: none;">${highlightOverlay}</div>
   </div>
 </div>`
 ```
@@ -196,6 +192,10 @@ html`<div>
         ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
       `
   }
+
+```js
+// TODO: Add Inputs.select() for area which behaves similar to the table select below
+```
 
 ```js
 // Get global SR by family
@@ -456,7 +456,7 @@ const famEntries = Object.entries(sr[selectedFam]?.['sr'] || {}).map(([areaCode,
 
 const famRanked = rankFamily(famEntries);
 
-// TODO: After an area is selected, the table immediately stops displaying it, even though value is not null ?
+
 const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0), {
   columns: ["areaName", "richness", "percentGlobal"],
   header: {
@@ -465,9 +465,7 @@ const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0)
     percentGlobal: "% of Global"
   },
   multiple: false,
-  sort: "richness", reverse: true,
-  value: mutAreaTableSelection
-  
+  sort: "richness", reverse: true
 }))
 ```
 
@@ -481,13 +479,14 @@ const codeToFeature = Object.fromEntries(
 )
 ```
 ```js
-// Set persistent area
+// Set persistent area from table
 if (areaTableSelect !== null) {
   setPersistedArea(
     codeToFeature[areaTableSelect.areaCode]
-  )
-  setMutAreaTableSelection(areaTableSelect)
-  // "unfreeze" or hide tip?
+  );
+  // selAreaMap.value = null;
+  // selAreaMap.dispatchEvent(new Event("input", {bubbles: true}));
+  setMutAreaTableSelection(areaTableSelect);
 };
 ```
 
@@ -569,6 +568,14 @@ if (selectedFam != null) {view(Plot.plot({
 .wide h6,
 .wide .katex-display {
   max-width: none;
+}
+@media (max-width: 640px) {
+  .grid.grid-cols-2 {
+    display: block;
+  }
+  .grid.grid-cols-2 > .card {
+    margin-bottom: 1rem; /* grid-gap doesn't apply in block mode, so add spacing manually */
+  }
 }
 </style>
 <div class="wide">
