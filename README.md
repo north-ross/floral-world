@@ -17,7 +17,7 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [x] Selecting a family from the countries table updates the selected family reactively
 - [x] Query Wikidata to add links to wikipedia, iNat, CoL paleobio database. 
   - [x] Embed an image from wikidata
-- [ ] When no area is selected, show a table of global SR by plant families (no global rank or % above avg)
+- [x] When no area is selected, show a table of global SR by plant families (no global rank or % above avg)
 - [ ] Add some text about the "specialty" family for each area
   - [ ] From the country-wise (global) ranking for families, get the highest ranked for this (using averages for ties)
 - [ ] Adapt the page to have a basic level of functionality on mobile
