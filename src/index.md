@@ -362,7 +362,7 @@ const setSelectedFam = (v) => {selectedFam.value = v;};
 if (famTableInput !== null) {
   setSelectedFam(famTableInput.family);
   // Set mutTableArea to the current selected family so it persists on map reload
-  if (mutAreaTableSelection == null && persistedArea != null) setMutAreaTableSelection(persistedArea.properties.LEVEL3_COD);
+  // if (mutAreaTableSelection == null && persistedArea != null) setMutAreaTableSelection(persistedArea.properties.LEVEL3_COD);
   // TODO: Now reset the search bar text
 }
 
