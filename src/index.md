@@ -27,6 +27,12 @@ toc: true
   align-items: center;
   width: 100%;
 }
+.dash { display: grid; gap: 1rem; align-items: stretch; }
+.dash .card { margin: 0; }
+.dash-right { display: flex; flex-direction: column; gap: 1rem; min-height: 0; }
+.dash-right .card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.dash-fill { position: relative; flex: 1 1 0; min-height: 0; }
+.dash-fill > div { position: absolute; inset: 0; }
 </style>
 
 # Floral World: ${selectedFam ?? "Vascular Plants"}
@@ -108,7 +114,10 @@ const richnessExtent = d3.extent(richnessByArea.values());
 // Map
 // set width min 900px, max 1200 px, or 80% of width in between
 // Mayb add a slider to let the user pick the map width?
-const mapWidth = (width < 800) ? 800 : Math.min(width, 1000); 
+const stacked = width < 800;                      // phone/narrow: single column
+const mapCardWidth = stacked ? width : Math.round(width * 0.62);
+const mapWidth = mapCardWidth - 34;
+// const mapWidth = (width < 800) ? 800 : Math.min(width, 1000); 
 
 const selAreaMap = Plot.plot({
   projection: { type: "equal-earth", domain: wgsrpd },
@@ -193,15 +202,61 @@ const colorLegend = Plot.legend({ color: colorOptions });
 ```
 
 ```js
-// TODO: Align to center, add LDG plot on the right
-html`<div>
-  <div class="grid grid-cols-2" >
-    <div>${colorLegend}</div> <div>${logscaleInput}</div>
+const distPlot = resize((w, h) => Plot.plot({
+  width: w, height: h,
+  x: {label: "Distribution (number of areas)"},
+  y: {type: "log", label: "Diversity (species richness)"},
+  marks: [
+    Plot.dot(globalFamilyEntries.filter(d => d.family == selectedFam),
+      {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
+    Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
+    Plot.tip(globalFamilyEntries, Plot.pointer({
+      x: "nAreas", y: "globalSr",
+      title: d => [d.family, d.cmnName].join("\n")
+    }))
+  ]
+}));
+
+const climateEntries = selectedFam
+  ? Object.entries(sr[selectedFam].climate).map(([climate, species]) =>
+      ({climate, species: Math.round(species)}))
+  : null;
+
+const climatePlot = selectedFam
+  ? resize((w, h) => Plot.plot({
+      width: w, height: h, marginBottom: 80,
+      x: {label: null, lineWidth: 1, tickRotate: -30, domain: Object.keys(colorMap)},
+      y: {label: "Species richness"},
+      color: {type: "categorical", domain: Object.keys(colorMap),
+              range: Object.values(colorMap), unknown: "var(--theme-foreground)"},
+      marks: [
+        Plot.barY(climateEntries, {x: "climate", y: "species", fill: "climate"}),
+        Plot.tip(climateEntries, Plot.pointerX({x: "climate", y: "species", title: "species"}))
+      ]
+    }))
+  : html`<p><i>Select a plant family from the table or search bar.</i></p>`;
+
+display(html`<div class="dash"
+    style="grid-template-columns: ${stacked ? "1fr" : `${mapCardWidth}px 1fr`};">
+
+  <div class="card" >
+    <div class="grid grid-cols-2">
+      <div>${colorLegend}</div><div>${logscaleInput}</div>
+    </div>
+    <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
+      <div style="position: absolute; top: 0; left: 0;">${selAreaMap}</div>
+    </div>
   </div>
-  <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
-    <div style="position: absolute; top: 0; left: 0;">${selAreaMap}</div>
+
+  <div class="dash-right">
+    <div class="card" style="${stacked ? "height: 350px;" : ""}">
+      <div class="dash-fill"><div>${distPlot}</div></div>
+    </div>
+    <div class="card" style="${stacked ? "height: 350px;" : ""}">
+      <div class="dash-fill"><div>${climatePlot}</div></div>
+    </div>
   </div>
-</div>`
+</div>`);
 ```
 
 <div class="grid grid-cols-2" style="grid-auto-rows: auto;">
@@ -556,70 +611,7 @@ if (areaTableSelect !== null) {
 
 
 </div>
-<div class="card"><h1>Diversity and Distribution</h1>
 
-Comparison of the distribution (number of areas, *x*) with global species richness (log scale, *y*) for each family. ${selectedFam ? html`Selected family is <mark style="background-color: #688816;">highlighted</mark>.`: html` `}
-
-```js
-const globalSrPlot = view(Plot.plot({
-  x: {label: "number of areas present"},
-  y: {type: "log", label: "Species richness"},
-  marks: [
-    Plot.dot(globalFamilyEntries.filter((d) => d.family == selectedFam), {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
-    Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
-    Plot.tip(globalFamilyEntries, Plot.pointer({x: "nAreas", y: "globalSr", title: (d) => [d.family, d.cmnName].join("\n")}))
-  ]
-}));
-// const globalSrPlotInput = Generators.input(globalSrPlot)
-// TODO: Add another select on click tip so you can change selected family from here
-// Actually setting selectedFam from this view() would be too intense, so only on click
-```
-
-</div>
-
-<div class="card"><h1>Diversity and Climate</h1>
-For the selected family, breakdown of the species richness by climate.
-
-```js
-const climateEntries = selectedFam 
-  ? Object.entries(sr[selectedFam]['climate']).map(
-      ([climate, species]) => ({
-        climate: climate, 
-        species: Math.round(species)
-      })
-    )
-  : null;
-
-if (selectedFam != null) {view(Plot.plot({
-      marginBottom: 80,
-    x: {
-      label: null,
-      lineWidth: 1,
-      tickRotate: -30,
-      domain: Object.keys(colorMap) //.filter(d => climateEntries.some(entry => entry.climate === d))
-    },
-    y: {label: "Species richness"},
-    color: {
-      type: "categorical",
-      domain: Object.keys(colorMap),
-      range: Object.values(colorMap),
-      unknown: "var(--theme-foreground)"
-      },
-    marks: [
-      Plot.barY(climateEntries, {
-          x: "climate", 
-          y: "species", 
-          fill: "climate"
-        }),
-      Plot.tip(climateEntries, Plot.pointerX({x: "climate", y: "species", title: "species"}))
-      ]
-    }))
-}else{
-  display(html`<p><i>Select a plant family from the table or search bar.</i></p>`)
-}
-
-```
-</div>
 </div>
 
 <div class="wide">
