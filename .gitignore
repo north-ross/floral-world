@@ -9,6 +9,7 @@ src/data/col_taxonomy*
 src/data/family-area-sr.json
 src/data/taxa-inat-darwincore.json
 src/data/tweak-wikidata-cache.py
+*.ipynb
 __pycache__/
 *.py[cod]
 .venv/
