@@ -114,13 +114,18 @@ const richnessExtent = d3.extent(richnessByArea.values());
 // Map
 // set width min 900px, max 1200 px, or 80% of width in between
 // Mayb add a slider to let the user pick the map width?
-const stacked = width < 800;                      // phone/narrow: single column
-const mapCardWidth = stacked ? width : Math.round(width * 0.62);
-const mapWidth = mapCardWidth - 34;
-// const mapWidth = (width < 800) ? 800 : Math.min(width, 1000); 
+const stacked = width < 800;  // phone/narrow: single column
+const mapCardWidth = stacked ? width : Math.round(width * 0.7);
+
+const mapWidth = mapCardWidth - Math.ceil(mapCardWidth/13) - 40;
+// Set width for the LDG gradient strip
+// At the equator, 30° of longitude is about mapWidth/12 pixels in equal earth
+const stripW = Math.ceil(mapWidth / 12) + 4;
+
+const mapProjection = {type: "equal-earth", domain: wgsrpd};
 
 const selAreaMap = Plot.plot({
-  projection: { type: "equal-earth", domain: wgsrpd },
+  projection: mapProjection,
   width: mapWidth,
   color: { ...colorOptions, legend: false },
   marks: [
@@ -155,8 +160,43 @@ const selAreaMap = Plot.plot({
 
 // console.log("reloaded main map")
 ```
+
 ```js
 const mapHeight = +selAreaMap.getAttribute("height");
+```
+
+```js
+// Get latitudinal diversity gradint (LDG) plot to put next to map
+// Source: selected family, or sum over all families
+const ldgSource = selectedFam != null
+  ? sr[selectedFam].ldg
+  : Object.values(sr).reduce((acc, f) => {
+      for (const [b, v] of Object.entries(f.ldg)) acc[b] = (acc[b] ?? 0) + v;
+      return acc;
+    }, {});   // like pd.DataFrame(...).sum()
+const ldgMax = Math.max(...Object.values(ldgSource));
+const ldgRows = Object.entries(ldgSource).map(([band, val]) => ({
+  band1: +band, band2: +band + 10, x2: 30 * val / ldgMax, val
+}));
+
+display(ldgRows)
+const ldgPlot = Plot.plot({
+  projection: mapProjection,
+  width: mapWidth,
+  style: "overflow: visible;",
+  color: {range: ["#FAF7C7", "#688816", "#1C3D28"], domain: d3.extent(Object.values(ldgSource)), legend: false},
+  marks: [
+    Plot.rect(ldgRows, {x1: 0, x2: "x2", y1: "band1", y2: "band2", 
+    fill: "val",
+    title: (d) => `${Math.abs(d.band1)}—${Math.abs(d.band2)}°${d.band2 <= 0 ? "S" : "N"}: ${d.val}`,
+    tip: true})
+  ]
+});
+
+// Crop the SVG to the strip starting at the central meridian
+ldgPlot.setAttribute("viewBox", `${mapWidth / 2 - 2} 0 ${stripW} ${mapHeight}`);
+ldgPlot.setAttribute("width", stripW);
+ldgPlot.setAttribute("height", mapHeight);
 ```
 
 ```js
@@ -226,7 +266,7 @@ const climatePlot = selectedFam
   ? resize((w, h) => Plot.plot({
       width: w, height: h, marginBottom: 80,
       x: {label: null, lineWidth: 1, tickRotate: -30, domain: Object.keys(colorMap)},
-      y: {label: "Species richness"},
+      y: {label: "Diversity (species richness)"},
       color: {type: "categorical", domain: Object.keys(colorMap),
               range: Object.values(colorMap), unknown: "var(--theme-foreground)"},
       marks: [
@@ -239,12 +279,15 @@ const climatePlot = selectedFam
 display(html`<div class="dash"
     style="grid-template-columns: ${stacked ? "1fr" : `${mapCardWidth}px 1fr`};">
 
-  <div class="card" >
+  <div class="card">
     <div class="grid grid-cols-2">
       <div>${colorLegend}</div><div>${logscaleInput}</div>
     </div>
-    <div style="position: relative; width: ${mapWidth}px; height: ${mapHeight}px;">
-      <div style="position: absolute; top: 0; left: 0;">${selAreaMap}</div>
+    <div style="display:flex; align-items:flex-start;">
+      <div style="position:relative; flex:none; width:${mapWidth+5}px; height:${mapHeight}px;">
+        <div style="position:absolute; top:0; left:0;">${selAreaMap}</div>
+      </div>
+      <div style="flex:none; width:${stripW}px; height:${mapHeight}px;">${ldgPlot}</div>
     </div>
   </div>
 
@@ -257,6 +300,9 @@ display(html`<div class="dash"
     </div>
   </div>
 </div>`);
+
+
+// display(ldgPlot)
 ```
 
 <div class="grid grid-cols-2" style="grid-auto-rows: auto;">
