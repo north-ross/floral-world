@@ -179,17 +179,19 @@ const ldgRows = Object.entries(ldgSource).map(([band, val]) => ({
   band1: +band, band2: +band + 10, x2: 30 * val / ldgMax, val
 }));
 
-display(ldgRows)
 const ldgPlot = Plot.plot({
   projection: mapProjection,
   width: mapWidth,
   style: "overflow: visible;",
   color: {range: ["#FAF7C7", "#688816", "#1C3D28"], domain: d3.extent(Object.values(ldgSource)), legend: false},
   marks: [
-    Plot.rect(ldgRows, {x1: 0, x2: "x2", y1: "band1", y2: "band2", 
-    fill: "val",
-    title: (d) => `${Math.abs(d.band1)}—${Math.abs(d.band2)}°${d.band2 <= 0 ? "S" : "N"}: ${d.val}`,
-    tip: true})
+    Plot.rect(ldgRows, {x1: 0, x2: "x2", 
+      y1: "band1",
+      y2: d => Math.min(d.band2, 83.6),// Cutoff northernmost band at domain edge (tip of Greenland)
+      fill: "val",
+      tip: "y",
+      title: (d) => `${Math.abs(d.band1)}—${Math.abs(d.band2)}°${d.band2 <= 0 ? "S" : "N"}: ${d.val.toLocaleString()}`
+    })
   ]
 });
 
@@ -279,12 +281,12 @@ const climatePlot = selectedFam
 display(html`<div class="dash"
     style="grid-template-columns: ${stacked ? "1fr" : `${mapCardWidth}px 1fr`};">
 
-  <div class="card">
+  <div class="card" style="position:relative; z-index:2;">
     <div class="grid grid-cols-2">
       <div>${colorLegend}</div><div>${logscaleInput}</div>
     </div>
     <div style="display:flex; align-items:flex-start;">
-      <div style="position:relative; flex:none; width:${mapWidth+5}px; height:${mapHeight}px;">
+      <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
         <div style="position:absolute; top:0; left:0;">${selAreaMap}</div>
       </div>
       <div style="flex:none; width:${stripW}px; height:${mapHeight}px;">${ldgPlot}</div>
@@ -674,7 +676,6 @@ The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascu
 The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
 ## How to use 
-<details><summary>Read more</summary>
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
 
 Here are a few plant families with interesting distributions you could check out as well:
@@ -688,16 +689,12 @@ Here are a few plant families with interesting distributions you could check out
   - ${Inputs.button("Select Sarraceniaceae", {reduce: () => setSelectedFam("Sarraceniaceae")})}
 - The gentian family has an interesting climate breakdown, the majority of species are found in "subalpine or subarctic" climate, which is very unusual.
   - ${Inputs.button("Select Gentianaceae", {reduce: () => setSelectedFam("Gentianaceae")})}
-</details><br>
 
 ## What does this map really show?
-<details><summary>Read more</summary>
 
 Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing "true" centers of biodiversity or distribution. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much computational approach, although showing similar patterns, although other studies have used these boundaries for statistical analysis, controlling for area and climatic diversity within the boundaries[^3].
-</details><br>
 
 ## Why are some areas more diverse than others?
-<details><summary>Read more</summary>
 
 This is a central and still unresolved question in biogeography, sometimes called the Latitudinal Diversity Gradient (LDG, [my notes](https://dismal-sariola.vercel.app/ecology-notes/macroecology/latitudinal-diversity-gradient/) ). The general pattern is that species richness tends to be higher around the equator and lower around the poles. It seems to be a relatively recent phenomenon which began after the end of the Cretaceous period, 30 or 40 million years ago. Before this, Earth usually had a much wider tropical band, and species richness was probably not much lower around the poles than at the equator. A planned feature for this site is a chart to visualize this LDG next to the map for each family.
 
@@ -707,8 +704,8 @@ As for why different families have different distributions than each other - thi
 - The LDG - tropical areas tend to be more diverse as a rule
 - Environmental diversity or geodiversity of an area 
   - areas with lots of different microclimates, soil types or altitudes will have more diversity
-- the evolutionary history of the family and its interactions with continental drift
-  - some families evolved quite recently in isolated areas, or have gone extinct everywhere expect for these areas
+- The evolutionary history of the family and its interactions with continental drift
+  - Some families evolved quite recently in isolated areas, or have gone extinct everywhere expect for these areas
   - New Caledonia is an example of this, containing a few families of "basal angiosperms" that have gone extinct everywhere else. ${Inputs.button("Select New Caledonia on the map", {reduce: () => setPersistedArea(codeToFeature["NWC"])})} 
 
 I previously assumed the reason why some families are very diverse in one area and present in small numbers in the rest of the world is because their center of diversity is the same as their point of evolutionary origin. However, this seems to not be true in every case. For example:
@@ -718,8 +715,6 @@ ${Inputs.button("Select Onagraceae on the map", {reduce: () => setSelectedFam("O
 Onagraceae (the "evening primrose" or fireweed family), is present around the world but extremely diverse in California. However, the earliest fossils we have are from Paleocene Colombia (as per [Paleobiology Database](https://paleobiodb.org)), and its evolutionary history is much more complex, with its most diverse lineages originating in California, but with other genera originating in South America, eastern North America, and *Chamanerion* appearing to originate in the northern temporal zone[^4].
 
 I hope this helps you dive into lots of rabbit holes!
-
-</details><br>
 
 ## Source code
 
