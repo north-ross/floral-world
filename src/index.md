@@ -30,7 +30,9 @@ toc: true
 .dash { display: grid; gap: 1rem; align-items: stretch; }
 .dash .card { margin: 0; }
 .dash-right { display: flex; flex-direction: column; gap: 1rem; min-height: 0; }
-.dash-right .card { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+.dash-right .card { margin: 0; flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.dash-right.stacked { margin-top: 1rem; }
+.dash-right.stacked .card { flex: none; height: 350px; }
 .dash-fill { position: relative; flex: 1 1 0; min-height: 0; }
 .dash-fill > div { position: absolute; inset: 0; }
 </style>
@@ -259,25 +261,38 @@ const distPlot = resize((w, h) => Plot.plot({
   ]
 }));
 
-const climateEntries = selectedFam
-  ? Object.entries(sr[selectedFam].climate).map(([climate, species]) =>
-      ({climate, species: Math.round(species)}))
-  : null;
+const climateSource = selectedFam != null
+  ? sr[selectedFam].climate
+  : Object.values(sr).reduce((acc, f) => {
+      for (const [c, n] of Object.entries(f.climate)) acc[c] = (acc[c] ?? 0) + n;
+      return acc;
+    }, {});
 
-const climatePlot = selectedFam
-  ? resize((w, h) => Plot.plot({
-      width: w, height: h, marginBottom: 80,
-      x: {label: null, lineWidth: 1, tickRotate: -30, domain: Object.keys(colorMap)},
-      y: {label: "Diversity (species richness)"},
-      color: {type: "categorical", domain: Object.keys(colorMap),
-              range: Object.values(colorMap), unknown: "var(--theme-foreground)"},
-      marks: [
-        Plot.barY(climateEntries, {x: "climate", y: "species", fill: "climate"}),
-        Plot.tip(climateEntries, Plot.pointerX({x: "climate", y: "species", title: "species"}))
-      ]
-    }))
-  : html`<p><i>Select a plant family from the table or search bar.</i></p>`;
+const climateEntries = Object.entries(climateSource).map(([climate, species]) =>
+  ({climate, species: Math.round(species)}));
 
+const climatePlot = resize((w, h) => Plot.plot({
+  width: w, height: h, marginBottom: 80,
+  style: "overflow: visible;",
+  x: {label: null, lineWidth: 1, tickRotate: -30, domain: Object.keys(colorMap)},
+  y: {label: "Diversity (species richness)"},
+  color: {type: "categorical", domain: Object.keys(colorMap),
+          range: Object.values(colorMap), unknown: "var(--theme-foreground)"},
+  marks: [
+    Plot.barY(climateEntries, {x: "climate", y: "species", fill: "climate"}),
+    Plot.tip(climateEntries, Plot.pointerX({x: "climate", y: "species", title: "species"}))
+  ]
+}));
+
+const chartCards = html`<div class="dash-right ${stacked ? "stacked" : ""}">
+    <div class="card">
+      <div class="dash-fill">${distPlot}</div>
+    </div>
+    <div class="card" style="${stacked ? "height: 350px;" : ""}">
+      <div class="dash-fill">${climatePlot}</div>
+    </div>
+  </div>`
+  
 display(html`<div class="dash"
     style="grid-template-columns: ${stacked ? "1fr" : `${mapCardWidth}px 1fr`};">
 
@@ -292,15 +307,7 @@ display(html`<div class="dash"
       <div style="flex:none; width:${stripW}px; height:${mapHeight}px;">${ldgPlot}</div>
     </div>
   </div>
-
-  <div class="dash-right">
-    <div class="card" style="${stacked ? "height: 350px;" : ""}">
-      <div class="dash-fill"><div>${distPlot}</div></div>
-    </div>
-    <div class="card" style="${stacked ? "height: 350px;" : ""}">
-      <div class="dash-fill"><div>${climatePlot}</div></div>
-    </div>
-  </div>
+    ${stacked ? "" : chartCards}
 </div>`);
 
 
@@ -660,12 +667,12 @@ if (areaTableSelect !== null) {
   setMutAreaTableSelection(areaTableSelect.areaCode);
 };
 ```
-
-
-
+</div>
 </div>
 
-</div>
+```js
+display(stacked ? chartCards : html` `);
+```
 
 <div class="wide">
 
