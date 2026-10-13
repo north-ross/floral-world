@@ -28,6 +28,7 @@ toc: true
   width: 100%;
 }
 .dash { display: grid; gap: 1rem; align-items: stretch; }
+.dash-scroll { overflow-x: auto; }
 .dash .card { margin: 0; }
 .dash-right { display: flex; flex-direction: column; gap: 1rem; min-height: 0; }
 .dash-right .card { margin: 0; flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
@@ -117,7 +118,7 @@ const richnessExtent = d3.extent(richnessByArea.values());
 // set width min 900px, max 1200 px, or 80% of width in between
 // Mayb add a slider to let the user pick the map width?
 const stacked = width < 800;  // phone/narrow: single column
-const mapCardWidth = stacked ? width : Math.round(width * 0.7);
+const mapCardWidth = stacked ? 834 : Math.round(width * 0.7);
 
 const mapWidth = mapCardWidth - Math.ceil(mapCardWidth/13) - 40;
 // Set width for the LDG gradient strip
@@ -142,7 +143,7 @@ const selAreaMap = Plot.plot({
       title: (d) => {
         const code = d.properties.LEVEL3_COD;
         const val = richnessByArea.get(code);
-        return `${d.properties.LEVEL3_NAM}: ${val ?? 0}`; // show zero for null. In any case where its null it should probably be zero anyways
+        return `${d.properties.LEVEL3_NAM}: ${val ? val.toLocaleString() : 0}`; // show zero for null. In any case where its null it should probably be zero anyways
       },
       stroke: "#662200",
       strokeWidth: 2,
@@ -293,21 +294,23 @@ const chartCards = html`<div class="dash-right ${stacked ? "stacked" : ""}">
     </div>
   </div>`
   
-display(html`<div class="dash"
-    style="grid-template-columns: ${stacked ? "1fr" : `${mapCardWidth}px 1fr`};">
-
-  <div class="card" style="position:relative; z-index:2;">
-    <div class="grid grid-cols-2">
-      <div>${colorLegend}</div><div>${logscaleInput}</div>
-    </div>
-    <div style="display:flex; align-items:flex-start;">
-      <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
-        <div style="position:absolute; top:0; left:0;">${selAreaMap}</div>
+display(html`
+<div class="dash-scroll">
+  <div class="dash" 
+      style="grid-template-columns: ${mapCardWidth}px ${stacked ? "" : "1fr"};">
+    <div class="card" style="position:relative; z-index:2;">
+      <div class="grid grid-cols-2">
+        <div>${colorLegend}</div><div>${logscaleInput}</div>
       </div>
-      <div style="flex:none; width:${stripW}px; height:${mapHeight}px;">${ldgPlot}</div>
+      <div style="display:flex; align-items:flex-start;">
+        <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
+          <div style="position:absolute; top:0; left:0;">${selAreaMap}</div>
+        </div>
+        <div style="flex:none; width:${stripW}px; height:${mapHeight}px;">${ldgPlot}</div>
+      </div>
     </div>
-  </div>
     ${stacked ? "" : chartCards}
+  </div>
 </div>`);
 
 
