@@ -14,3 +14,4 @@ __pycache__/
 *.py[cod]
 .venv/
 src/.observablehq/cache/
+selectedAreaVarStructure.md
