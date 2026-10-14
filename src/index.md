@@ -339,7 +339,7 @@ const areaNameToFeature = Object.fromEntries(
 )
 ```
 ```js
-const areaSelectDropdownInput = Inputs.select([null].concat(Object.keys(areaNameToFeature)),{
+const areaSelectDropdownInput = Inputs.select([null].concat(Object.keys(areaNameToFeature).sort()),{
   label: "Select area from list",
   value: null,
   width: 260
