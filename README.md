@@ -26,10 +26,11 @@ Based on an earlier simple project to generate static maps of plant diversity: [
   - [x] Autofill suggestions not working on mobile
     - Turns out this is just a limitation of firefox on android
   - [x] Grid cards should not match height on mobile
+- [ ] Rework the selection behaviour
 
 ### Lower priority
 - [ ] Add explanatory tooltips, maybe an intro splash page?
-- [ ] Line chart of species richness by latitude (LDG)
+- [x] Line chart of species richness by latitude (LDG)
 - [ ] Embed wikipedia text
 - [x] Fix the flickering when selecting a country from the map
 - [ ] Add option to change map projection, maybe pan/zoom d3 style if possible

@@ -16,6 +16,7 @@ import time
 from datetime import datetime, timezone
 from zipfile import ZipFile
 import pandas as pd
+import geopandas as gpd
 import requests
 
 
@@ -204,7 +205,7 @@ def commons_url_to_filename(image_url):
     encoded_name = urlparse(image_url).path.rsplit("/", 1)[-1]
     return unquote(encoded_name)
 
-def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wikidata_info_with_fallback):
+def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch_wikidata_info_with_fallback):
     """Deterministic aggregation; duplicate localities never inflate species richness."""
     species = names.loc[(names.taxon_status == "Accepted") &
                         (names.taxon_rank == "Species"), NAME_COLUMNS].drop_duplicates()
@@ -228,6 +229,23 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
     if unmapped:
         print(f"WCVP areas absent from level3.json (excluded from area counts): {sorted(unmapped)}", file=sys.stderr)
     counts = native.groupby(["family", "area_code_l3"]).plant_name_id.nunique()
+
+    # Get the list of countries for each latitudinal band from the geodataframe
+    # For building the latitudinal diversity gradient (LDGs)
+    ldg_areas_dict = {}
+    band_size=10
+    for i in range(-90, 90, band_size):
+        # select countries in bounding box of this latitude band
+        ldg_countries = gdf.cx[:, i : i+band_size].LEVEL3_COD
+        # key is the lower limit of the band
+        ldg_areas_dict[i] = ldg_countries
+
+    # one row per (area, band), built from the bbox logic
+    band_map = pd.concat(
+        [pd.DataFrame({"area_code_l3": codes.values, "band": i}) for i, codes in ldg_areas_dict.items()]
+    )
+    ldg_counts = (native.merge(band_map, on="area_code_l3")
+                        .groupby(["family", "band"]).plant_name_id.nunique())
 
     # Get info from wikidata
     family_names = species.family.unique()
@@ -279,7 +297,8 @@ def build_richness(names, distributions, area_codes, wikidata_fetcher=fetch_wiki
                 'colId': wd.get('colId', None),
                 'powoId': wd.get('powoId', None)
                 },
-            "image": img_dict
+            "image": img_dict,
+            "ldg": {int(b): int(ldg_counts.get((family, b), 0)) for b in ldg_areas_dict}
         }
     save_image_cache(image_cache)
 
@@ -299,7 +318,8 @@ def load_archive(archive, area_codes, wikidata_fetcher=fetch_wikidata_info_with_
             names = pd.read_csv(source, sep="|", usecols=NAME_COLUMNS, dtype="string")
         with zf.open("wcvp_distribution.csv") as source:
             distributions = pd.read_csv(source, sep="|", usecols=DISTRIBUTION_COLUMNS, dtype="string")
-    return build_richness(names, distributions, area_codes, wikidata_fetcher=wikidata_fetcher)
+    gdf = gpd.read_file(MAP_PATH, layer="level3")
+    return build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=wikidata_fetcher)
 
 #%%
 def main():

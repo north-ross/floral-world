@@ -4,6 +4,7 @@
       "artist",
       "Didier Descouens"
     ],
+    "depicts": "Calycanthus floridus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:(MHNT)_Calycanthus_floridus_-_Les_Martels,_Giroussens_Tarn.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -56,6 +57,7 @@
       "artist",
       "Didier Descouens"
     ],
+    "depicts": "Stachyurus chinensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:(MHNT)_Stachyurus_chinensis_%27Joy_Forever%27_Les_Martels,_Giroussens_Tarn.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -66,6 +68,7 @@
       "artist",
       "Baldhead1010"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:%E3%83%A4%E3%83%83%E3%82%B3%E3%82%BD%E3%82%A6.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -76,6 +79,7 @@
       "artist",
       "Vojt\u011bch Zavadil"
     ],
+    "depicts": "Goupia glabra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:13534-Goupia_glabra-Caura.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -86,6 +90,7 @@
       "artist",
       "Gary Houston Ghouston 16:40, 2 Jun 2005 (UTC)"
     ],
+    "depicts": "Laurus nobilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:20050515-007-laurus-nobilis.jpg",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -101,11 +106,23 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/2013-08-25_15_39_09_Closeup_of_Eastern_Hemlock_foliage_across_Taborton_Road_from_the_entrance_to_Spring_Lake_in_Berlin%2C_New_York.jpg/330px-2013-08-25_15_39_09_Closeup_of_Eastern_Hemlock_foliage_across_Taborton_Road_from_the_entrance_to_Spring_Lake_in_Berlin%2C_New_York.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/A%20splendens.jpg": {
+    "author": [
+      "uploader",
+      "Maksim"
+    ],
+    "depicts": "Achyranthes splendens",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:A_splendens.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/A_splendens.jpg/330px-A_splendens.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Abrophyllum%20ornans%20Elvina%20Bay.JPG": {
     "author": [
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Abrophyllum ornans",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Abrophyllum_ornans_Elvina_Bay.JPG",
     "license": "Public domain",
     "licenseUrl": null,
@@ -116,6 +133,7 @@
       "artist",
       "No machine-readable author provided. Lin linao assumed (based on copyright claims)."
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Abtao-Parque_Nacional_Chilo%C3%A9.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -126,6 +144,7 @@
       "artist",
       "Agnieszka Kwiecie\u0144 (Nova)"
     ],
+    "depicts": "Acanthus mollis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Acanthus_mollis_syn._Acanthus_niger_flower.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -136,6 +155,7 @@
       "artist",
       "L. Steinheil and   A.  Riocreux"
     ],
+    "depicts": "Achatocarpus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Achatocarpus.PNG",
     "license": "Public domain",
     "licenseUrl": null,
@@ -146,6 +166,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Acorus calamus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Acorus_calamus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-006.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -156,6 +177,7 @@
       "artist",
       "Adolf Engler (1844-1930), Karl Prantl (1949-1893)"
     ],
+    "depicts": "Afrostyrax kamerunensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Afrostyrax_kamerunensis.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -166,6 +188,7 @@
       "artist",
       "Pierre Jean Fran\u00e7ois Turpin (1775-1840)"
     ],
+    "depicts": "Agelaea lamarckii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Agelaea_lamarckii.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -176,6 +199,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Ailanthus altissima",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ailanthus_altissima2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -186,6 +210,7 @@
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Akania bidwillii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Akania_bidwillii_leaves.jpg",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -196,6 +221,7 @@
       "uploader",
       "Jeffdelonge"
     ],
+    "depicts": "Akebia quinata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Akebia_quinata01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -206,6 +232,7 @@
       "uploader",
       "JMK"
     ],
+    "depicts": "Alluaudia montagnacii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Alluaudia_montagnacii.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -216,6 +243,7 @@
       "artist",
       "No machine-readable author provided. MPF assumed (based on copyright claims)."
     ],
+    "depicts": "Alnus glutinosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Alnus_glutinosa.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -226,6 +254,7 @@
       "artist",
       "Joseph Dalton Hooker"
     ],
+    "depicts": "Alseuosmia macrophylla",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Alseuosmia_macrophylla.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -236,6 +265,7 @@
       "artist",
       "Muhammad Mahdi Karim"
     ],
+    "depicts": "Alstroemeria",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Alstroemeria.jpg",
     "license": "GFDL 1.2",
     "licenseUrl": "http://www.gnu.org/licenses/old-licenses/fdl-1.2.html",
@@ -246,6 +276,7 @@
       "artist",
       "Jim Conrad"
     ],
+    "depicts": "Alvaradoa amorphoides",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Alvaradoa_amorphoides-leaves-fruit.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -256,6 +287,7 @@
       "artist",
       "(c) Ashwin Srinivasan, some rights reserved (CC BY)"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Alzatea_verticillata_imported_from_iNaturalist_photo_173522367_on_27_January_2022.jpg",
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
@@ -276,6 +308,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Amaryllis_belladonna_sfbg_2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -286,6 +319,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Amborella trichopoda",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Amborella_trichopoda_1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -306,6 +340,7 @@
       "artist",
       "Frank Vincentz"
     ],
+    "depicts": "Anacampseros rufescens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Anacampseros_rufescens1_ies.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -316,6 +351,7 @@
       "artist",
       "Vinayaraj"
     ],
+    "depicts": "Ancistrocladus heyneanus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ancistrocladus_heyneanus.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -326,6 +362,7 @@
       "artist",
       "Muhammad Mahdi Karim"
     ],
+    "depicts": "Aneilema aequinoctiale",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aneilema_aequinoctiale.jpg",
     "license": "GFDL 1.2",
     "licenseUrl": "http://www.gnu.org/licenses/old-licenses/fdl-1.2.html",
@@ -336,6 +373,7 @@
       "artist",
       "Govindoo"
     ],
+    "depicts": "Anisophyllea cinnamomoides",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Anisophyllea_cinnamomoides_Govindoo.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -356,6 +394,7 @@
       "uploader",
       "A-gi\u00e2u"
     ],
+    "depicts": "Annona squamosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Annona_squamosa.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -366,6 +405,7 @@
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Aphanopetalum resinosum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aphanopetalum_resinosum_Eastwood.JPG",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -376,6 +416,7 @@
       "artist",
       "Pancrat"
     ],
+    "depicts": "Aphloia theiformis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aphloia-theiformis0073.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -386,6 +427,7 @@
       "uploader",
       "Ayacop"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Apodanthaceae_spp_vMH377.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -427,6 +469,7 @@
       "artist",
       "scott.zona"
     ],
+    "depicts": "Araucaria araucana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Araucaria_araucana_by_Scott_Zona_-_002.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -447,6 +490,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Aristolochia eriantha",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aristolochia_eriantha1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -457,6 +501,7 @@
       "uploader",
       "\u00dcberraschungsbilder"
     ],
+    "depicts": "Xanthosoma roseum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Arum_flower.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -467,6 +512,7 @@
       "artist",
       "Rasbak"
     ],
+    "depicts": "Asparagus officinalis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Asperge_in_bloei_Asparagus_officinalis.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -477,6 +523,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": "Asphodelus albus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Asphodelus_albus0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -487,6 +534,7 @@
       "artist",
       "No machine-readable author provided. B.navez assumed (based on copyright claims)."
     ],
+    "depicts": "Astelia hemichrysa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Astelia_hemichrysa.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -497,6 +545,7 @@
       "uploader",
       "Plugwash~commonswiki"
     ],
+    "depicts": "Aster alpinus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aster-alpinus.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -507,6 +556,7 @@
       "artist",
       "lallen"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Asteropeia_labatii_49433393.jpg",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -517,6 +567,7 @@
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Atherosperma moschatum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Atherosperma_-_Leura3.jpg",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -527,6 +578,7 @@
       "artist",
       "tanetahi"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Austrobaileya_scandens_01.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -537,6 +589,7 @@
       "artist",
       "Frank Vincentz"
     ],
+    "depicts": "Azima tetracantha",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Azima_tetracantha_02_ies.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -547,6 +600,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Iris sibirica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Babiana_sambucina_1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -557,6 +611,7 @@
       "artist",
       "Swati Sidhu"
     ],
+    "depicts": "Balanophora dioica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Balanophora_dioica_Pakke.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -567,6 +622,7 @@
       "artist",
       "Keith Townsend from Townsville, Australia"
     ],
+    "depicts": "Balanops australiana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Balanops_australiana_(13813866135).jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -588,6 +644,7 @@
       "artist",
       "H. Baillon"
     ],
+    "depicts": "Barbeuia madagascariensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Barbeuia_madagascariensis_flower_-_Baillon.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -598,6 +655,7 @@
       "artist",
       "Tau\u02bbolunga"
     ],
+    "depicts": "Barringtonia asiatica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Barringtonia_asiatica_(flower).jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -608,6 +666,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Basella alba",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Basella_rubra_Blanco1.74.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -618,6 +677,7 @@
       "artist",
       "Michael Wolf"
     ],
+    "depicts": "Begonia naumoniensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Begonia_naumoniensis.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -628,6 +688,7 @@
       "artist",
       "ashley basil from uk"
     ],
+    "depicts": "Berberidopsis corallina",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Berberidopsis_corallina_1.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -638,6 +699,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Berzelia lanuginosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Berzelia_lanuginosa_2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -648,6 +710,7 @@
       "artist",
       "W Saunders"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:BiebersteiniaOdoraRoyle.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -668,6 +731,7 @@
       "artist",
       "Frank Kr\u00e4mer"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bixa_bluete.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -678,6 +742,7 @@
       "uploader",
       "Jjron"
     ],
+    "depicts": "Kingia australis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:BlackGins,AridGarden,RBG-CranbourneVIC.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -688,6 +753,7 @@
       "artist",
       "John Sims (1749-1831)"
     ],
+    "depicts": "Blandfordia nobilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Blandfordia_nobilis.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -698,6 +764,7 @@
       "artist",
       "Christian Hummert (Ixitixel)"
     ],
+    "depicts": "Bonnetia roraimae",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bonnetia_roraimae_(Habitus).jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -708,6 +775,7 @@
       "artist",
       "The document is by John Lindley; authorship of the plates is unacknowledged and now unknown."
     ],
+    "depicts": "Borya scirpoidea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Borya_scirpoidea.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -718,6 +786,7 @@
       "artist",
       "Engler, Adolf, 1844-1930"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Botanische_Jahrb%C3%BCcher_f%C3%BCr_Systematik,_Pflanzengeschichte_und_Pflanzengeographie_(1904)_(20216163239).jpg",
     "license": "No restrictions",
     "licenseUrl": "https://www.flickr.com/commons/usage/",
@@ -728,6 +797,7 @@
       "artist",
       "Engler, Adolf, 1844-1930"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Botanische_Jahrb%C3%BCcher_f%C3%BCr_Systematik,_Pflanzengeschichte_und_Pflanzengeographie_(1904)_(20402793025).jpg",
     "license": "No restrictions",
     "licenseUrl": "https://www.flickr.com/commons/usage/",
@@ -738,6 +808,7 @@
       "artist",
       "Engler, Adolf, 1844-1930"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Botanische_Jahrb%C3%BCcher_f%C3%BCr_Systematik,_Pflanzengeschichte_und_Pflanzengeographie_(1907)_(20394368832).jpg",
     "license": "No restrictions",
     "licenseUrl": "https://www.flickr.com/commons/usage/",
@@ -748,6 +819,7 @@
       "artist",
       "Carsten Niehaus (= user:Lumbar)."
     ],
+    "depicts": "Bougainvillea glabra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bougainvillea_glabra.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -778,6 +850,7 @@
       "uploader",
       "MattKingston~commonswiki"
     ],
+    "depicts": "Brugmansia insignis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Brugmansia_lg.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -788,6 +861,7 @@
       "artist",
       "Yolanda Leon"
     ],
+    "depicts": "Brunellia comocladifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Brunellia_comocladifolia_1.JPG",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -798,6 +872,7 @@
       "artist",
       "James Ho"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Burmanniaceae_family.jpg",
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
@@ -808,6 +883,7 @@
       "uploader",
       "Jeffdelonge"
     ],
+    "depicts": "Bursera simaruba",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bursera_simaruba0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -818,6 +894,7 @@
       "artist",
       "No machine-readable author provided. MPF assumed (based on copyright claims)."
     ],
+    "depicts": "Buxus sempervirens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Buxus_sempervirens.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -828,6 +905,7 @@
       "artist",
       "No machine-readable author provided. Denis Barthel assumed (based on copyright claims)."
     ],
+    "depicts": "Byblis liniflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:ByblisLinifloraFlora.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -849,6 +927,7 @@
       "artist",
       "Piotr Kuczynski"
     ],
+    "depicts": "Cabomba aquatica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cabomba_aquatica_1_(Piotr_Kuczynski).jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -859,6 +938,7 @@
       "artist",
       "Butterfly voyages Serge Ouach\u00e9e"
     ],
+    "depicts": "Calceolaria biflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Calceolaria_biflora_Lam..jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -869,6 +949,7 @@
       "artist",
       "Shenandoah  National Park from Virginia"
     ],
+    "depicts": "Caltha palustris",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Caltha_palustris_(13082613485).jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -879,6 +960,7 @@
       "artist",
       "Marcia  Stefani"
     ],
+    "depicts": "Calycera crassifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Calycera_crassifolia_1.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -889,6 +971,7 @@
       "uploader",
       "Phyzome"
     ],
+    "depicts": "Camellia sinensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Camellia_sinensis_-_tea_-_from-DC1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -920,6 +1003,7 @@
       "uploader",
       "Ayacop"
     ],
+    "depicts": "Canella alba",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Canella_alba_Ypey71.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -930,6 +1014,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Canna indica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Canna_indica_Blanco1.4-cropped.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -972,6 +1057,7 @@
       "artist",
       "Phyzome is Tim McCormack"
     ],
+    "depicts": "Carica papaya",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Carica_papaya_-_papaya_-_var-tropical_dwarf_papaya_-_desc-fruit.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -993,6 +1079,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Castilla elastica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Castilla_elastica_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-174.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1003,6 +1090,7 @@
       "uploader",
       "Roo72"
     ],
+    "depicts": "Celastrus orbiculatus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Celastrus_orbiculatus.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1013,6 +1101,7 @@
       "uploader",
       "BotBln"
     ],
+    "depicts": "Cephalotaxus harringtonia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cephalotaxus_harringtonia_BotGardBln1105WithSeeds.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1023,6 +1112,7 @@
       "artist",
       "Daiju Azuma"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cephalotus.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -1033,6 +1123,7 @@
       "artist",
       "James Sowerby"
     ],
+    "depicts": "Ceratopetalum gummiferum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ceratopetalum_gummiferum_(Sowerby).jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1043,6 +1134,7 @@
       "uploader",
       "Fice"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:CeratophyllumSubmersum.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1053,6 +1145,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Cercidiphyllum japonicum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cercidiphyllum_japonicum2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1063,6 +1156,7 @@
       "artist",
       "USDA-NRCS PLANTS Database"
     ],
+    "depicts": "Epilobium latifolium",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Chamerion.latifolium.web.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1073,6 +1167,7 @@
       "uploader",
       "Quadell"
     ],
+    "depicts": "Myosotis discolor",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Changing_Forget-me-not_600.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1105,6 +1200,7 @@
       "artist",
       "http://angio.bergianska.se/Bilder/Ranunculales/Circaeasteraceae/Circaeaster/Circaeaster%20agrestis%207%20Yunnan,%20China%20Photo:%20Magnus%20Lid%C3%A9n.jpg"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Circaeaster_agrestis_7_Yunnan,_China_Photo_Magnus_Lid%C3%A9n.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1115,6 +1211,7 @@
       "artist",
       "Tomas Castelazo"
     ],
+    "depicts": "Fouquieria columnaris",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cirio_columnaris,_boojum_tree.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -1125,6 +1222,7 @@
       "artist",
       "Krzysztof Ziarnek, Kenraiz"
     ],
+    "depicts": "Cistus creticus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cistus_parviflorus_kz8.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1135,6 +1233,7 @@
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Citronella moorei",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Citronella_moorei_juvenile2.JPG",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1145,6 +1244,7 @@
       "uploader",
       "Chrizz~commonswiki"
     ],
+    "depicts": "Myriophyllum spicatum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cleaned-Illustration_Myriophyllum_spicatum.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1155,6 +1255,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Clethra arborea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Clethra_arborea1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1165,6 +1266,7 @@
       "uploader",
       "Eugene van der Pijll"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cluytia_ericoides_-_Edwards.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1175,6 +1277,7 @@
       "uploader",
       "Ies"
     ],
+    "depicts": "Cochlospermum vitifolium",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cochlospermum-vitifolium.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1185,6 +1288,7 @@
       "artist",
       "Stemonitis"
     ],
+    "depicts": "Colchicum autumnale",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Colchicum_autumnale.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1195,6 +1299,7 @@
       "uploader",
       "Darina"
     ],
+    "depicts": "Erythroxylum coca",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Colcoca03.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1237,6 +1342,7 @@
       "artist",
       "JMK"
     ],
+    "depicts": "Corbichonia decumbens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Corbichonia_decumbens,_habitus,_Zoutpan,_a.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1247,6 +1353,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Coriaria ruscifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Coriaria_ruscifolia.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1257,6 +1364,7 @@
       "artist",
       "Cillas"
     ],
+    "depicts": "Cornus sanguinea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cornus_sanguinea_HRM.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1278,6 +1386,7 @@
       "artist",
       "A.Barra"
     ],
+    "depicts": "Corokia \u00d7 virgata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Corokia_virgata.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -1288,6 +1397,7 @@
       "artist",
       "Wilfried Bennert"
     ],
+    "depicts": "Corsia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:CorsiaSpec1-(jha2).jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1298,6 +1408,7 @@
       "artist",
       "John Frederick Miller"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Corynocarpuslaevigatus.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1318,6 +1429,7 @@
       "artist",
       "author is sannse."
     ],
+    "depicts": "Crassula ovata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Crassula_ovata_700.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1328,6 +1440,7 @@
       "uploader",
       "Jeffdelonge"
     ],
+    "depicts": "Crinodendron hookerianum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Crinodendron_hookerianum1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1338,6 +1451,7 @@
       "artist",
       "No machine-readable author provided. Keisotyo assumed (based on copyright claims)."
     ],
+    "depicts": "Croomia heterosepala",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Croomia_heterosepala_001.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1348,6 +1462,7 @@
       "artist",
       "Sir Joseph Dalton Hooker (1818-1911), William Botting Hemsley (1843-1924)"
     ],
+    "depicts": "Crossosoma californicum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Crossosoma_californicum.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1369,6 +1484,7 @@
       "artist",
       "en:User:Abu Shawka"
     ],
+    "depicts": "Curtisia dentata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Curtisia_dentata_-_2.JPG",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1379,6 +1495,7 @@
       "uploader",
       "Kelson"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Curtisstylidium.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1389,6 +1506,7 @@
       "artist",
       "Sylvain Le Bris"
     ],
+    "depicts": "Cymodocea nodosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cymodocea_nodosa.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1399,6 +1517,7 @@
       "artist",
       "Smailtn"
     ],
+    "depicts": "Cynomorium coccineum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cynomorium_coccineum_Rad%C3%A8s_beach.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1409,6 +1528,7 @@
       "uploader",
       "Dlanglois"
     ],
+    "depicts": "Cyrilla racemiflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:CyrillaRacemosa.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1419,6 +1539,7 @@
       "artist",
       "Regalado et al, 2017"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cystodium_sorbifolioides_additional_fragments_fig1_B.jpg",
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
@@ -1429,6 +1550,7 @@
       "artist",
       "Henry Brisse (upload by user:Abalg)"
     ],
+    "depicts": "Cytinus hypocistis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Cytinus_hypocistis06052003_1.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1439,6 +1561,7 @@
       "artist",
       "M. Smith (drawing)"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dactylocladus_stenostachys,_Hooker%27s_Icones_Plantarum_vol_24_pl_2351.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1449,6 +1572,7 @@
       "artist",
       "Bernd Haynold"
     ],
+    "depicts": "Daphne striata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Daphne_striata_100604.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1459,6 +1583,7 @@
       "artist",
       "A. Barra"
     ],
+    "depicts": "Daphniphyllum macropodum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Daphniphyllum_macropodum.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -1469,6 +1594,7 @@
       "uploader",
       "Lockal"
     ],
+    "depicts": "Datisca cannabina",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Datisca_cannabina.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1479,6 +1605,7 @@
       "uploader",
       "Rasbak"
     ],
+    "depicts": "Davidia involucrata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Davidia1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1489,6 +1616,7 @@
       "artist",
       "\u0415.\u0421. \u0422\u0430\u0445\u0442\u0430\u0434\u0436\u044f\u043d, \u041f.\u0410. \u0416\u0438\u043b\u0438\u0447\u043a\u0438\u043d"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Degeneria_vitiensis.png",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1499,6 +1627,7 @@
       "artist",
       "William Jackson Hooker (1785-1865)"
     ],
+    "depicts": "Desfontainia spinosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Desfontainia_spinosa.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1509,6 +1638,7 @@
       "artist",
       "Miya.m"
     ],
+    "depicts": "Diapensia lapponica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diapensia_lapponica01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1519,6 +1649,7 @@
       "artist",
       "Chhe (talk)"
     ],
+    "depicts": "Didymochlaena truncatula",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:DidymochlaenaTruncatula.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1529,6 +1660,7 @@
       "artist",
       "tato grasso"
     ],
+    "depicts": "Dionaea muscipula",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dionaea_muscipula03.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -1539,6 +1671,7 @@
       "uploader",
       "BotBln"
     ],
+    "depicts": "Dioscorea balcanica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dioscorea_balcanica_BotGardBln310505.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1560,6 +1693,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Diplopterygium pinnatum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Diplopterygium_pinnatum1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1570,16 +1704,29 @@
       "uploader",
       "Keisotyo"
     ],
+    "depicts": "Dipteris conjugata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Dipteris_conjugata_ybrgub01.jpg",
     "license": "GFDL",
     "licenseUrl": "http://www.gnu.org/copyleft/fdl.html",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Dipteris_conjugata_ybrgub01.jpg/330px-Dipteris_conjugata_ybrgub01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Doryanthes-excelsa%20Fitch.jpg": {
+    "author": [
+      "artist",
+      "Walter Hood Fitch"
+    ],
+    "depicts": null,
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Doryanthes-excelsa_Fitch.jpg",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "thumbUrl": "https://upload.wikimedia.org/wikipedia/commons/2/28/Doryanthes-excelsa_Fitch.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Drimys%20winteri.jpg": {
     "author": [
       "artist",
       "Eric Hunt"
     ],
+    "depicts": "Drimys winteri",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Drimys_winteri.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -1590,6 +1737,7 @@
       "artist",
       "Taken by Carsten Niehaus (user:Lumbar)."
     ],
+    "depicts": "Drosophyllum lusitanicum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Drosophyllum_lusitanicum_b.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1600,6 +1748,7 @@
       "artist",
       "Frank Vincentz"
     ],
+    "depicts": "Euphorbia flanaganii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:E_flanaganii_ies.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1610,6 +1759,7 @@
       "artist",
       "User RKraasch on de.wikipedia"
     ],
+    "depicts": "Taxus baccata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Eibe.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1620,6 +1770,7 @@
       "artist",
       "Katia from Porto Alegre, Brazil"
     ],
+    "depicts": "Eichhornia crassipes",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Eichhornia_crassipes.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -1630,6 +1781,7 @@
       "uploader",
       "Eugene van der Pijll"
     ],
+    "depicts": "Elatine hexandra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Elatine_tripetala.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1640,6 +1792,7 @@
       "artist",
       "Andy king50"
     ],
+    "depicts": "Elegia capensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Elegia_capensis_CHCH_2.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1650,6 +1803,7 @@
       "artist",
       "Ferdinand Jacob H . Mueller"
     ],
+    "depicts": "Emblingia calceoliflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Emblingia_calceoliflora.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1660,6 +1814,7 @@
       "uploader",
       "Phyzome"
     ],
+    "depicts": "Encephalartos lebomboensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Encephalartos_lebomboensis_-_Lebombo_cycad_-_desc-fruiting_stalk.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1670,6 +1825,7 @@
       "uploader",
       "Zeimusu"
     ],
+    "depicts": "Ephedra distachya",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ephedra_distachya.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1680,6 +1836,7 @@
       "artist",
       "Marshman at English Wikipedia / Eric Guinther"
     ],
+    "depicts": "Casuarina equisetifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Equisetoid_twigs.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1690,6 +1847,7 @@
       "artist",
       "H. Zell"
     ],
+    "depicts": "Equisetum arvense",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Equisetum_arvense_001.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1700,6 +1858,7 @@
       "artist",
       "Taken by Carsten Niehaus (user:Lumbar)."
     ],
+    "depicts": "Erica arborea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Erica_arborea.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1721,6 +1880,7 @@
       "uploader",
       "Cuello de pepino"
     ],
+    "depicts": "Eriocaulon decangulare",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Eriocaulon_decangulare_(1832).jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1742,6 +1902,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Escallonia rubra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Escallonia_rubra.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1762,6 +1923,7 @@
       "artist",
       "Sten Porse"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Eucommia-ulmoides.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1772,6 +1934,7 @@
       "artist",
       "William Jackson Hooker"
     ],
+    "depicts": "Eupomatia laurina",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Eupomatia_laurina.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1782,6 +1945,7 @@
       "uploader",
       "Ayacop"
     ],
+    "depicts": "Euptelea polyandra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Euptelea_polyandra_SZ72.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1792,6 +1956,7 @@
       "artist",
       "David Monniaux"
     ],
+    "depicts": "Pteridium aquilinum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fern_dsc06699.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1802,6 +1967,7 @@
       "artist",
       "Pierre-Joseph Redout\u00e9 (1759-1840)"
     ],
+    "depicts": "Flagellaria indica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Flagellaria_indica.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1812,6 +1978,7 @@
       "artist",
       "Biodiversity Heritage Library"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Flickr_-_BioDivLibrary_-_n73_w1150.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -1822,6 +1989,7 @@
       "uploader",
       "KayEss"
     ],
+    "depicts": "Wrightia antidysenterica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Flower-01-KayEss-1.jpeg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1832,6 +2000,7 @@
       "artist",
       "Prof Christo Botha, Univ of Pretoria"
     ],
+    "depicts": "Dichapetalum cymosum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Flowering_poison_leaf.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1842,6 +2011,7 @@
       "artist",
       "MichaelMaggs"
     ],
+    "depicts": "Fothergilla major",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Fothergilla_major_(Witch_alder).JPG",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -1852,6 +2022,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Francoa sonchifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Francoa_sonchifolia_form.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1862,6 +2033,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Frankenia salina",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Frankenia_salina.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1872,6 +2044,7 @@
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Galbulimima baccata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Galbulimima_baccata_RBG_Sydney.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -1882,6 +2055,7 @@
       "artist",
       "The original uploader was MPF at English Wikipedia."
     ],
+    "depicts": "Garrya elliptica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Garrya_elliptica.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1892,6 +2066,7 @@
       "artist",
       "unnamed USGS employee"
     ],
+    "depicts": "Sarcobatus baileyi",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Geasewood_Sarcobatus_baileyi_p024.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1902,6 +2077,7 @@
       "artist",
       "Jill B. Lignaut, South Africa"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Geissoloma_Lignaut_1.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1912,6 +2088,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Gelsemium sempervirens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gelsemium_sempervirens3.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1932,6 +2109,7 @@
       "uploader",
       "GeeJo"
     ],
+    "depicts": "Gentiana acaulis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:GentianaAcaulisRannoch.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1942,6 +2120,7 @@
       "artist",
       "Christer Johansson"
     ],
+    "depicts": "Geranium robertianum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Geranium_robertianum1003.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -1952,6 +2131,7 @@
       "artist",
       "SAplants"
     ],
+    "depicts": "Gerrardina foliosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gerrardina_foliosa_5Dsr_4409.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -1962,6 +2142,7 @@
       "uploader",
       "Crux"
     ],
+    "depicts": "Ginkgo biloba",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ginkgo-Gegenlicht-web.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1972,6 +2153,7 @@
       "artist",
       "William Roxburgh (1751-1815)"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gisekia_pharnacioides.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1982,6 +2164,7 @@
       "uploader",
       "Vzb83~commonswiki"
     ],
+    "depicts": "Gnetum gnemon",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gnetum_gnemon.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -1992,6 +2175,7 @@
       "artist",
       "Tatters:)"
     ],
+    "depicts": "Gomphandra australiana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gomphandra_australiana.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -2023,6 +2207,7 @@
       "artist",
       "Winfried Bruenken (Amrum)"
     ],
+    "depicts": "Grielum humifusum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Grielum_humifusum1.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -2033,6 +2218,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Griselinia racemosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Griselinia_racemosa.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2043,6 +2229,7 @@
       "artist",
       "Tony Rebelo"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Grubbia_tomentosa_55891017.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -2053,6 +2240,7 @@
       "uploader",
       "Harmil~commonswiki"
     ],
+    "depicts": "Cashew",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gui1_cashewfruit2.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2063,6 +2251,7 @@
       "uploader",
       "Julgon~commonswiki"
     ],
+    "depicts": "Gunnera manicata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gunnera.manicata.arp.750pix.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2073,6 +2262,7 @@
       "artist",
       "Pierre Jean Fran\u00e7ois Turpin"
     ],
+    "depicts": "Gyrostemon ramulosus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Gyrostemon_ramulosus.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2083,6 +2273,7 @@
       "artist",
       "Andreas Eils"
     ],
+    "depicts": "Heliamphora chimantensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:H_chimantensis2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2093,6 +2284,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Halesia carolina",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Halesia_carolina0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2103,6 +2295,7 @@
       "artist",
       "Scott Zona"
     ],
+    "depicts": "Hanguana malayana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hanguana_malayana.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -2123,6 +2316,7 @@
       "uploader",
       "Cesarious"
     ],
+    "depicts": "Heliconia rostrata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Heliconia_rostrata1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2133,6 +2327,7 @@
       "artist",
       "Sphl"
     ],
+    "depicts": "Helwingia japonica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Helwingia_japonica_m.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2143,6 +2338,7 @@
       "artist",
       "Joseph Dalton Hooker"
     ],
+    "depicts": "Hernandia moerenhoutiana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hernandia_moerenhoutiana.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2153,6 +2349,7 @@
       "artist",
       "NathanHurst at English Wikipedia"
     ],
+    "depicts": "Hibbertia stellaris",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hibbertia_stellaris.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2163,6 +2360,7 @@
       "artist",
       "Michael Wolf"
     ],
+    "depicts": "Hilleria latifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hilleria_latifolia_01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2173,6 +2371,7 @@
       "artist",
       "Cathcart, John Fergusson (1802 - 1851)"
     ],
+    "depicts": "Hodgsonia heteroclita",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hodgsonia_heteroclita_male.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2183,6 +2382,7 @@
       "artist",
       "Koyaanis Qatsi at English Wikipedia"
     ],
+    "depicts": "Lonicera japonica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Honeysuckle_w_y.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2203,6 +2403,7 @@
       "uploader",
       "Jeffdelonge"
     ],
+    "depicts": "Houttuynia cordata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Houttuynia_cordata.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2213,6 +2414,7 @@
       "uploader",
       "Raulbot"
     ],
+    "depicts": "Hydrangea macrophylla",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hydrangea_macrophylla_-_Bigleaf_hydrangea2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2223,6 +2425,7 @@
       "artist",
       "Christian Fischer"
     ],
+    "depicts": "Hydrocharis morsus-ranae",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:HydrocharisMorsus-ranae2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2233,6 +2436,7 @@
       "artist",
       "Karl Friedrich Philipp von Martius (1794 - 1868), August Wilhelm Eichler (1839 - 1887)"
     ],
+    "depicts": "Hydrolea spinosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hydrolea_spinosa.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2243,6 +2447,7 @@
       "artist",
       "Jules Paul Benjamin Delessert (1773-1858)"
     ],
+    "depicts": "Hydrostachys imbricata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hydrostachys_imbricata.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2253,6 +2458,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Hypericum tetrapterum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hypericum_quadrangulum0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2263,6 +2469,7 @@
       "uploader",
       "BotBln"
     ],
+    "depicts": "Hypoxis hemerocallidea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Hypoxis_hemerocallidea_BotGardBln1105InflorescenceHabitus.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2273,6 +2480,7 @@
       "artist",
       "Marco Schmidt"
     ],
+    "depicts": "Icacina senegalensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Icacina_senegalensis_MS_4743.JPG",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -2294,6 +2502,7 @@
       "uploader",
       "ArtMechanic"
     ],
+    "depicts": "Butomus umbellatus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Butomus_umbellatus1.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2304,6 +2513,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": "Corrigiola litoralis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Corrigiola_litoralis0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2314,6 +2524,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": "Ilex aquifolium",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Ilex_aquifolium0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2324,6 +2535,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Isoetes_lacustris0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2334,6 +2546,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Paeonia_mascula0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2355,6 +2568,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": "Ruppia maritima",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Ruppia_maritima0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2365,6 +2579,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": "Tofieldia calyculata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Tofieldia_calyculata0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2375,6 +2590,7 @@
       "uploader",
       "Topjabot"
     ],
+    "depicts": "Zostera marina",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Illustration_Zostera_noltii0.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2385,6 +2601,7 @@
       "artist",
       "TeunSpaans at Dutch Wikipedia"
     ],
+    "depicts": "Impatiens glandulifera",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:ImpatiensGlandulifera-bloem2-kl.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2395,6 +2612,7 @@
       "artist",
       "User:SB_Johnny"
     ],
+    "depicts": "Itea virginica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Itea_virginica_flowers_001.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2405,6 +2623,7 @@
       "artist",
       "Ang Wickham from Hamilton, New Zealand"
     ],
+    "depicts": "Ixerba brexioides",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ixerba_brexioides.jpg",
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
@@ -2415,6 +2634,7 @@
       "artist",
       "Paxton"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ixiolirion_montanum1PAXTON.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2425,6 +2645,7 @@
       "artist",
       "Patrice78500"
     ],
+    "depicts": "Ixonanthes isocandra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ixonanthes_isocandra.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2446,6 +2667,7 @@
       "artist",
       "Qwert1234"
     ],
+    "depicts": "Japanolirion",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Japonolirion_osense_1.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2456,6 +2678,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Jateorhiza palmata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Jateorhiza_palmata_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-080.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2466,6 +2689,7 @@
       "artist",
       "Scott Zona from USA"
     ],
+    "depicts": "Joinvillea ascendens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Joinvillea_ascendens_2_(scott.zona).jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -2476,6 +2700,7 @@
       "uploader",
       "Rasbak"
     ],
+    "depicts": "Juglans regia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Juglans_regia_Broadview.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2486,6 +2711,7 @@
       "artist",
       "The original uploader was Meggar at English Wikipedia."
     ],
+    "depicts": "Juncus effusus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Juncus_effuses.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2506,6 +2732,7 @@
       "artist",
       "Jard\u00ed Bot\u00e0nic de Barcelona"
     ],
+    "depicts": "Kirkia wilmsii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Kirkia_wilmsii(3).JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2516,6 +2743,7 @@
       "uploader",
       "Mnolf"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Kiwi-Flower,_female.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2526,6 +2754,7 @@
       "artist",
       "Florian Siebeck"
     ],
+    "depicts": "Koeberlinia spinosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Koeberlinia_spinosa_WikiPlant.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2546,6 +2775,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Krameria lappacea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Krameria_lappacea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-084.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2566,6 +2796,7 @@
       "artist",
       "Carl Friedrich Philipp von Martius"
     ],
+    "depicts": "Lacistema pubescens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lacistema_pubescens.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2576,6 +2807,7 @@
       "artist",
       "Paul venter"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lanaria_lanata06.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -2586,6 +2818,7 @@
       "uploader",
       "Fir0002"
     ],
+    "depicts": "Lantana camara",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lantana.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2596,6 +2829,7 @@
       "artist",
       "Shu Suehiro"
     ],
+    "depicts": "Lapageria rosea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lapageria_rosea1b.SHSU.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -2606,6 +2840,7 @@
       "artist",
       "Silviculture at Vietnamese Wikipedia"
     ],
+    "depicts": "Hopea odorata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Leaves_of_Hopea_odorata.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2616,6 +2851,7 @@
       "artist",
       "Adolf Engler"
     ],
+    "depicts": "Lepidobotrys staudtii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lepidobotryaceae_Lepidobotrys_staudtii.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2626,6 +2862,7 @@
       "artist",
       "Scott"
     ],
+    "depicts": "Leptolaena multiflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Leptolaena_multiflora.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -2636,6 +2873,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Ligaria cuneifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ligaria_cuneifolia.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2646,6 +2884,7 @@
       "artist",
       "Tinelot Wittermans"
     ],
+    "depicts": "Lilium martagon",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lilium_Martagon,_Lai_Blau.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2656,6 +2895,7 @@
       "artist",
       "Malcolm Manners"
     ],
+    "depicts": "Limeum africanum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Limeum_africanum.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -2666,6 +2906,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Limnanthes douglasii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Limnanthes_douglasii0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2676,6 +2917,7 @@
       "artist",
       "Rudolph89"
     ],
+    "depicts": "Lindsaea linearis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lindsaea_linearis_11.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2686,6 +2928,7 @@
       "uploader",
       "Kelson"
     ],
+    "depicts": "Linum pubescens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Linum_pubescens.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2696,6 +2939,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Liquidambar styraciflua",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Liquidambar_styraciflua5.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2706,6 +2950,7 @@
       "uploader",
       "Jean-Pol GRANDMONT"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Liriodendron_tulipifera_JPG01.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -2716,6 +2961,7 @@
       "artist",
       "\u00c9duard Andr\u00e9, Jean Jules Linden"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Loasa_vulcanica_-_Andre.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2736,6 +2982,7 @@
       "artist",
       "Barry Fitzgerald, USDA"
     ],
+    "depicts": "Litchi chinensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lychee.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2746,6 +2993,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Lycopodium annotinum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lycopodium_annotinum1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2756,6 +3004,7 @@
       "artist",
       "Pieria(Uploader and Photographer)"
     ],
+    "depicts": "Lythrum anceps",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lythrum_anceps(Flower).jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2766,6 +3015,7 @@
       "uploader",
       "Metilsteiner"
     ],
+    "depicts": "Kewa acida",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:MELLISS(1875)_p315_-_PLATE_27_-_Pharnaceum_acidum.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2776,6 +3026,7 @@
       "artist",
       "MargaretRDonald"
     ],
+    "depicts": "Macarthuria australis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Macarthuria_australis_31280541088_e33f4120ac_o.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -2786,6 +3037,7 @@
       "artist",
       "Em\u0151ke D\u00e9nes"
     ],
+    "depicts": "Irvingia malayana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Malpighiales_-_Irvingia_malayana_-_2.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -2818,6 +3070,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Maranta leuconeura",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Maranta_leuconeura3.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2828,6 +3081,7 @@
       "artist",
       "Marco Schmidt [1]"
     ],
+    "depicts": "Maranthes polyandra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Maranthes_polyandra_MS3969.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -2838,6 +3092,7 @@
       "artist",
       "Karl Moritz Schumann / Ernst Friedrich Gilg"
     ],
+    "depicts": "Marcgravia umbellata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Marcgravia_umbellata_GS388.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2858,6 +3113,7 @@
       "artist",
       "M.Seward"
     ],
+    "depicts": "Matonia pectinata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Matonia_pectinata_-_drawing_by_M._Seward.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2868,6 +3124,7 @@
       "artist",
       "Jean Baptiste Christophe Fus\u00e9e Aublet (1720-1778)"
     ],
+    "depicts": "Mayaca fluviatilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mayaca_fluviatilis_clean.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2878,6 +3135,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Mazus miquelii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mazus_miquelii2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2888,6 +3146,7 @@
       "uploader",
       "TadejM"
     ],
+    "depicts": "Alopecurus pratensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Meadow_Foxtail_head.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2898,6 +3157,7 @@
       "uploader",
       "MPF"
     ],
+    "depicts": "Cupressus sempervirens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Med_Cypress.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2908,6 +3168,7 @@
       "artist",
       "No machine-readable author provided. MPF assumed (based on copyright claims)."
     ],
+    "depicts": "Meliosma veitchiorum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Meliosma_veitchorum2.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -2929,6 +3190,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Menyanthes trifoliata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Menyanthes_trifoliata_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-225.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2939,6 +3201,7 @@
       "artist",
       "Barry Hammel"
     ],
+    "depicts": "Metteniusa tessmanniana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Metteniusa_tessmanniana_01.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -2949,6 +3212,7 @@
       "artist",
       "Walter Siegmund (talk)"
     ],
+    "depicts": "Mimulus guttatus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mimulus_guttatus_5631.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2959,6 +3223,7 @@
       "artist",
       "Franz Xaver"
     ],
+    "depicts": "Misodendrum punctulatum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Misodendrum_punctulatum.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2969,6 +3234,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Mitraria coccinea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mitraria_coccinea_5.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -2979,6 +3245,7 @@
       "artist",
       "Harald S\u00fcpfle"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Moringab%C3%A4ume_Sprokieswoud_Etosha.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -2989,6 +3256,7 @@
       "artist",
       "Jean Baptiste Christian Fus\u00e9e-Aublet (1720-1778)"
     ],
+    "depicts": "Mourera fluviatilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mourera_fluviatilis.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2999,6 +3267,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Musa \u00d7 paradisiaca",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Musa_paradisiaca_Blanco1.88.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3019,6 +3288,7 @@
       "artist",
       "Riocreux"
     ],
+    "depicts": "Myodocarpus pinnatus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Myodocarpus_pinnatus.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3029,6 +3299,7 @@
       "uploader",
       "Etxrge~commonswiki"
     ],
+    "depicts": "Myrica faya",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Myrica_faya.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3039,6 +3310,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Myristica fragrans",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Myristica_fragrans_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-097.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3049,6 +3321,7 @@
       "artist",
       "Nko"
     ],
+    "depicts": "Myrothamnus flabellifolius",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Myrothamnus_flabellifolius_Myrothamanaceae.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -3059,6 +3332,7 @@
       "uploader",
       "Manuel Anast\u00e1cio"
     ],
+    "depicts": "common myrtle",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Myrtus_communis.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3069,6 +3343,7 @@
       "uploader",
       "Marshman~commonswiki"
     ],
+    "depicts": "Xyris complanata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:N_Xyrc_D9741.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3079,6 +3354,7 @@
       "artist",
       "Johann Georg Sturm (Painter: Jacob Sturm)"
     ],
+    "depicts": "Narthecium ossifragum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Narthecium_ossifragum_Sturm41.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3089,6 +3365,7 @@
       "uploader",
       "Armon"
     ],
+    "depicts": "Tropaeolum majus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nasturtium-Tropaeolum.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3099,6 +3376,7 @@
       "artist",
       "Peripitus"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nelumno_nucifera_open_flower_-_botanic_garden_adelaide2.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -3109,6 +3387,7 @@
       "artist",
       "en:User:NepGrower"
     ],
+    "depicts": "Nepenthes sibuyanensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nepenthes_sibuyanensis.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3119,6 +3398,7 @@
       "artist",
       "No machine-readable author provided. Abrahami assumed (based on copyright claims)."
     ],
+    "depicts": "Nothofagus cunninghamii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nothofagus_cunninghamii.JPG",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -3129,6 +3409,7 @@
       "artist",
       "Labillardi\u00e8re, Jacques Julien Houton de"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nov%C3%A6_Hollandi%C3%A6_plantarum_specimen_(Tab._121)_(8224180122).jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3150,6 +3431,7 @@
       "artist",
       "Marie-Lan Nguyen"
     ],
+    "depicts": "Nymphaea alba",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Nymphaea_alba_JdP_2013-06-08_n01.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -3160,6 +3442,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Ochna serrulata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ochna_serrula0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3170,6 +3453,7 @@
       "artist",
       "Eric Hunt"
     ],
+    "depicts": "Odontostomum hartwegii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Odontostomum_hartwegii_2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3180,6 +3464,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Olax imbricata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Olax_imbricata_Blanco2.311.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3190,6 +3475,7 @@
       "artist",
       "Rodrigo Nuno Bragan\u00e7a da Cunha"
     ],
+    "depicts": "Olea europaea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Olive-tree-fruit-august-0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3200,6 +3486,7 @@
       "artist",
       "Royal Botanic Gardens, Kew"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Oncotheca_humboldtiana_Kew_K000669140.jpg",
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
@@ -3210,6 +3497,7 @@
       "artist",
       "Johan N"
     ],
+    "depicts": "Ophioglossum vulgatum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ophioglossum_vulgatum_001.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3220,6 +3508,7 @@
       "artist",
       "Joseph Banks"
     ],
+    "depicts": "Opilia amentacea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Opilia_amentacea.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3230,6 +3519,7 @@
       "artist",
       "M. S. del. ( = Matilda Smith, 1854-1926),  J. N. Fitch lith. ( = John Nugent Fitch, 1840\u20131927)  \n\nDescription by J. G. Baker"
     ],
+    "depicts": "Orchidantha maxillarioides",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Orchidantha_maxillarioides.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3251,6 +3541,7 @@
       "artist",
       "Christian Fischer"
     ],
+    "depicts": "Osmunda regalis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:OsmundaRegalis.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3261,6 +3552,7 @@
       "artist",
       "gailhampshire from Cradley, Malvern, U.K"
     ],
+    "depicts": "Oxalis acetosella",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Oxalis_acetosella_-_Wood-sorrel_(29025109957).jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -3271,6 +3563,7 @@
       "artist",
       "Isidre blanc"
     ],
+    "depicts": "Portulaca oleracea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:PORTULACA_OLERACEA_-_EMPALOUS_-_IB-518_(Verdolaga).JPG",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -3281,6 +3574,7 @@
       "artist",
       "Mauroguanandi"
     ],
+    "depicts": "Calophyllum brasiliense",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Paisagismoriviera.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3301,6 +3595,7 @@
       "artist",
       "Adolf Engler"
     ],
+    "depicts": "Panda oleosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pandaceae_Panda_oleosa.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3311,6 +3606,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pandanus_sp.2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3321,6 +3617,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Pangium edule",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pangium_edule_Blanco2.391.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3331,6 +3628,7 @@
       "uploader",
       "MPF"
     ],
+    "depicts": "Parthenocissus vitacea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Parthenocissus_vitacea.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3341,6 +3639,7 @@
       "artist",
       "Mihai"
     ],
+    "depicts": "blue passionflower",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Passion_flower.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3372,6 +3671,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Peganum harmala",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Peganum_harmala1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3382,6 +3682,7 @@
       "artist",
       "Fabsiar"
     ],
+    "depicts": "Pelliciera rhizophorae",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pelliciera_rhizophorae.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -3392,6 +3693,7 @@
       "artist",
       "Kahuroa"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pennantiacorymbosa2.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3402,6 +3704,7 @@
       "artist",
       "Wildeman, E. de, died 24 July 1947 see Wildeman, E. de (Emile) 1866-1947"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pentadiplandra_etching_1909.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3412,6 +3715,7 @@
       "artist",
       "William Jackson Hooker (1785-1865)"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pentaphragma_begoniaefolium.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3422,6 +3726,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Penthorum chinense",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Penthorum_chinense2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3432,6 +3737,7 @@
       "artist",
       "No machine-readable author provided. Conrado assumed (based on copyright claims)."
     ],
+    "depicts": "Caryocar brasiliense",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pequi01.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3442,6 +3748,7 @@
       "artist",
       "William Jackson  Hooker"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Peridiscus_lucidus_(Hooker).png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3452,6 +3759,7 @@
       "artist",
       "Martin Bennett"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Petermannia_cirrosa.png",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3462,6 +3770,7 @@
       "uploader",
       "Pixeltoo"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:PhalaenopsisOphrysPaphiopedilumMaxillaria.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3472,6 +3781,7 @@
       "artist",
       "John Sims"
     ],
+    "depicts": "Philydrum lanuginosum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Philydrum_lanuginosum.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3482,6 +3792,7 @@
       "artist",
       "No machine-readable author provided. Hans B.~commonswiki assumed (based on copyright claims)."
     ],
+    "depicts": "Phyllanthus acidus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Phyllanthus_acidus.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3492,6 +3803,7 @@
       "artist",
       "Aim\u00e9 Bonpland (1773-1858), Alexander von Humboldt (1769-1859), Karl Sigismund Kunth (1788-1850)"
     ],
+    "depicts": "Phyllonoma ruscifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Phyllonoma_ruscifolia_clean.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3502,6 +3814,7 @@
       "artist",
       "MANOJTV at English Wikipedia"
     ],
+    "depicts": "Ananas comosus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pineapple1.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3523,6 +3836,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "black pepper",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Piper_nigrum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-107.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3533,6 +3847,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Pittosporum crassifolium",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pittosporum_crassifolium0.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3543,6 +3858,7 @@
       "artist",
       "Bernd Haynold"
     ],
+    "depicts": "Plantago lanceolata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Plantago_lanceolata_040807.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -3564,6 +3880,7 @@
       "artist",
       "Taken by Fanghong"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Platanus_acerifolia_leaves_(2).jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -3574,6 +3891,7 @@
       "artist",
       "unknown, maybe Hans Solereder"
     ],
+    "depicts": "Plocosperma buxifolium",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Plocosperma_buxifolium.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3584,6 +3902,7 @@
       "uploader",
       "Ayacop"
     ],
+    "depicts": "Plumbago europaea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Plumbago_europaea.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3594,6 +3913,7 @@
       "artist",
       "No machine-readable author provided. Keisotyo assumed (based on copyright claims)."
     ],
+    "depicts": "Podocarpus macrophyllus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Podocarpus_macrophyllus_inumaki.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3604,6 +3924,7 @@
       "artist",
       "\u03a364"
     ],
+    "depicts": "Polemonium caeruleum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Polemonium_caeruleum_var._nipponicum_01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3614,6 +3935,7 @@
       "artist",
       "Bogdan Giu\u015fc\u0103"
     ],
+    "depicts": "Polygonum persicaria",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Polygonum_persicaria_bgiu.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3624,6 +3946,7 @@
       "artist",
       "Andr\u00e9 Karwath aka Aka"
     ],
+    "depicts": "Polypodium vulgare",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Polypodium_vulgare_(aka).jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -3634,6 +3957,7 @@
       "artist",
       "scott.zona"
     ],
+    "depicts": "Polypremum procumbens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Polypremum_procumbens,_white.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -3644,6 +3968,7 @@
       "artist",
       "Vyacheslav Argenberg"
     ],
+    "depicts": "Papaver rhoeas",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Poppy_flower,_Torcello,_Italy.jpg",
     "license": "CC BY 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
@@ -3654,6 +3979,7 @@
       "artist",
       "Fr\u00e9d\u00e9ric Ducarme"
     ],
+    "depicts": "Posidonia oceanica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Posidonia_oceanica_(L).jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -3664,6 +3990,7 @@
       "uploader",
       "Fice"
     ],
+    "depicts": "Potamogeton crispus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:PotamogetonCrispus.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3674,6 +4001,7 @@
       "uploader",
       "Phyzome"
     ],
+    "depicts": "Pouteria sapota",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pouteria_sapota_-_marmalade_tree_-_desc-leaf_cluster_-_from-DC1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3684,6 +4012,7 @@
       "artist",
       "Serban Proches"
     ],
+    "depicts": "Prionium serratum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Prionium_serratum.jpg",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -3694,6 +4023,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Proboscidea louisianica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Proboscidea_louisianica2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3704,6 +4034,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Protea cynaroides",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Protea_cynaroides_3.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3714,6 +4045,7 @@
       "uploader",
       "Vzb83~commonswiki"
     ],
+    "depicts": "Psilotum nudum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Psilotum.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3735,6 +4067,7 @@
       "uploader",
       "Farbenfreude"
     ],
+    "depicts": "Cyperus polystachyos",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Pycreus.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3745,6 +4078,7 @@
       "uploader",
       "Chrischan~commonswiki"
     ],
+    "depicts": "Quercus rotundifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Quercus_ilex_rotundifolia.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3755,6 +4089,7 @@
       "artist",
       "Diego Alarc\u00f3n"
     ],
+    "depicts": "Gomortega keule",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Queule_Tom%C3%A9_01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3765,6 +4100,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Quillaja saponaria",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Quillaja_saponaria_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-119.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3775,6 +4111,7 @@
       "artist",
       "pabloendemico"
     ],
+    "depicts": "Quinchamalium chilense",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Quinchamalium_chilense_Molina.(pabloendemico).jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -3785,6 +4122,7 @@
       "artist",
       "Poyt448 Peter Woodard"
     ],
+    "depicts": "Quintinia sieberi",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Quintinia_sieberi_-_Grose_Valley.JPG",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -3805,6 +4143,7 @@
       "artist",
       "Ralph Mangelsdorff"
     ],
+    "depicts": "Grevea madagascariensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:RMM_475_Montiniaceae-Kaliphoraceae_Grevea_madagascariensis_Baill._Maintirano,_Phot._PG_04_03_08_IMG_3060.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3815,6 +4154,7 @@
       "uploader",
       "Ahoerstemeier"
     ],
+    "depicts": "Rafflesia kerrii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Rafflesia_kerrii_flower.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3825,6 +4165,7 @@
       "artist",
       "Hans Hillewaert"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Rainforest_near_Belle_-_Dominica.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3835,6 +4176,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "yellow mignonette",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Reseda_lutea1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3845,6 +4187,7 @@
       "artist",
       "Karora"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Rhipogonum_scandens_-_Supplejack_3.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3855,16 +4198,29 @@
       "artist",
       "Marshman at English Wikipedia / Eric Guinther"
     ],
+    "depicts": "Rhizophora mangle",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Rhizophora_yngtree.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Rhizophora_yngtree.jpg/330px-Rhizophora_yngtree.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Ribes%20petraeum%20Sturm51.jpg": {
+    "author": [
+      "artist",
+      "Johann Georg Sturm (Painter: Jacob Sturm)"
+    ],
+    "depicts": "Ribes petraeum",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ribes_petraeum_Sturm51.jpg",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Ribes_petraeum_Sturm51.jpg/330px-Ribes_petraeum_Sturm51.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Roraima%20Stegolepis%20guianensis.jpg": {
     "author": [
       "artist",
       "Claire Taylor from Cyprus"
     ],
+    "depicts": "Stegolepis guianensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Roraima_Stegolepis_guianensis.jpg",
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
@@ -3875,6 +4231,7 @@
       "artist",
       "Denis Barthel"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:RoridulaDentataFlora2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3885,6 +4242,7 @@
       "artist",
       "Original uploader was Monika at pl.wikipedia"
     ],
+    "depicts": "Rosa arvensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Rosa_arvensis_1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3895,6 +4253,7 @@
       "artist",
       "No machine-readable author provided. TeunSpaans assumed (based on copyright claims)."
     ],
+    "depicts": "Claytonia sibirica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Roze_winterpostelein_R0014197.JPG",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -3937,6 +4296,7 @@
       "artist",
       "Utah State University Intermountain Herbarium"
     ],
+    "depicts": "Saccoloma inaequale",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Saccoloma_inaequale_herbarium.jpg",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -3947,6 +4307,7 @@
       "uploader",
       "Maksim"
     ],
+    "depicts": "Sagittaria sagittifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sagittaria_latifolia_(flowers).jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3957,6 +4318,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Salix caprea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Salix_caprea9.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3967,6 +4329,7 @@
       "artist",
       "NPS"
     ],
+    "depicts": "Tamarix",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Saltcedar.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -3977,6 +4340,7 @@
       "artist",
       "Andrew massyn"
     ],
+    "depicts": "Saltera sarcocolla",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Saltera_sarcocolla_5.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -3987,6 +4351,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Salvinia minima",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Salvinia_minima_1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3997,6 +4362,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Sarcandra glabra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sarcandra_glabra2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4039,6 +4405,7 @@
       "artist",
       "Christian Fischer"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:ScheuchzeriaPalustrisColl.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4049,6 +4416,7 @@
       "artist",
       "Doronenko 07:11, 21 April 2007 (UTC)"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Schisandra_sinensis_flower.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -4059,6 +4427,7 @@
       "artist",
       "Photo by David J. Stang"
     ],
+    "depicts": "Schlegelia parasitica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Schlegelia_parasitica_0zz.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4069,6 +4438,7 @@
       "artist",
       "Franz Eugen K\u00f6hler, K\u00f6hler's Medizinal-Pflanzen"
     ],
+    "depicts": "Schoenocaulon officinale",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Schoenocaulon_officinale_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-262.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4079,6 +4449,7 @@
       "uploader",
       "Ayacop"
     ],
+    "depicts": "Sciadopitys verticillata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sciadopitys_verticillata_SZ102.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4100,6 +4471,7 @@
       "artist",
       "Fornax"
     ],
+    "depicts": "Scrophularia nodosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Scrophularia_nodosa_W.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4110,6 +4482,7 @@
       "artist",
       "Marco Schmidt [1]"
     ],
+    "depicts": "Securidaca longepedunculata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Securidaca_longipedunculata_MS_1933.JPG",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -4152,6 +4525,7 @@
       "artist",
       "SriMesh"
     ],
+    "depicts": "Shepherdia argentea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:SilverBuffaloberrySK-3.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4162,6 +4536,7 @@
       "artist",
       "Johannes Lundberg"
     ],
+    "depicts": "Silvianthus bracteatus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Silvianthus_bracteatus_1.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4172,6 +4547,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Simmondsia chinensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Simmondsia_chinensis_form.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4182,6 +4558,7 @@
       "artist",
       "W. Botting Hemsley (1843-1924)"
     ],
+    "depicts": "Siparuna pauciflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Siparuna_cauliflora.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4202,6 +4579,7 @@
       "artist",
       "William Jackson Hooker"
     ],
+    "depicts": "Sladenia celastrifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sladenia_celastrifolia.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4222,6 +4600,7 @@
       "uploader",
       "Conrado"
     ],
+    "depicts": "Smilax aspera",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Smilax_aspera_-_Salsepareille1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4232,6 +4611,7 @@
       "artist",
       "663highland"
     ],
+    "depicts": "Cycas revoluta",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sorakuen03s3200.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -4242,6 +4622,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Sphenoclea zeylanica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Sphenoclea_zeylanica_Blanco1.143.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4262,6 +4643,7 @@
       "uploader",
       "Isfisk"
     ],
+    "depicts": "Staphylea colchica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Staphylea_colchica.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4272,6 +4654,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Batis maritima",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_010206-0250_Batis_maritima.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4282,6 +4665,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Clusia rosea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_010330-0602_Clusia_rosea.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4292,6 +4676,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Perrottetia sandwicensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_020925-0042_Perrottetia_sandwicensis.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4302,6 +4687,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Santalum ellipticum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_021209-0016_Santalum_ellipticum.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4312,6 +4698,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Carludovica palmata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_030807-0128_Carludovica_palmata.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4322,6 +4709,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Angiopteris evecta",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_030807-0181_Angiopteris_evecta.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4343,6 +4731,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Ipomoea imperati",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_040711-0402_Ipomoea_imperati.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4353,6 +4742,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Rivina humilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_050222-4165_Rivina_humilis.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4374,6 +4764,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Pityrogramma austroamericana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_051122-5326_Pityrogramma_austroamericana.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4384,6 +4775,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Galphimia gracilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_080117-1999_Galphimia_gracilis.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4394,6 +4786,7 @@
       "artist",
       "Forest & Kim Starr"
     ],
+    "depicts": "Anigozanthos flavidus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_980528-4129_Anigozanthos_flavidus.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4404,6 +4797,7 @@
       "artist",
       "Biol-pereyra"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Stegnosperma_Cubense.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4435,6 +4829,7 @@
       "artist",
       "J.M.Garg"
     ],
+    "depicts": "Strychnos nux-vomica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Strychnos_nux-vomica_in_Kinnarsani_WS,_AP_W_IMG_5873.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4445,6 +4840,7 @@
       "artist",
       "Philipp Franz von Siebold and Joseph Gerhard Zuccarini"
     ],
+    "depicts": "Symplocos lucida",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Symplocos_lucida_SZ24.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4455,6 +4851,7 @@
       "artist",
       "Meneerke bloem"
     ],
+    "depicts": "Talinum fruticosum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Talinum_fruticosum2.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4465,16 +4862,29 @@
       "artist",
       "B.navez"
     ],
+    "depicts": "Tambourissa elliptica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tambourissa_elliptica_maleflowers_01.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Tambourissa_elliptica_maleflowers_01.JPG/330px-Tambourissa_elliptica_maleflowers_01.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Tapeinochilos%20ananassae2.jpg": {
+    "author": [
+      "artist",
+      "Kurt St\u00fcber [1]"
+    ],
+    "depicts": "Tapeinochilos ananassae",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tapeinochilos_ananassae2.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Tapeinochilos_ananassae2.jpg/330px-Tapeinochilos_ananassae2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Tapiscia%20sinensis%2001.jpg": {
     "author": [
       "artist",
       "Wendy Cutler from Vancouver, Canada"
     ],
+    "depicts": "Tapiscia sinensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tapiscia_sinensis_01.jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -4485,6 +4895,7 @@
       "uploader",
       "Markalexander100"
     ],
+    "depicts": "Tetrameles nudiflora",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Taprohmroots01.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4495,6 +4906,7 @@
       "artist",
       "KENPEI"
     ],
+    "depicts": "Ternstroemia gymnanthera",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ternstroemia_gymnanthera1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4505,6 +4917,7 @@
       "artist",
       "Unknown authorUnknown author"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tetracarpaea.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4515,6 +4928,7 @@
       "artist",
       "Stan Shebs"
     ],
+    "depicts": "Tetracoccus dioicus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tetracoccus_dioicus_3.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4525,6 +4939,7 @@
       "artist",
       "DXLINH"
     ],
+    "depicts": "Muntingia calabura",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:The_Muntingia_calabura_flower_are_small_and_white.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4535,6 +4950,7 @@
       "artist",
       "Thouny"
     ],
+    "depicts": "Thismia rodwayi",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Thismia_rodwayi_(Fairy_lantern)_Bouton.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4556,6 +4972,7 @@
       "artist",
       "Photo by David J. Stang"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ticodendron_incognitum_5zz.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4566,6 +4983,7 @@
       "artist",
       "dune_ninja"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tiganophyton_karasense_2.jpeg",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
@@ -4576,6 +4994,7 @@
       "artist",
       "Jeevan Jose, Kerala, India"
     ],
+    "depicts": "Torenia fournieri",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Torenia_fournieri_at_Kudayathoor.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4586,6 +5005,7 @@
       "artist",
       "Daderot"
     ],
+    "depicts": "Toricellia angulata var. intermedia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Toricellia_angulata_var._intermedia_-_Kunming_Botanical_Garden_-_DSC02765.JPG",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4596,6 +5016,7 @@
       "artist",
       "Michael Wolf"
     ],
+    "depicts": "Tovaria pendula",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tovaria_pendula_01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4606,6 +5027,7 @@
       "artist",
       "J.M.Garg"
     ],
+    "depicts": "Putranjiva roxburghii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tree_I_IMG_3274.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4627,6 +5049,7 @@
       "artist",
       "Photo taken and provided by Brian Voon Yee Yap. Original uploader was Yewenyi (Brian Voon Yee Yap) at en.wikipedia"
     ],
+    "depicts": "Cadellia pentastylis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Trgole_NP_Ooline_Trees_DSC03274.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4637,6 +5060,7 @@
       "uploader",
       "BotBln"
     ],
+    "depicts": "Triglochin palustris",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Triglochium_palustris_BotGartBln310505.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4647,6 +5071,7 @@
       "artist",
       "Alex Popovkin, Bahia, Brazil from Brazil"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Trigonia_nivea_Cambess._var._pubescens_(Cambess.)_Lleras_-_Flickr_-_Alex_Popovkin,_Bahia,_Brazil_(22).jpg",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
@@ -4657,6 +5082,7 @@
       "artist",
       "Fitch, del. et lith."
     ],
+    "depicts": "Trimenia weinmanniaefolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Trimenia_weinmanniaefolia_99.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4667,6 +5093,7 @@
       "artist",
       "No machine-readable author provided. Denis Barthel assumed (based on copyright claims)."
     ],
+    "depicts": "Triphyophyllum peltatum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:TriphyophyllumPeltatumShootDetail.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4677,6 +5104,7 @@
       "artist",
       "Sten Porse"
     ],
+    "depicts": "Trochodendron aralioides",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Trochodendron-aralioides-flowers.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4687,6 +5115,7 @@
       "artist",
       "Brocken Inaglory"
     ],
+    "depicts": "Etlingera elatior",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Tropical_plant_hilo5.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4697,6 +5126,7 @@
       "artist",
       "Petritap"
     ],
+    "depicts": "Typha latifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Typha_latifolia_Finland.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4707,6 +5137,7 @@
       "uploader",
       "Phyzome"
     ],
+    "depicts": "Ulmus rubra",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ulmus_rubra_leaf.jpg",
     "license": "Attribution",
     "licenseUrl": null,
@@ -4728,6 +5159,7 @@
       "artist",
       "User:Qwertzy2"
     ],
+    "depicts": "Uncarina grandidieri",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Uncarina_grandidieri1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4748,6 +5180,7 @@
       "artist",
       "No machine-readable author provided. Migas assumed (based on copyright claims)."
     ],
+    "depicts": "Urtica dioica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Urtica_dioica_(Bl%C3%BCten).jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -4758,6 +5191,7 @@
       "artist",
       "nicky"
     ],
+    "depicts": "Vahlia capensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Vahlia_capensis_2.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4768,6 +5202,7 @@
       "artist",
       "Jean Baptiste Christian Fus\u00e9e-Aublet (1720-1778)"
     ],
+    "depicts": "Vantanea guianensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Vantanea_guianensis.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4778,6 +5213,7 @@
       "artist",
       "G. M\u00fctrel, Leipzig\u00a0; Berlin\u00a0; Wien\u00a0: F.A. Brockhaus"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Various_Cactaceae.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4788,6 +5224,7 @@
       "artist",
       "Daniela Cano"
     ],
+    "depicts": "Halophytum ameghinoi",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Verdolaga-Halophytum_ameghinoi_-.JPG",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4798,6 +5235,7 @@
       "artist",
       "Wouter Hagens"
     ],
+    "depicts": "Viburnum opulus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Viburnum_opulus_C.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4808,6 +5246,7 @@
       "artist",
       "Stefan.lefnaer"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Vicia_faba_sl23.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -4818,6 +5257,7 @@
       "uploader",
       "Jeffdelonge"
     ],
+    "depicts": "Viola banksii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Viola_hedercea01.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4828,6 +5268,7 @@
       "artist",
       "Myself"
     ],
+    "depicts": "Cleome houtteana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:VioletQueen.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4838,6 +5279,7 @@
       "artist",
       "Johann Baptist Emanuel Pohl"
     ],
+    "depicts": "Vochysia divergens",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Vochysia_divergens_Pohl111.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4848,6 +5290,7 @@
       "uploader",
       "CommonismNow"
     ],
+    "depicts": "Hymenophyllum tunbrigense",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:WP-Hymenophyllum-Exkursion_nach_Berdorf_(Luxemburgexkursion)_011.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4858,6 +5301,7 @@
       "artist",
       "Poyt448"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Waratah_Track_Comb_Fern.JPG",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4868,6 +5312,7 @@
       "uploader",
       "Velela"
     ],
+    "depicts": "Primula vulgaris",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Welsh_Primrose.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4878,6 +5323,7 @@
       "artist",
       "Thomas Schoch"
     ],
+    "depicts": "Welwitschia mirabilis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Welwitschia_mirabilis(1).jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -4898,6 +5344,7 @@
       "uploader",
       "Manuel Anast\u00e1cio"
     ],
+    "depicts": "Silene latifolia",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:White_campion_close_700.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4908,6 +5355,7 @@
       "artist",
       "Rasbak"
     ],
+    "depicts": "Daucus carota",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Wilde_wortel_bloeiwijze_Daucus_carota.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4918,6 +5366,7 @@
       "artist",
       "Peter1968 at English Wikipedia"
     ],
+    "depicts": null,
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Xeronema.jpg",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -4928,6 +5377,7 @@
       "artist",
       "Rotational"
     ],
+    "depicts": "Xerophyta retinervis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Xerophyta_retinervis00.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -4938,6 +5388,7 @@
       "artist",
       "Teun Spaans"
     ],
+    "depicts": "Berberis vulgaris",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Zuurbes_R0021693.JPG",
     "license": "CC BY 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
@@ -4948,6 +5399,7 @@
       "artist",
       "Javier martin"
     ],
+    "depicts": "Zygophyllum fabago",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Zygophyllum_fabago_Flower_Closeup_ParquedelasDunas_TorreLaMata.jpg",
     "license": "Public domain",
     "licenseUrl": null,

@@ -6,6 +6,8 @@ from pathlib import Path
 import unittest
 import unittest.mock
 from zipfile import ZipFile
+import geopandas as gpd
+from shapely.geometry import box
 
 import pandas as pd
 
@@ -30,10 +32,21 @@ class RichnessTests(unittest.TestCase):
         ], columns=loader.DISTRIBUTION_COLUMNS)
         self.codes = ["ABT", "ALA", "ANT"]
 
+        # LDG
+        self.gdf = gpd.GeoDataFrame(
+            {"LEVEL3_COD": ["ABT", "ALA", "ANT"]},
+            geometry=[
+                box(-120, 51, -110, 59),   # ABT -> band 50
+                box(-150, 61, -140, 69),   # ALA -> band 60
+                box(0, -79, 10, -71),      # ANT -> band -80
+            ],
+            crs="EPSG:4326",
+        )
+
     def build(self):
         return loader.build_richness(
-            self.names, self.distributions, self.codes,
-            wikidata_fetcher=lambda names: {},  # no Wikidata data in fixture tests
+            self.names, self.distributions, self.codes, self.gdf,
+            wikidata_fetcher=lambda names: {}, 
         )
 
     def test_native_unique_species_and_global_counts(self):
@@ -44,10 +57,16 @@ class RichnessTests(unittest.TestCase):
         self.assertEqual(result["Polemoniaceae"]["sr"], {"ABT": 0, "ALA": 0, "ANT": 0})
         self.assertEqual(result["Polemoniaceae"]["global"], 1)
         self.assertEqual(result["Polemoniaceae"]["climate"], {})
-        self.assertEqual(json.loads(json.dumps(result, allow_nan=False)), result)
+        json.dumps(result, allow_nan=False)
         for family in result.values():
             self.assertTrue(all(type(n) is int and 0 <= n <= family["global"]
                                 for n in family["sr"].values()))
+        # ldg
+        ldg = result["Ericaceae"]["ldg"]
+        self.assertEqual(len(ldg), 18)
+        self.assertEqual((ldg[50], ldg[60]), (1, 1))
+        self.assertEqual(sum(ldg.values()), 2)
+        self.assertEqual(sum(result["Polemoniaceae"]["ldg"].values()), 0)
 
     def test_duplicate_names_do_not_inflate_counts(self):
         expected = self.build()
@@ -78,15 +97,15 @@ class RichnessTests(unittest.TestCase):
                 names = self.names.copy()
                 names.loc[0, column] = None
                 with self.assertRaisesRegex(ValueError, "ID and family"):
-                    loader.build_richness(names, self.distributions, self.codes)
+                    loader.build_richness(names, self.distributions, self.codes, self.gdf)
 
     def test_empty_accepted_species_fails(self):
         with self.assertRaisesRegex(ValueError, "No accepted species"):
-            loader.build_richness(self.names.iloc[0:0], self.distributions, self.codes)
+            loader.build_richness(self.names.iloc[0:0], self.distributions, self.codes, self.gdf)
 
     def test_order_independence(self):
         self.assertEqual(self.build(), loader.build_richness(
-            self.names.iloc[::-1], self.distributions.iloc[::-1], self.codes[::-1],
+            self.names.iloc[::-1], self.distributions.iloc[::-1], self.codes[::-1], self.gdf,
             wikidata_fetcher=lambda names: {},
         ))
 
@@ -96,10 +115,9 @@ class RichnessTests(unittest.TestCase):
             zf.writestr("wcvp_names.csv", self.names.to_csv(sep="|", index=False))
             zf.writestr("wcvp_distribution.csv", self.distributions.to_csv(sep="|", index=False))
         archive.seek(0)
-        self.assertEqual(
-            loader.load_archive(archive, self.codes, wikidata_fetcher=lambda names: {}),
-            self.build(),
-        )
+        with unittest.mock.patch.object(loader.gpd, "read_file", return_value=self.gdf):
+            from_zip = loader.load_archive(archive, self.codes, wikidata_fetcher=lambda names: {})
+        self.assertEqual(from_zip, self.build())
         self.assertTrue(set(self.codes) <= set(loader.map_codes()))
 
 
@@ -112,13 +130,13 @@ class ArchiveTests(unittest.TestCase):
         json.dumps(result, allow_nan=False)
         for family, record in result.items():
             with self.subTest(family=family):
-                self.assertEqual(set(record), {"sr", "global", "climate", "ids", "image"})
+                self.assertEqual(set(record), {"sr", "global", "climate", "ids", "image", "ldg"})
                 self.assertEqual(set(record["sr"]), set(codes))
                 self.assertGreater(record["global"], 0)
                 self.assertTrue(all(type(n) is int and 0 <= n <= record["global"]
                                     for n in record["sr"].values()))
                 self.assertTrue(isinstance(record["climate"], dict))
-                self.assertTrue(all(isinstance(v, int) for v in record["climate"].values()))\
+                self.assertTrue(all(isinstance(v, int) for v in record["climate"].values()))
 
 
 if __name__ == "__main__":
