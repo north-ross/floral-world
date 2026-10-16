@@ -4,6 +4,10 @@ toc: true
 ---
 
 <style>
+mark {
+  background-color: #688816;
+  padding: 2px;
+}
 .wide p,
 .wide h1,
 .wide h2,
@@ -258,7 +262,7 @@ ${persistedArea === null
     `
   : html`
       <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
-      ${topFamiliesNum > 0 ? html`<p>Top ranked for ${topFamiliesNum} families!</p>` : html``}
+      ${topFamiliesNum > 0 ? html`<p><mark>Hotspot!</mark> Top ranked for ${topFamiliesNum} families.</p>` : html``}
     `
 }
 
