@@ -55,6 +55,13 @@ const sr = FileAttachment('./data/family-area-sr.json').json();
 const cmnNames = FileAttachment('./data/taxa-inat-darwincore.json').json();
 const colorMap = FileAttachment('./data/climate-colors-map.json').json();
 const dark = Generators.dark();
+
+const icons = {
+  wiki: await FileAttachment("./data/assets/wikipedia.png").url(),
+  inat: await FileAttachment("./data/assets/inaturalist.png").url(),
+  col:  await FileAttachment("./data/assets/col.png").url(),
+  powo: await FileAttachment("./data/assets/powo.png").url()
+};
 ```
 
 ```js
@@ -538,21 +545,36 @@ inputEl.addEventListener("input", () => {
   }
 });
 ```
+
 </div>
-
-
-
 <div class="card">
+
+```js
+const readMore = selectedFam == null ? [] : [
+  {label: "Wiki",  url: wikiUrl, icon: icons.wiki},
+  sr[selectedFam].ids.inatId && {label: "iNat", url: inatUrl, icon: icons.inat},
+  sr[selectedFam].ids.colId  && {label: "CoL",  url: colUrl,  icon: icons.col},
+  sr[selectedFam].ids.powoId && {label: "POWO", url: powoUrl, icon: icons.powo}
+].filter(Boolean);   // drops the falsy entries, like df.dropna()
+```
 
 ```js
 selectedFam == null
   ? html`<p>Select a plant family with the search bar or from the left table.</p>`
   : html`
-        <div><h1 style="font-family: 'serif';font-weight: normal;">
-          <a href="https://en.wikipedia.org/wiki/${selectedFam}" target="_blank">${selectedFam}</a>
-        </h1><h2 style="font-family: 'serif';">${cmnNamesFiltered[selectedFam]?.[0] ? " "+cmnNamesFiltered[selectedFam][0]+" " : ""}</h2>
-        </div>
-        `
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; margin: -1rem 0;">
+      <div>
+        <h1 style="font-family: 'serif'; font-weight: normal;">${selectedFam}</h1>
+        <h2 style="font-family: 'serif';">${cmnNamesFiltered[selectedFam]?.[0] ?? ""}</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:auto auto; gap:0.4rem 1.2rem; font-size:0.9em;">
+        ${readMore.map(l => html`
+          <a href="${l.url}" target="_blank"
+             style="display:flex; align-items:center; gap:0.35em; white-space:nowrap;">
+            <img src="${l.icon}" width="16" height="16" alt="">${l.label}
+          </a>`)}
+      </div>
+    </div>`
 ```
 
 <div>${familySearchBox}<br></div>
@@ -608,12 +630,11 @@ selectedFam != null
         ${imgAuthorText}
         ${licenseHtml}</figcaption>
       </figure>`
-    : html`<p>No images available. Consider adding one on <a href="https://www.wikidata.org/wiki/${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
+    : html`<p>No images available. Consider adding one on <a href="${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
   }
   ${akaHtml}
   <!--<p><strong>Preferred climate:</strong> ${Object.keys(sr[selectedFam]?.['climate'])[0]}</p> -->
   <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
-  <p><b>Read more: </b><a href="${wikiUrl}" target="_blank">Wikipedia</a> | <a href="${inatUrl}" target="_blank">iNaturalist</a> | <a href="${colUrl}" target="_blank">Catalogue of Life</a> | <a href="${powoUrl}" target="_blank">POWO</a> </p>
   `
   : html` `
 ```
