@@ -15,8 +15,12 @@ mark {
 .wide h4,
 .wide h5,
 .wide h6,
+.wide ul,
 .wide .katex-display {
-  max-width: none;
+  width: max(35%, 640px); /* middle third, but never narrower than ~640px */
+  max-width: 100%;           /* on narrow screens, don't overflow the page */
+  margin-left: auto;
+  margin-right: auto;
 }
 @media (max-width: 640px) {
   .grid.grid-cols-2 {
@@ -170,23 +174,27 @@ const selAreaMap = Plot.plot({
       stroke: "#afafaf",
       strokeWidth: 0.5
     }),
+    // Hover: tooltip only, with a thinner outline so it doesn't look "selected"
     Plot.geo(wgsrpd, Plot.pointer({
       title: (d) => {
-        const code = d.properties.LEVEL3_COD;
-        const val = richnessByArea.get(code);
-        return `${d.properties.LEVEL3_NAM}: ${val ? val.toLocaleString() : 0}`; // show zero for null. In any case where its null it should probably be zero anyways
+        const val = richnessByArea.get(d.properties.LEVEL3_COD);
+        return `${d.properties.LEVEL3_NAM}: ${val ? val.toLocaleString() : 0}`;
       },
       stroke: "#662200",
-      strokeWidth: 2,
-      tip: {fill: dark ? "#662200" : "var(--theme-background)",}
+      strokeWidth: 1,
+      tip: {fill: dark ? "#662200" : "var(--theme-background)"}
     })),
-    // Overlay updated based on table selection
-    Plot.geo(
-      codeToFeature[mutAreaTableSelection] ?? [],
-      { stroke: "#662200", strokeWidth: 2, fill: "none"}
-      // Give this a tip label as well?
-    )
+    // Selected area: drawn from persistedArea, so it survives every re-render
+    Plot.geo(persistedArea ?? [], {stroke: "#662200", strokeWidth: 2.5, fill: "none"})
   ]
+});
+
+selAreaMap.addEventListener("click", () => {
+  const feature = selAreaMap.value;   // area under the pointer, or null over the ocean
+  if (!feature) return;
+  // Skip if it's already selected, to avoid a pointless redraw
+  if (feature.properties.LEVEL3_COD === persistedArea?.properties?.LEVEL3_COD) return;
+  setPersistedArea(feature);
 });
 
 // Plot sets this explicitly from width + projection aspect ratio —
@@ -239,36 +247,6 @@ ldgPlot.setAttribute("height", mapHeight);
 // Set mutable for selected area, separate one for table
 const persistedArea = Mutable(null);
 const setPersistedArea = (v) => {persistedArea.value = v;};
-```
-```js
-// Reset signal for table select
-const mutAreaTableSelection = Mutable(null);
-const setMutAreaTableSelection = (v) => {mutAreaTableSelection.value = v;}
-```
-
-```js
-// On map input, set table select to none
-const selArea = Generators.observe((notify) => {
-  let lastCode = undefined; // plain closure var — NOT reactive, just local bookkeeping
-  const inputted = () => {
-    // console.log("input")
-    const current = selAreaMap.value;
-    notify(current);
-    const currentCode = current?.properties?.LEVEL3_COD;
-    if (currentCode !== lastCode) {
-      lastCode = currentCode;
-      // Only touch the Mutable when the hovered area actually changes,
-      // and only if something is even selected in the table right now
-      if (mutAreaTableSelection !== null) setMutAreaTableSelection(null);
-    }
-  };
-  inputted();
-  selAreaMap.addEventListener("input", inputted, {capture: true});
-  return () => selAreaMap.removeEventListener("input", inputted, {capture: true});
-});
-```
-```js
-if (selArea !== null) setPersistedArea(selArea);
 ```
 
 
@@ -408,7 +386,6 @@ const areaClearButton = Generators.input(areaClearButtonInput);
 if (areaSelectDropdown !== null) {
   const areaSelFeature = areaNameToFeature[areaSelectDropdown]
   setPersistedArea(areaSelFeature);
-  setMutAreaTableSelection(areaSelFeature.properties.LEVEL3_COD);
 };
 ```
 
@@ -526,8 +503,6 @@ const setSelectedFam = (v) => {selectedFam.value = v;};
 // Update selected family from table when table clicked
 if (famTableInput !== null) {
   setSelectedFam(famTableInput.family);
-  // Set mutTableArea to the current selected family so it persists on map reload
-  // if (mutAreaTableSelection == null && persistedArea != null) setMutAreaTableSelection(persistedArea.properties.LEVEL3_COD);
   // TODO: Now reset the search bar text
 }
 
@@ -621,7 +596,6 @@ selectedFam == null
 <div>${familySearchBox}<br></div>
 
 ```js
-// TODO: fix wide images not showing?
 const imgUrl = sr[selectedFam]?.['image']?.['thumbUrl'] ?? null
 const imgSrcUrl = sr[selectedFam]?.['image']?.['descriptionUrl'] ?? null
 
@@ -733,7 +707,6 @@ if (areaTableSelect !== null) {
   );
   // selAreaMap.value = null;
   // selAreaMap.dispatchEvent(new Event("input", {bubbles: true}));
-  setMutAreaTableSelection(areaTableSelect.areaCode);
 };
 ```
 </div>
@@ -768,11 +741,11 @@ Here are a few plant families with interesting distributions you could check out
 
 ## What does this map really show?
 
-Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing "true" centers of biodiversity or distribution. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much computational approach, although showing similar patterns, although other studies have used these boundaries for statistical analysis, controlling for area and climatic diversity within the boundaries[^3].
+Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing "true" centers of biodiversity or distribution, especially the latitudinal diversity gradient. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much computational approach, although showing similar patterns, although other studies have used these boundaries for statistical analysis, controlling for area and climatic diversity within the boundaries[^3].
 
 ## Why are some areas more diverse than others?
 
-This is a central and still unresolved question in biogeography, sometimes called the Latitudinal Diversity Gradient (LDG, [my notes](https://dismal-sariola.vercel.app/ecology-notes/macroecology/latitudinal-diversity-gradient/) ). The general pattern is that species richness tends to be higher around the equator and lower around the poles. It seems to be a relatively recent phenomenon which began after the end of the Cretaceous period, 30 or 40 million years ago. Before this, Earth usually had a much wider tropical band, and species richness was probably not much lower around the poles than at the equator. A planned feature for this site is a chart to visualize this LDG next to the map for each family.
+This is a central and still unresolved question in biogeography, sometimes called the Latitudinal Diversity Gradient (LDG). The general pattern is that species richness tends to be higher around the equator and lower around the poles. The LDG chart to the right of the map on this site shows that this is true for most families, although some have a preference for the northern hemisphere or mid-latitudes. It seems to be a relatively recent phenomenon which began after the end of the Cretaceous period, 30 or 40 million years ago. Before this, Earth usually had a much wider tropical band, and species richness was probably not much lower around the poles than at the equator. 
 
 One paper ([Tietje et al. 2022](https://www.researchgate.net/publication/361631933_Global_variation_in_diversification_rate_and_species_richness_are_unlinked_in_plants)[^3]) used this same dataset (filtered to seed plants) to try and explore some different hypotheses on this question. They found that one of the most important factors contributing to an area's plant species richness are temperature and precipitation. However, they also found that the diversification rate was generally lower in these areas and higher in dry, northern areas that experienced more climate change in the past 30 million years. They conclude that the reason why tropical areas have more diverse plants is not because of higher rates of diversification, but that they have conserved more species from the Earth's deep tropical past. Something to consdier when exploring the map!
 
