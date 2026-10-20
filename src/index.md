@@ -278,20 +278,30 @@ const colorLegend = Plot.legend({ color: colorOptions });
 ```
 
 ```js
-const distPlot = resize((w, h) => Plot.plot({
-  width: w, height: h,
-  x: {label: "Distribution (number of areas)"},
-  y: {type: "log", label: "Diversity (species richness)"},
-  marks: [
-    Plot.dot(globalFamilyEntries.filter(d => d.family == selectedFam),
-      {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
-    Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
-    Plot.tip(globalFamilyEntries, Plot.pointer({
-      x: "nAreas", y: "globalSr",
-      title: d => [d.family, d.cmnName].join("\n")
-    }))
-  ]
-}));
+const distPlot = resize((w, h) => {
+  const plot = Plot.plot({
+    width: w, height: h,
+    x: {label: "Distribution (number of areas)"},
+    y: {type: "log", label: "Diversity (log species richness)"},
+    marks: [
+      Plot.dot(globalFamilyEntries.filter(d => d.family == selectedFam),
+        {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
+      Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
+      Plot.tip(globalFamilyEntries, Plot.pointer({
+        x: "nAreas", y: "globalSr",
+        title: d => [d.family, d.cmnName].join("\n")
+      }))
+    ]
+  });
+
+  // Read the hovered datum only at click time, so hovering stays cheap
+  plot.addEventListener("click", () => {
+    const d = plot.value;          // null if the pointer isn't near a dot
+    if (d) setSelectedFam(d.family);
+  });
+
+  return plot;
+});
 
 const climateSource = selectedFam != null
   ? sr[selectedFam].climate
