@@ -40,6 +40,26 @@ mark {
 .dash-right.stacked .card { flex: none; height: 350px; }
 .dash-fill { position: relative; flex: 1 1 0; min-height: 0; }
 .dash-fill > div { position: absolute; inset: 0; }
+
+/*Help icon text*/
+.card { position: relative; }
+.help { position: absolute; top: 8px; right: 10px; z-index: 10; }
+.help > summary {
+  list-style: none; cursor: pointer; user-select: none;
+  width: 1.5em; height: 1.5em; line-height: 1.5em; text-align: center;
+  border-radius: 50%; font-size: 0.85em;
+  border: 1px solid var(--theme-foreground-faint);
+  color: var(--theme-foreground-muted);
+}
+.help > summary::-webkit-details-marker { display: none; }
+.help > summary:hover, .help[open] > summary { background: var(--theme-foreground-faintest); }
+.help-body {
+  position: absolute; top: 2em; right: 0; width: 360px;
+  padding: 0.6em 0.8em; text-align: left; font-size: 0.85rem;
+  background: var(--theme-background-alt);
+  border: 1px solid var(--theme-foreground-faint);
+  border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
 </style>
 
 # Floral World: ${selectedFam ?? "Vascular Plants"}
@@ -296,11 +316,18 @@ const climatePlot = resize((w, h) => Plot.plot({
   ]
 }));
 
+const helpTip = (text) => html`<details class="help">
+  <summary aria-label="About this card">?</summary>
+  <div class="help-body">${text}</div>
+</details>`;
+
 const chartCards = html`<div class="dash-right ${stacked ? "stacked" : ""}">
     <div class="card">
       <div class="dash-fill">${distPlot}</div>
+      ${helpTip("Comparison of the global diversity and distribution of each plant family, selected family highlighted.")}
     </div>
     <div class="card" style="${stacked ? "height: 350px;" : ""}">
+      ${helpTip("Preferred climate of the each species in the selected plant family, as reported in WCVP.")}
       <div class="dash-fill">${climatePlot}</div>
     </div>
   </div>`
@@ -312,6 +339,7 @@ display(html`
     <div class="card" style="position:relative; z-index:2;">
       <div class="grid grid-cols-2">
         <div>${colorLegend}</div><div>${logscaleInput}</div>
+        ${helpTip(html`<p>The map shows biodiversity (species richness) of the selected family by WGSRPD botanical country. Click on a country to select it and see its unique plant families.</p> <p>The strip on the right shows the species richness of all countries in this latitude band.</p>`)}
       </div>
       <div style="display:flex; align-items:flex-start;">
         <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
@@ -334,9 +362,12 @@ display(html`
 ${persistedArea === null
   ? html`
     <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
+    ${helpTip("Table lists all global plant families and their diversity. Select a family by clicking the button to the left of its name.")}
     `
   : html`
       <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
+      ${helpTip(html`This table lists all the plant families present in the selected area, sorted by their global diversity rank. For example, Finland is ranked third place for Ranunculaceae (buttercup family) diversity, behind Sweden and China South-Central. <br> <br>
+                    Select a family in the table to update the map and other panels.`)}
     `
 }
 
