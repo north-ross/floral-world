@@ -39,13 +39,13 @@ mark {
 .dash-scroll { overflow-x: auto; }
 .dash .card { margin: 0; }
 .dash-right { display: flex; flex-direction: column; gap: 1rem; min-height: 0; }
-.dash-right .card { margin: 0; flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+.dash-right .card { margin: 0; flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; overflow: visible; }
 .dash-right.stacked { margin-top: 1rem; }
 .dash-right.stacked .card { flex: none; height: 350px; }
 .dash-fill { position: relative; flex: 1 1 0; min-height: 0; }
 .dash-fill > div { position: absolute; inset: 0; }
 
-/*Help icon text*/
+/*Help icon text.*/
 .card { position: relative; }
 .help { position: absolute; top: 8px; right: 10px; z-index: 10; }
 .help > summary {
@@ -327,7 +327,7 @@ display(html`
     <div class="card" style="position:relative; z-index:2;">
       <div class="grid grid-cols-2">
         <div>${colorLegend}</div><div>${logscaleInput}</div>
-        ${helpTip(html`<p>The map shows biodiversity (species richness) of the selected family by WGSRPD botanical country. Click on a country to select it and see its unique plant families.</p> <p>The strip on the right shows the species richness of all countries in this latitude band.</p>`)}
+        ${helpTip(html`The map shows biodiversity (species richness) of the selected family by WGSRPD botanical country. Click on a country to select it and see its unique plant families.<br> <br>The strip on the right shows the species richness of all countries in this latitude band.`)}
       </div>
       <div style="display:flex; align-items:flex-start;">
         <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
@@ -354,7 +354,8 @@ ${persistedArea === null
     `
   : html`
       <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
-      ${helpTip(html`This table lists all the plant families present in the selected area, sorted by their global diversity rank. For example, Finland is ranked third place for Ranunculaceae (buttercup family) diversity, behind Sweden and China South-Central. <br> <br>
+      ${helpTip(html`This table lists all the plant families present in the selected area, sorted by their global diversity rank. 
+                    <br><br>For example, Finland is ranked third place for Ranunculaceae (buttercup family) diversity, behind Sweden and China South-Central. <br> <br>
                     Select a family in the table to update the map and other panels.`)}
     `
 }
