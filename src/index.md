@@ -735,10 +735,23 @@ Here are a few plant families with interesting distributions you could check out
 ${Inputs.button("Select Ericaceae", {reduce: () => setSelectedFam("Ericaceae")})} 
 - Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
 ${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
-- The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean.
+- The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean. I suspect that this is a relict population that has survived in these three areas with similar climates.
 ${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
 - Sarraceniaceae (new world pitcher plants) are a cool family with an interesting distribution, highest around Florida and Venezuela.
 ${Inputs.button("Select Sarraceniaceae", {reduce: () => setSelectedFam("Sarraceniaceae")})}
+- The "[Asa Gray disjunction](https://en.wikipedia.org/wiki/Asa_Gray_disjunction)" can be seen in the following families that are found in both East Asia and eastern North America, but not in between. It's generally though that these families used to be present over all of the northern hemisphere, but went extinct in western North America as the climate became drier there during the Neogene.
+
+ ${asaGrayButtons}
+
+```js
+const asaGrayButtons = Inputs.button([
+  ["Altingiaceae", () => setSelectedFam("Altingiaceae")],
+  ["Hamamelidaceae", () => setSelectedFam("Hamamelidaceae")],
+  ["Magnoliaceae", () => setSelectedFam("Magnoliaceae")],
+  ["Nelumbonaceae", () => setSelectedFam("Nelumbonaceae")]
+], {label: "Select examples"});
+```
+
 - The gentian family has an unusual climate breakdown, the majority of species are found in "subalpine or subarctic" climate.
  ${Inputs.button("Select Gentianaceae", {reduce: () => setSelectedFam("Gentianaceae")})}
 
