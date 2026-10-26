@@ -591,7 +591,9 @@ selectedFam == null
             <img src="${l.icon}" width="16" height="16" alt="">${l.label}
           </a>`)}
       </div>
-    </div>`
+    </div>
+    
+    <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>`
 ```
 
 <div>${familySearchBox}<br></div>
@@ -623,40 +625,6 @@ const colUrl = "https://www.catalogueoflife.org/data/taxon/" + sr[selectedFam]?.
 const powoUrl = "https://powo.science.kew.org/taxon/" + sr[selectedFam]?.['ids']['powoId'] ?? "";
 ```
 
-<details open><summary><b>About this family</b></summary>
-
-```js
-selectedFam != null
-  ? html`
-  ${imgUrl != null 
-    ? html`<figure style="
-        float: right;
-        width: 220px;
-        margin: 0 0 1em 1.5em;
-        border: 1px solid var(--theme-foreground-fainter);
-        background: var(--theme-background);
-        padding: 0.4em;
-        font-size: 0.85em;
-        text-align: center;
-      ">
-      <a href="${imgSrcUrl}"  target="_blank">
-      <img src="${imgUrl}" alt="Representative image from Wikimedia Commons." style="width: 100%; height: auto; display: block;"></a>
-      <figcaption style="padding-top: 0.4em; color: var(--theme-foreground-muted);">
-        ${depictsHtml}
-        ${imgAuthorText}
-        ${licenseHtml}</figcaption>
-      </figure>`
-    : html`<p>No images available. Consider adding one on <a href="${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`
-  }
-  ${akaHtml}
-  <!--<p><strong>Preferred climate:</strong> ${Object.keys(sr[selectedFam]?.['climate'])[0]}</p> -->
-  <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
-  `
-  : html` `
-```
-
-</details>
-
 ```js
 // Show a table of species richness by area for selected family
 
@@ -679,7 +647,7 @@ const famEntries = Object.entries(sr[selectedFam]?.['sr'] || {}).map(([areaCode,
 const famRanked = rankFamily(famEntries);
 
 
-const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0), {
+const areaTableInput = Inputs.table(famEntries.filter((d) => d.richness>0), {
   columns: ["areaName", "richness", "percentGlobal"],
   header: {
     areaName: "Area",
@@ -687,8 +655,12 @@ const areaTableSelect = view(Inputs.table(famEntries.filter((d) => d.richness>0)
     percentGlobal: "% of Global"
   },
   multiple: false,
+  rows: 11.5,
   sort: "richness", reverse: true
-}))
+});
+```
+```js
+const areaTableSelect = Generators.input(areaTableInput);
 ```
 
 ```js
@@ -706,9 +678,31 @@ if (areaTableSelect !== null) {
   setPersistedArea(
     codeToFeature[areaTableSelect.areaCode]
   );
-  // selAreaMap.value = null;
-  // selAreaMap.dispatchEvent(new Event("input", {bubbles: true}));
 };
+```
+```js
+// Display table and image
+selectedFam != null
+  ? html`
+  ${akaHtml}
+  <div style="display:flex; gap:1em; align-items:flex-start; flex-wrap:wrap;">
+    <div style="flex:1 1 280px; min-width:0;">${areaTableInput} </div>
+    ${imgUrl != null
+      ? html`<figure style="
+          flex:none; width:220px; margin:0;
+          border: 1px solid var(--theme-foreground-fainter);
+          background: var(--theme-background);
+          padding: 0.4em; font-size: 0.85em; text-align: center;">
+          <a href="${imgSrcUrl}" target="_blank">
+            <img src="${imgUrl}" alt="Representative image from Wikimedia Commons."
+                 style="width:100%; height:auto; display:block;"></a>
+          <figcaption style="padding-top:0.4em; color:var(--theme-foreground-muted);">
+            ${depictsHtml}${imgAuthorText}${licenseHtml}</figcaption>
+        </figure>`
+      : html`<p>No images available. Consider adding one on <a href="${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`}
+  </div>
+  `
+  : html` `
 ```
 </div>
 </div>
