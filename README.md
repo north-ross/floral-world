@@ -33,15 +33,16 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [x] Line chart of species richness by latitude (LDG)
 - [ ] Embed wikipedia text
 - [x] Fix the flickering when selecting a country from the map
+- [ ] Map number of endemic species to each area
+  - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
 - [ ] Add option to change map projection, maybe pan/zoom d3 style if possible
 - [ ] Add higher-level categories (well-known ones like monocots, ferns etc) or some taxonomic tree view integration
+  - [ ] Maybe making a suburst plot to explore diversity?
 - [ ] In the family info box, include some "iconic species" (maybe most observed on iNat)
 - [ ] Allow the user to apply filters data to include introduced ranges or exclude extinct species
 - [x] Chart of preferred climate for each species by family
-- [ ] Map number of endemic species to each area
-  - [ ] Will need to make small islands more visible with a buffer or outline, since this will be the interesting part here
-- [ ] Get a list of species in selected area-family
-  - [ ] Perhaps on a separate page, since this will involve querying the entire 200MB WCVP
+- [x] Get a list of species in selected area-family
+  - Turns out Arnau Ribera has already made a tool to do this: [WCVP Checklist Builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/)
 
 ## Use of AI
 I started this project as a [small Python script](https://github.com/north-ross/PlantFamilyMapping) to make static species richness maps, without use of AI, for my own personal interest and for contributing to Wikipedia. I was so fascinated by the unexpected patterns of diversity that I decided to make it into a shareable web app for exploring the data.

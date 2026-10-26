@@ -725,6 +725,8 @@ The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascu
 
 The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
+Wondering which species are in your area checklist? Check out Arnau Ribera's [WCVP checklist builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/) tool to get a precise list. Use "TWDG Level 3" to filter using the same areas displayed here.
+
 ## How to use 
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
 
@@ -742,7 +744,9 @@ ${Inputs.button("Select Sarraceniaceae", {reduce: () => setSelectedFam("Sarracen
 
 ## Methodology
 
-After the WCVP dataset is updated (weekly), a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species in their native ranges, then saves the count of unique species in each area, grouped by family. The species richness in each ten-degree latitude band is calculated for each country by selecting all areas intersecting this band and getting the unique count in this collection of countries. The number of species grouped by preferred climate for each family is also recorded. Next, a Wikidata SPARQL query is preformed for all families to retrieve web links to Wikipedia and other sites, along with an associated image. This image is queried on Wikimedia commons to get a suitable embed link and associated licence and metadata. 
+After the WCVP dataset is updated (weekly), a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species in their native ranges, then saves the count of unique species in each area, grouped by family. The species richness in each ten-degree latitude band is calculated for each country by selecting all areas intersecting this band and getting the unique count in this collection of countries. The number of species grouped by preferred climate for each family is also recorded. 
+
+Next, a Wikidata SPARQL query is preformed for all families to retrieve web links to Wikipedia and other sites, along with an associated image. This image is queried on Wikimedia commons to get a suitable embed link and associated licence and metadata. After that, the iNaturalist taxonomy DarwinCore archive is downloaded to get the community-contributed English commmon names for each family where they exist.
 
 Additional calculations, including ranking, are preformed in javascript at load time on the site.
 
@@ -771,9 +775,11 @@ Onagraceae (the "evening primrose" or fireweed family), is present around the wo
 
 I hope this helps you dive into lots of rabbit holes!
 
-## Source code
+## Future plans
 
-This is an open source project. Check out the source and planned features, or make your own fork or contribution on [GitHub](https://github.com/north-ross/floral-world).
+A checklist of future plans for the site is available on [GitHub](https://github.com/north-ross/floral-world), along with the source code. For now, the things I'm most interested in are:
+- Letting the user filter the data to toggle introduced, extinct species.
+- Mapping number of endemic species (at botanical country-scale)
 
 </div>
 
