@@ -592,14 +592,8 @@ selectedFam == null
           </a>`)}
       </div>
     </div>
-    
-    <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
-    
-  ${akaHtml}
     `
 ```
-
-<div>${familySearchBox}<br></div>
 
 ```js
 const imgUrl = sr[selectedFam]?.['image']?.['thumbUrl'] ?? null
@@ -688,7 +682,14 @@ if (areaTableSelect !== null) {
 selectedFam != null
   ? html`
   <div style="display:flex; gap:1em; align-items:flex-start; flex-wrap:wrap;">
-    <div style="flex:1 1 280px; min-width:0;">${areaTableInput} </div>
+        
+    
+    <div style="flex:1 1 280px; min-width:0;">
+      <div>${familySearchBox}</div>
+      <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+      <p>${akaHtml}</p>
+      ${areaTableInput} 
+    </div>
     ${imgUrl != null
       ? html`<figure style="
           flex:none; width:220px; margin:0;
