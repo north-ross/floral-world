@@ -479,7 +479,7 @@ const famTableInput = (persistedArea != null)
       // display the formatted tie label field instead of average rank
       rank: (d, i) => areaRanked[i]?.tieLabel ?? "—", 
     },
-    multiple: false, rows:13.5
+    multiple: false, rows:13
   }))
   : view(Inputs.table(globalFamilyEntries, {
     columns: ["family", "cmnName", "globalSr", "nAreas"],
@@ -490,7 +490,7 @@ const famTableInput = (persistedArea != null)
       nAreas: "Areas present"
       },
     sort: "globalSr", reverse: true,
-    multiple: false, rows:13.5
+    multiple: false, rows:13
   }))
 ```
 
@@ -652,7 +652,7 @@ const areaTableInput = Inputs.table(famEntries.filter((d) => d.richness>0), {
     percentGlobal: "% of Global"
   },
   multiple: false,
-  rows: 11.5,
+  rows: 12,
   sort: "richness", reverse: true
 });
 ```
@@ -686,7 +686,7 @@ selectedFam != null
     
     <div style="flex:1 1 280px; min-width:0;">
       <div>${familySearchBox}</div>
-      <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}.</p>
+      <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. [Build species list](https://arnauribera.com/portfolio/wcvp-checklist-builder/).</p>
       <p>${akaHtml}</p>
       ${areaTableInput} 
     </div>
