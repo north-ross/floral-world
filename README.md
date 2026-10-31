@@ -43,6 +43,7 @@ Based on an earlier simple project to generate static maps of plant diversity: [
 - [x] Chart of preferred climate for each species by family
 - [x] Get a list of species in selected area-family
   - Turns out Arnau Ribera has already made a tool to do this: [WCVP Checklist Builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/)
+- [ ] Incorporate the "lifeform_description" of each species (tree, shrub, aquatic etc) and allow exploration with this instead of family
 
 ## Use of AI
 I started this project as a [small Python script](https://github.com/north-ross/PlantFamilyMapping) to make static species richness maps, without use of AI, for my own personal interest and for contributing to Wikipedia. I was so fascinated by the unexpected patterns of diversity that I decided to make it into a shareable web app for exploring the data.
