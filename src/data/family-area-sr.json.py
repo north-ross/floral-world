@@ -234,6 +234,8 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
     n_areas = native.groupby("plant_name_id").area_code_l3.transform("nunique")
     endemics = (native[n_areas == 1].groupby(['family', 'area_code_l3'])
                 .plant_name_id.nunique().rename("endemic"))
+    # Since each endemic is only in one area, we can just sum to get the global count
+    endemic_global = endemics.groupby(level="family").sum()
 
     # TODO: Troubleshoot the reindex not working - it seems the output has introduced and extinct swapped
     counts = (counts.join(endemics, how="left")
@@ -311,6 +313,7 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
                     for code in sorted(set(area_codes))
                     if (family, code) in counts_lookup},
             "global": int(group.plant_name_id.nunique()),
+            "globalEndemic": int(endemic_global.get(family, 0)),
             "climate": climates_dict,
             "ids": {
                 'wikidata': wd.get('item', None),

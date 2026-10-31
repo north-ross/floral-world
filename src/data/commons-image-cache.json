@@ -32,6 +32,17 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/%28MHNT%29_Galium_verum_inflorescence.jpg/330px-%28MHNT%29_Galium_verum_inflorescence.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/%28MHNT%29%20Geranium%20macrorrhizum%20inflorescence%20and%20foliage%20-%20Les%20Martels%2C%20Giroussens%20Tarn.jpg": {
+    "author": [
+      "artist",
+      "Didier Descouens"
+    ],
+    "depicts": "Geranium macrorrhizum",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:(MHNT)_Geranium_macrorrhizum_inflorescence_and_foliage_-_Les_Martels,_Giroussens_Tarn.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/%28MHNT%29_Geranium_macrorrhizum_inflorescence_and_foliage_-_Les_Martels%2C_Giroussens_Tarn.jpg/330px-%28MHNT%29_Geranium_macrorrhizum_inflorescence_and_foliage_-_Les_Martels%2C_Giroussens_Tarn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
   "http://commons.wikimedia.org/wiki/Special:FilePath/%28MHNT%29%20Hedera%20helix%20-%20immature%20inflorescences.jpg": {
     "author": [
       "artist",
@@ -708,6 +719,17 @@
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Berberidopsis_corallina_1.jpg/330px-Berberidopsis_corallina_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Bergtocht%20van%20Gimillan%20%281805m.%29%20naar%20Colle%20Tsa%20S%C3%A8tse%20in%20Cogne%20Valley%20%28Itali%C3%AB%29%20035.jpg": {
+    "author": [
+      "artist",
+      "Agnes Monkelbaan"
+    ],
+    "depicts": "Larix decidua",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bergtocht_van_Gimillan_(1805m.)_naar_Colle_Tsa_S%C3%A8tse_in_Cogne_Valley_(Itali%C3%AB)_035.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Bergtocht_van_Gimillan_%281805m.%29_naar_Colle_Tsa_S%C3%A8tse_in_Cogne_Valley_%28Itali%C3%AB%29_035.jpg/330px-Bergtocht_van_Gimillan_%281805m.%29_naar_Colle_Tsa_S%C3%A8tse_in_Cogne_Valley_%28Itali%C3%AB%29_035.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Berzelia%20lanuginosa%202.jpg": {
     "author": [
       "artist",
@@ -844,6 +866,7 @@
       "artist",
       "Melburnian"
     ],
+    "depicts": "Bowkeria verticillata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Bowkeria_verticillata.jpg",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -1340,6 +1363,17 @@
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Combretum_constrictum3.jpg/330px-Combretum_constrictum3.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Conanthera1.JPG": {
+    "author": [
+      "artist",
+      "penarc"
+    ],
+    "depicts": "Conanthera bifolia",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Conanthera1.JPG",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Conanthera1.JPG/330px-Conanthera1.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Convolvulus%20arvensis%2011.jpg": {
     "author": [
@@ -2115,6 +2149,7 @@
       "artist",
       "No machine-readable author provided. Denis Barthel assumed (based on copyright claims)."
     ],
+    "depicts": "Genlisea violacea",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Genlisea_violacea.JPG",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -3269,6 +3304,17 @@
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Mimulus_guttatus_5631.JPG/330px-Mimulus_guttatus_5631.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Mimulus%20tilingii%2023134.JPG": {
+    "author": [
+      "artist",
+      "Walter Siegmund"
+    ],
+    "depicts": "Mimulus tilingii",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Mimulus_tilingii_23134.JPG",
+    "license": "CC BY 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Mimulus_tilingii_23134.JPG/330px-Mimulus_tilingii_23134.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Misodendrum%20punctulatum.jpg": {
     "author": [

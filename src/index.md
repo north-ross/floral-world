@@ -285,10 +285,10 @@ const distPlot = resize((w, h) => {
     y: {type: "log", label: "Diversity (log species richness)"},
     marks: [
       Plot.dot(globalFamilyEntries.filter(d => d.family == selectedFam),
-        {x: "nAreas", y: "globalSr", fill: "#688816", r: 8}),
-      Plot.dot(globalFamilyEntries, {x: "nAreas", y: "globalSr", opacity: 0.6}),
+        {x: "nAreas", y: endemicOnly ? "endemicGlobalSr" : "globalSr", fill: "#688816", r: 8}),
+      Plot.dot(globalFamilyEntries, {x: "nAreas", y: endemicOnly ? "endemicGlobalSr" : "globalSr", opacity: 0.6}),
       Plot.tip(globalFamilyEntries, Plot.pointer({
-        x: "nAreas", y: "globalSr",
+        x: "nAreas", y: endemicOnly ? "endemicGlobalSr" : "globalSr",
         title: d => [d.family, d.cmnName].join("\n")
       }))
     ]
@@ -439,6 +439,7 @@ const globalFamilyEntries = Object.keys(sr).map((family) => {
     family, 
     cmnName: cmnNamesFiltered[family]?.[0],
     globalSr: sr[family]['global'],
+    endemicGlobalSr: sr[family]['globalEndemic'],
     nAreas: Object.values(srView[family]).filter((d) => d > 0).length
   }
 });
@@ -511,6 +512,7 @@ const famTableInput = (persistedArea != null)
       family: "Plant Family", 
       cmnName: "Common Name",
       globalSr: "Species Richness",
+      endemicGlobalSr: "Endemic Species",
       nAreas: "Areas present"
       },
     sort: "globalSr", reverse: true,
@@ -710,7 +712,7 @@ selectedFam != null
     
     <div style="flex:1 1 280px; min-width:0;">
       <div>${familySearchBox}</div>
-      <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
+      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() : sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
       <p>${akaHtml}</p>
       ${areaTableInput} 
     </div>
