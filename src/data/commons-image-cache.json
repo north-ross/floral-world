@@ -15,6 +15,7 @@
       "artist",
       "Didier Descouens"
     ],
+    "depicts": "Delosperma cooperi",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:(MHNT)_Delosperma_cooperi_-_Flower_and_leaves.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -298,6 +299,7 @@
       "artist",
       "Lynk media"
     ],
+    "depicts": "Amaranthus retroflexus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Amaranthus_retroflexus_full1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -438,6 +440,7 @@
       "artist",
       "Drhyperlaur at English Wikipedia"
     ],
+    "depicts": "Aponogeton crispus",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Aponogeton_crispus.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -649,6 +652,17 @@
     "license": "Public domain",
     "licenseUrl": null,
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Barbeuia_madagascariensis_flower_-_Baillon.jpg/330px-Barbeuia_madagascariensis_flower_-_Baillon.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Barbeya%20plates%20%28page%201%20crop%29.jpg": {
+    "author": [
+      "artist",
+      "W. A. Meyn (fl. 1871-1911)"
+    ],
+    "depicts": "Barbeya oleoides",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Barbeya_plates_(page_1_crop).jpg",
+    "license": "Public domain",
+    "licenseUrl": null,
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Barbeya_plates_%28page_1_crop%29.jpg/330px-Barbeya_plates_%28page_1_crop%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Barringtonia%20asiatica%20%28flower%29.jpg": {
     "author": [
@@ -982,6 +996,7 @@
       "uploader",
       "TeunSpaans"
     ],
+    "depicts": "Campanula cespitosa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Campanula_cespitosa.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -1419,6 +1434,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Costus deistelii",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Costus_deistellii1.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -2186,6 +2202,7 @@
       "artist",
       "James Sowerby"
     ],
+    "depicts": "Goodenia ramosissima",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Goodenia_ramosissima-Sowerby.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2306,6 +2323,7 @@
       "artist",
       "Dinesh Valke from Thane, India"
     ],
+    "depicts": "Heliconia psittacorum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Heliconia_psittacorum_(753479962).jpg",
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
@@ -2634,7 +2652,7 @@
       "artist",
       "Paxton"
     ],
-    "depicts": null,
+    "depicts": "Ixiolirion tataricum",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ixiolirion_montanum1PAXTON.jpg",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2722,6 +2740,7 @@
       "artist",
       "Marco Schmidt [1]"
     ],
+    "depicts": "Khaya senegalensis",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Khaya_senegalensis_MS_2037.JPG",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -2834,6 +2853,28 @@
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Lapageria_rosea1b.SHSU.jpg/330px-Lapageria_rosea1b.SHSU.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Larrea%20tridentata%201.jpg": {
+    "author": [
+      "artist",
+      "Stan Shebs"
+    ],
+    "depicts": "Larrea tridentata",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Larrea_tridentata_1.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Larrea_tridentata_1.jpg/330px-Larrea_tridentata_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/LeamingtonSpa%20Platform2%20Verbena%20heads.jpg": {
+    "author": [
+      "artist",
+      "Motacilla"
+    ],
+    "depicts": "Verbena bonariensis",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:LeamingtonSpa_Platform2_Verbena_heads.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/LeamingtonSpa_Platform2_Verbena_heads.jpg/330px-LeamingtonSpa_Platform2_Verbena_heads.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Leaves%20of%20Hopea%20odorata.jpg": {
     "author": [
@@ -2966,6 +3007,17 @@
     "license": "Public domain",
     "licenseUrl": null,
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Loasa_vulcanica_-_Andre.jpg/330px-Loasa_vulcanica_-_Andre.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Lophopyxis%20pentaptera%20NYBG.jpg": {
+    "author": [
+      "artist",
+      "The New York Botanical Garden"
+    ],
+    "depicts": "Lophopyxis",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Lophopyxis_pentaptera_NYBG.jpg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Lophopyxis_pentaptera_NYBG.jpg/330px-Lophopyxis_pentaptera_NYBG.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Luculia%20gratissima.jpg": {
     "author": [
@@ -3754,6 +3806,17 @@
     "licenseUrl": null,
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Peridiscus_lucidus_%28Hooker%29.png/330px-Peridiscus_lucidus_%28Hooker%29.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Petenaea%20cordata.jpg": {
+    "author": [
+      "artist",
+      "Neptal\u00ed Ram\u00edrez Marcial"
+    ],
+    "depicts": "Petenaea cordata",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Petenaea_cordata.jpg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Petenaea_cordata.jpg/330px-Petenaea_cordata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Petermannia%20cirrosa.png": {
     "author": [
       "artist",
@@ -4133,6 +4196,7 @@
       "artist",
       "Marco Schmidt"
     ],
+    "depicts": "Quisqualis indica",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Quisqualis_indica_MS4133.JPG",
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
@@ -4520,6 +4584,17 @@
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Sesuvium_p.jpg/330px-Sesuvium_p.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Setchellanthus%20caeruleus%20404397684%20%28cropped%29.jpg": {
+    "author": [
+      "artist",
+      "Mauricio Calder\u00f3n"
+    ],
+    "depicts": "Setchellanthus caeruleus",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Setchellanthus_caeruleus_404397684_(cropped).jpg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Setchellanthus_caeruleus_404397684_%28cropped%29.jpg/330px-Setchellanthus_caeruleus_404397684_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
   "http://commons.wikimedia.org/wiki/Special:FilePath/SilverBuffaloberrySK-3.jpg": {
     "author": [
       "artist",
@@ -4569,6 +4644,7 @@
       "artist",
       "Kurt St\u00fcber [1]"
     ],
+    "depicts": "Skimmia reevesiana",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Skimmia_reevesiana2.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4633,6 +4709,7 @@
       "uploader",
       "Factumquintus"
     ],
+    "depicts": "Ribes uva-crispa",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Stachelbeeren.jpg",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
@@ -4692,6 +4769,17 @@
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Starr_021209-0016_Santalum_ellipticum.jpg/330px-Starr_021209-0016_Santalum_ellipticum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Starr%20030612-0047%20Breynia%20disticha.jpg": {
+    "author": [
+      "artist",
+      "Forest & Kim Starr"
+    ],
+    "depicts": "Breynia disticha",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Starr_030612-0047_Breynia_disticha.jpg",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/eb/Starr_030612-0047_Breynia_disticha.jpg/330px-Starr_030612-0047_Breynia_disticha.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Starr%20030807-0128%20Carludovica%20palmata.jpg": {
     "author": [
@@ -5131,6 +5219,17 @@
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Typha_latifolia_Finland.jpg/330px-Typha_latifolia_Finland.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Ulmus%20laciniata.jpg": {
+    "author": [
+      "artist",
+      "Bruce Marlin"
+    ],
+    "depicts": "Ulmus laciniata",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Ulmus_laciniata.jpg",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ea/Ulmus_laciniata.jpg/330px-Ulmus_laciniata.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Ulmus%20rubra%20leaf.jpg": {
     "author": [

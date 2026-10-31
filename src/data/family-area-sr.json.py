@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from zipfile import ZipFile
 import pandas as pd
 import geopandas as gpd
+import numpy as np
 import requests
 
 
@@ -26,7 +27,7 @@ WCVP_URL = "https://sftp.kew.org/pub/data-repositories/WCVP/wcvp.zip"
 UNMAPPED_CODES = frozenset({})
 MAP_PATH = Path(__file__).with_name("level3.json")
 NAME_COLUMNS = ["plant_name_id", "taxon_status", "taxon_rank", "family", "climate_description"]
-DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced"]
+DISTRIBUTION_COLUMNS = ["plant_name_id", "area_code_l3", "introduced", "extinct"]
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 QUERY_PATH = Path(__file__).with_name("wikidata-sparql-query.rq")
 COMMONS_API_URL = "https://commons.wikimedia.org/w/api.php"
@@ -216,19 +217,37 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
     if species.plant_name_id.duplicated().any():
         raise ValueError("Conflicting accepted species records for the same ID")
 
-    native = distributions.loc[distributions.introduced.astype("string") == "0"]
-    native = native.merge(species[["plant_name_id", "family"]],
-                          on="plant_name_id", how="inner", validate="many_to_one")
-    # Some WCVP localities specify only a continent or region, not level 3.
-    # They cannot be assigned to a map area, but remain in global counts.
-    native = native.loc[native.area_code_l3.notna() & (native.area_code_l3 != "")]
+    # Get counts for native, introduced and extinct species
+    d = distributions.merge(species[["plant_name_id", "family"]], on="plant_name_id")
+    d = d[d.area_code_l3.notna() & (d.area_code_l3 != "")]
+
+    # Run the unknown-code check here on d.area_code_l3 now, instead of on `native`
+    is_intro = (d.introduced == "1").fillna(False).to_numpy()
+    is_ext = (d.extinct == "1").fillna(False).to_numpy()
+    d["bucket"] = np.select([is_intro, is_ext], ["introduced", "extinct"], default="native")
+    d = d.drop_duplicates(["plant_name_id", "area_code_l3", "bucket"])
+    counts = (d.groupby(["family", "area_code_l3", "bucket"]).plant_name_id
+                .nunique().unstack(fill_value=0))
+
+    # Count endemics
+    native = d[d.bucket != "introduced"]
+    n_areas = native.groupby("plant_name_id").area_code_l3.transform("nunique")
+    endemics = (native[n_areas == 1].groupby(['family', 'area_code_l3'])
+                .plant_name_id.nunique().rename("endemic"))
+
+    # TODO: Troubleshoot the reindex not working - it seems the output has introduced and extinct swapped
+    counts = (counts.join(endemics, how="left")
+                    .reindex(columns=["native", "introduced", "extinct", "endemic"], fill_value=0)
+                    .fillna(0).astype('int'))
+    # get counts as a collection of dicts to better put into the dict later
+    counts_lookup = dict(zip(counts.index, counts.to_numpy().tolist()))
+
     unmapped = set(native.area_code_l3) - set(area_codes)
     unknown = unmapped - UNMAPPED_CODES
     if unknown:
         raise ValueError(f"Unknown WGSRPD level 3 codes: {sorted(unknown)}")
     if unmapped:
         print(f"WCVP areas absent from level3.json (excluded from area counts): {sorted(unmapped)}", file=sys.stderr)
-    counts = native.groupby(["family", "area_code_l3"]).plant_name_id.nunique()
 
     # Get the list of countries for each latitudinal band from the geodataframe
     # For building the latitudinal diversity gradient (LDGs)
@@ -288,7 +307,9 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
         img_dict['depicts'] = wd.get('imageDepictsLabel', None)
 
         result[family] = {
-            "sr": {code: int(counts.get((family, code), 0)) for code in sorted(set(area_codes))},
+            "sr": {code: counts_lookup[(family, code)]
+                    for code in sorted(set(area_codes))
+                    if (family, code) in counts_lookup},
             "global": int(group.plant_name_id.nunique()),
             "climate": climates_dict,
             "ids": {

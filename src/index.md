@@ -89,7 +89,31 @@ const icons = {
 ```
 
 ```js
-// Restrict common names to only families actually present in sr
+// Options to filter SR numbers by Introduced, Extinct, Endemic
+const optsInput = Inputs.checkbox(["Native", "Introduced", "Extinct"], {label: "Range", value: ["Native", "Extinct"], disabled: endemicOnly});
+const opts = Generators.input(optsInput);
+```
+```js
+const endemicInput = Inputs.toggle({label: "Endemics only"});
+const endemicOnly = Generators.input(endemicInput);
+```
+
+```js
+// Apply changes to species richness numbers based on options extinct, introduced, etc
+function cellValue(c) {
+  if (!c) return 0;
+  if (endemicOnly) return c[3];
+  return (opts.includes("Native") ? c[0] : 0) + (opts.includes("Extinct") ? c[2] : 0) + (opts.includes("Introduced") ? c[1] : 0);
+}
+const areaCodes = wgsrpd.features.map(f => f.properties.LEVEL3_COD)
+// Define a "view" based on current settings
+const srView = Object.fromEntries(Object.entries(sr).map(([fam, rec]) =>
+  [fam, Object.fromEntries(areaCodes.map(a => [a, cellValue(rec.sr[a])]))]
+));
+```
+
+```js
+// Restrict common names to only families actually present in sr json
 // (iNat taxonomy includes families WCVP doesn't recognize / has merged / renamed)
 const cmnNamesFiltered = Object.fromEntries(
   Object.entries(cmnNames).filter(([fam]) => fam in sr)
@@ -128,19 +152,17 @@ const colorOptions = {
 // Get total vascular plant sr by family
 const totalSrMap = {};
 
-const areaKeys = Object.keys(sr[Object.keys(sr)[0]].sr);
-
 // For each country code, sum the values across all plant families
-areaKeys.forEach(area => {
-  totalSrMap[area] = Object.values(sr).reduce((sum, family) => {
-    return sum + (family.sr[area] || 0);
+areaCodes.forEach(area => {
+  totalSrMap[area] = Object.values(srView).reduce((sum, family) => {
+    return sum + (family[area] || 0);
   }, 0);
 });
 ```
 
 ```js
 // lookup functions for map 
-const familyDataSr = selectedFam != null ? sr[selectedFam]['sr'] : totalSrMap;
+const familyDataSr = selectedFam != null ? srView[selectedFam] : totalSrMap;
 // Set zeros to null for display purposes
 const richnessByArea = new Map(
   Object.entries(familyDataSr).map(([area, val]) => [area, val == 0 ? null : Math.round(val)])
@@ -215,7 +237,7 @@ const ldgSource = selectedFam != null
   : Object.values(sr).reduce((acc, f) => {
       for (const [b, v] of Object.entries(f.ldg)) acc[b] = (acc[b] ?? 0) + v;
       return acc;
-    }, {});   // like pd.DataFrame(...).sum()
+    }, {});   
 const ldgMax = Math.max(...Object.values(ldgSource));
 const ldgRows = Object.entries(ldgSource).map(([band, val]) => ({
   band1: +band, band2: +band + 10, x2: 30 * val / ldgMax, val
@@ -315,7 +337,7 @@ const chartCards = html`<div class="dash-right ${stacked ? "stacked" : ""}">
       ${helpTip("Comparison of the global diversity and distribution of each plant family, selected family highlighted.")}
     </div>
     <div class="card" style="${stacked ? "height: 350px;" : ""}">
-      ${helpTip("Preferred climate of the each species in the selected plant family, as reported in WCVP.")}
+      ${helpTip("Preferred climate of the each species in the selected plant family, as reported in WCVP. Does not support filtering by introduced/extinct/endemic.")}
       <div class="dash-fill">${climatePlot}</div>
     </div>
   </div>`
@@ -325,9 +347,13 @@ display(html`
   <div class="dash" 
       style="grid-template-columns: ${mapCardWidth}px ${stacked ? "" : "1fr"};">
     <div class="card" style="position:relative; z-index:2;">
-      <div class="grid grid-cols-2">
-        <div>${colorLegend}</div><div>${logscaleInput}</div>
-        ${helpTip(html`The map shows biodiversity (species richness) of the selected family by WGSRPD botanical country. Click on a country to select it and see its unique plant families.<br> <br>The strip on the right shows the species richness of all countries in this latitude band.`)}
+      <div class="grid grid-cols-4">
+        <div>${colorLegend}</div><div>${logscaleInput}</div><div>${optsInput}</div><div>${endemicInput}</div>
+        ${helpTip(html`The map shows biodiversity (species richness) of the selected family by WGSRPD botanical country. Click on a country to select it and see its unique plant families.
+        <br><br>
+        The check boxes at the top of the page let you update the map (and other cards). The log scale option only affects the map visualization, but the range options will also affect the tables and distribution chart. See the <a href="#methodology">Methodology</a> below for details.
+        <br><br>
+        The strip on the right shows the native + extinct species richness of all countries in this latitude band, called a latitudinal diversity gradient. Does not support filtering by introduced/endemic species.`)}
       </div>
       <div style="display:flex; align-items:flex-start;">
         <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
@@ -407,12 +433,13 @@ ${persistedArea === null
 
 ```js
 // Get global SR by family
+// TODO: Get global SR for the different "buckets" so they work for this chart
 const globalFamilyEntries = Object.keys(sr).map((family) => {
   return {
     family, 
     cmnName: cmnNamesFiltered[family]?.[0],
     globalSr: sr[family]['global'],
-    nAreas: Object.values(sr[family]['sr']).filter((d) => d > 0).length
+    nAreas: Object.values(srView[family]).filter((d) => d > 0).length
   }
 });
 // Get total global species richness
@@ -426,7 +453,7 @@ const globalRankCache = new Map();
 
 function getGlobalRanking(family) {
   if (!globalRankCache.has(family)) {
-    const entries = Object.entries(sr[family]['sr'] ?? {}).map(([areaCode, richness]) => ({
+    const entries = Object.entries(srView[family] ?? {}).map(([areaCode, richness]) => ({
       areaCode,
       richness: Math.round(richness)
     }));
@@ -452,16 +479,12 @@ function transposeForArea(nested, areaCode) {
 }
 
 const areaEntries = persistedArea
-  ? transposeForArea(sr, persistedArea.properties.LEVEL3_COD)
+  ? transposeForArea(srView, persistedArea.properties.LEVEL3_COD)
   : [];
 
 // Sort by the family's global rank (best/lowest rank number first)
 const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank)).filter((d) => d.richness>0);
 const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
-// starter code for number of endemic families
-// replace selectedFam with all families. 
-// If this country has all the global species, and the second highest country has zero, it's endemic.
-// if (sr[selectedFam]['global'] === sr[selectedFam]['sr'][persistedArea.properties.LEVEL3_COD] & famRanked[1] === 0) 
 ```
 
 ```js
@@ -635,7 +658,7 @@ const codeToName = Object.fromEntries(
 )
 
 // 2. Turn the object into an array of rows with a safe fallback
-const famEntries = Object.entries(sr[selectedFam]?.['sr'] || {}).map(([areaCode, richness]) => ({
+const famEntries = Object.entries(srView[selectedFam] || {}).map(([areaCode, richness]) => ({
   areaCode,
   areaName: codeToName[areaCode] ?? areaCode,
   richness: Math.round(richness),
@@ -687,7 +710,7 @@ selectedFam != null
     
     <div style="flex:1 1 280px; min-width:0;">
       <div>${familySearchBox}</div>
-      <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(sr[selectedFam]?.['sr']).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://arnauribera.com/portfolio/wcvp-checklist-builder/" target="_blank">Build species checklist</a></p>
+      <p>Contains ${sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
       <p>${akaHtml}</p>
       ${areaTableInput} 
     </div>
@@ -723,7 +746,7 @@ The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascu
 
 The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
-Wondering which species are in your area checklist? Check out Arnau Ribera's [WCVP checklist builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/) tool to get a precise list. Use "TWDG Level 3" to filter using the same areas displayed here.
+Displaying the names of all the species would be too intensive for this site, but you can use the [WCVP Build a Checklist](https://checklistbuilder.science.kew.org/reportbuilder.do) tool to get this list for your area/family/range options combo. Alternatively, check out Arnau Ribera's [WCVP checklist builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/), which has a more user-friendly output. Use "Botanical Country" or "TWDG Level 3" to filter using the same areas displayed here.
 
 ## How to use 
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
@@ -755,7 +778,9 @@ const asaGrayButtons = Inputs.button([
 
 ## Methodology
 
-After the WCVP dataset is updated (weekly), a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species in their native ranges, then saves the count of unique species in each area, grouped by family. The species richness in each ten-degree latitude band is calculated for each country by selecting all areas intersecting this band and getting the unique count in this collection of countries. The number of species grouped by preferred climate for each family is also recorded. 
+After the WCVP dataset is updated (weekly), a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species. The count of unique extant native, introduced and extinct species in each area is recorded and grouped by family. Note that "native" implies "extant native", and extinct introduced species are included in the "introduced" category. Next, the non-introduced subset is filtered to find "endemic" species which only naturally occur(red) in one area. 
+
+The species richness in each ten-degree latitude band is calculated for each country by selecting all areas intersecting this band and counting their combined unique species. The number of species by climate for each family is also recorded. Future plans are to also examine the unique "life-forms".
 
 Next, a Wikidata SPARQL query is preformed for all families to retrieve web links to Wikipedia and other sites, along with an associated image. This image is queried on Wikimedia commons to get a suitable embed link and associated licence and metadata. After that, the iNaturalist taxonomy DarwinCore archive is downloaded to get the community-contributed English commmon names for each family where they exist.
 
@@ -764,6 +789,12 @@ Additional calculations, including ranking, are preformed in javascript at load 
 ### Methology issues
 
 Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrpd/) are somewhat arbitrary, this visualization can't be taken too seriously as representing "true" centers of biodiversity or distribution, especially for the latitudinal diversity gradient. This is especially noticeable "tall" areas like Western Australia, where most of the diversity is actually only located on the southwestern coast. See [Sabatini et al. 2022](https://www.nature.com/articles/s41467-022-32063-z)[^2] for a much computational approach with finer-grained data. However, other studies have used these boundaries for statistical analysis after controlling for area and climatic diversity within the boundaries[^3].
+
+### Notes on endemism and extinction
+
+The WCVP only includes species that were formally described from living specimens. The dataset also doesn't distinguish extirpated and extinct species easily - when a species is extirpated from one area, its tag for that country is updated to "extinct", even if it is still present in another area. Therefore, the "extinct" filter on the site only really applies to species that have gone extinct fairly recently, and it includes both extinct and extirpated species.
+
+On this map, a species is considered endemic if its native range (including areas where it has been extirpated) is only in one botanical country. Therefore, if a species was recently present in multiple areas but its range is now reduced to one
 
 ## Why are some areas more diverse than others?
 
@@ -791,6 +822,7 @@ I hope this helps you dive into lots of rabbit holes!
 A checklist of future plans for the site is available on [GitHub](https://github.com/north-ross/floral-world), along with the source code. For now, the things I'm most interested in are:
 - Letting the user filter the data to toggle introduced, extinct species.
 - Mapping number of endemic species (at botanical country-scale)
+- Filtering by "life-form" (e.g. tree, shrub, aquatic)
 
 </div>
 
