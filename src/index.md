@@ -387,7 +387,7 @@ ${persistedArea === null
 }
 
 ```js
-// TODO: Set input to null when something else changes
+// TODO: Set to null when area changes elsewhere
 const areaNameToFeature = Object.fromEntries(
   wgsrpd.features.map(feature => [
     feature.properties.LEVEL3_NAM,
@@ -433,7 +433,7 @@ ${persistedArea === null
 
 ```js
 // Get global SR by family
-// TODO: Get global SR for the different "buckets" so they work for this chart
+// TODO: Get global SR for the different "buckets" so they work for this chart - more complex than I thought
 const globalFamilyEntries = Object.keys(sr).map((family) => {
   return {
     family, 
@@ -666,21 +666,40 @@ const famEntries = Object.entries(srView[selectedFam] || {}).map(([areaCode, ric
   richness: Math.round(richness),
   percentGlobal: Math.round(richness / sr[selectedFam]['global'] * 1000) / 10
 }));
-
 const famRanked = rankFamily(famEntries);
 
+// Same table but without any selected family
+const famEntriesTotal = Object.entries(totalSrMap).map(([areaCode, richness]) => ({
+  areaCode,
+  areaName: codeToName[areaCode] ?? areaCode,
+  richness: Math.round(richness),
+  // TODO: Number of families present
+}));
 
-const areaTableInput = Inputs.table(famEntries.filter((d) => d.richness>0), {
-  columns: ["areaName", "richness", "percentGlobal"],
-  header: {
-    areaName: "Area",
-    richness: "Species Richness",
-    percentGlobal: "% of Global"
-  },
-  multiple: false,
-  rows: 12,
-  sort: "richness", reverse: true
-});
+const areaTableInput = selectedFam
+  ? Inputs.table(famEntries.filter((d) => d.richness>0), {
+      columns: ["areaName", "richness", "percentGlobal"],
+      header: {
+        areaName: "Area",
+        richness: "Species Richness",
+        percentGlobal: "% of Global"
+      },
+      multiple: false,
+      rows: 12,
+      sort: "richness", reverse: true
+    })
+  // if selectedFam is null, do table of all areas by total richness
+  : Inputs.table(famEntriesTotal, {
+      columns: ["areaName", "richness"],
+      header: {
+        areaName: "Area",
+        richness: "Species Richness"
+        // TODO: Number of families present
+      },
+      multiple: false,
+      rows: 14,
+      sort: "richness", reverse: true
+    })
 ```
 ```js
 const areaTableSelect = Generators.input(areaTableInput);
@@ -731,7 +750,8 @@ selectedFam != null
       : html`<p>No images available. Consider adding one on <a href="${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`}
   </div>
   `
-  : html`<div>${familySearchBox}</div>`
+  : html`<div>${familySearchBox}</div><br>
+        ${areaTableInput}`
   // TODO: Add overall areas table by total species richness when selFamily=null. Should include total number of families also
 ```
 </div>
