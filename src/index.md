@@ -731,7 +731,7 @@ selectedFam != null
     
     <div style="flex:1 1 280px; min-width:0;">
       <div>${familySearchBox}</div>
-      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() : sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
+      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() + " endemic " : sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
       <p>${akaHtml}</p>
       ${areaTableInput} 
     </div>
