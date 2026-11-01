@@ -90,7 +90,7 @@ const icons = {
 
 ```js
 // Options to filter SR numbers by Introduced, Extinct, Endemic
-const optsInput = Inputs.checkbox(["Native", "Introduced", "Extinct"], {label: "Range", value: ["Native", "Extinct"], disabled: endemicOnly});
+const optsInput = Inputs.checkbox(["Native", "Introduced", "Extinct/Extirpated"], {label: "Range", value: ["Native", "Extinct/Extirpated"], disabled: endemicOnly});
 const opts = Generators.input(optsInput);
 ```
 ```js
@@ -103,7 +103,7 @@ const endemicOnly = Generators.input(endemicInput);
 function cellValue(c) {
   if (!c) return 0;
   if (endemicOnly) return c[3];
-  return (opts.includes("Native") ? c[0] : 0) + (opts.includes("Extinct") ? c[2] : 0) + (opts.includes("Introduced") ? c[1] : 0);
+  return (opts.includes("Native") ? c[0] : 0) + (opts.includes("Extinct/Extirpated") ? c[2] : 0) + (opts.includes("Introduced") ? c[1] : 0);
 }
 const areaCodes = wgsrpd.features.map(f => f.properties.LEVEL3_COD)
 // Define a "view" based on current settings
@@ -351,9 +351,9 @@ display(html`
         <div>${colorLegend}</div><div>${logscaleInput}</div><div>${optsInput}</div><div>${endemicInput}</div>
         ${helpTip(html`The map shows biodiversity (species richness) of the selected family by WGSRPD botanical country. Click on a country to select it and see its unique plant families.
         <br><br>
-        The check boxes at the top of the page let you update the map (and other cards). The log scale option only affects the map visualization, but the range options will also affect the tables and distribution chart. See the <a href="#methodology">Methodology</a> below for details.
+        The log scale, range and endemic check boxes will update the map and other cards. The log scale option only affects the map visualization, but the range options will also affect the tables and distribution chart. See the <a href="#methodology">Methodology</a> below for details.
         <br><br>
-        The strip on the right shows the native + extinct species richness of all countries in this latitude band, called a latitudinal diversity gradient. Does not support filtering by introduced/endemic species.`)}
+        The strip on the right shows the (native + extinct) species richness of all countries in this latitude band, called a latitudinal diversity gradient. Does not support filtering by introduced/endemic species.`)}
       </div>
       <div style="display:flex; align-items:flex-start;">
         <div style="position:relative; flex:none; width:${mapWidth+15}px; height:${mapHeight}px;">
@@ -507,7 +507,7 @@ const famTableInput = (persistedArea != null)
     sort: "rank"
   }))
   : view(Inputs.table(globalFamilyEntries, {
-    columns: ["family", "cmnName", "globalSr", "nAreas"],
+    columns: ["family", "cmnName", endemicOnly ? "endemicGlobalSr" : "globalSr", "nAreas"],
     header: {
       family: "Plant Family", 
       cmnName: "Common Name",
@@ -515,7 +515,7 @@ const famTableInput = (persistedArea != null)
       endemicGlobalSr: "Endemic Species",
       nAreas: "Areas present"
       },
-    sort: "globalSr", reverse: true,
+    sort: endemicOnly ? "endemicGlobalSr" : "globalSr", reverse: true,
     multiple: false, rows:13
   }))
 ```
@@ -731,7 +731,8 @@ selectedFam != null
       : html`<p>No images available. Consider adding one on <a href="${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`}
   </div>
   `
-  : html` `
+  : html`<div>${familySearchBox}</div>`
+  // TODO: Add overall areas table by total species richness when selFamily=null. Should include total number of families also
 ```
 </div>
 </div>
@@ -746,7 +747,7 @@ display(stacked ? chartCards : html` `);
 
 The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${globalSrSum.toLocaleString()} species in ${Object.keys(sr).length} families. It also tracks their distributions into ${wgsrpd.features.length} "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
-The data on this site **includes** extinct species, hybrids and "doubtfully present" locations, while **excluding** introduced ranges. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
+The data on this site **includes** hybrids and "doubtfully present" locations, and allows filtering by native, introduced and extirpated range. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
 Displaying the names of all the species would be too intensive for this site, but you can use the [WCVP Build a Checklist](https://checklistbuilder.science.kew.org/reportbuilder.do) tool to get this list for your area/family/range options combo. Alternatively, check out Arnau Ribera's [WCVP checklist builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/), which has a more user-friendly output. Use "Botanical Country" or "TWDG Level 3" to filter using the same areas displayed here.
 
@@ -796,7 +797,7 @@ Since the [boundaries used for aggregation](https://www.tdwg.org/standards/wgsrp
 
 The WCVP only includes species that were formally described from living specimens. The dataset also doesn't distinguish extirpated and extinct species easily - when a species is extirpated from one area, its tag for that country is updated to "extinct", even if it is still present in another area. Therefore, the "extinct" filter on the site only really applies to species that have gone extinct fairly recently, and it includes both extinct and extirpated species.
 
-On this map, a species is considered endemic if its native range (including areas where it has been extirpated) is only in one botanical country. Therefore, if a species was recently present in multiple areas but its range is now reduced to one
+On this map, a species is considered endemic if its native range (including areas where it has been extirpated) is only in one botanical country. Therefore, if a species was recently present in multiple areas but its range is now reduced to one.
 
 ## Why are some areas more diverse than others?
 
@@ -822,9 +823,8 @@ I hope this helps you dive into lots of rabbit holes!
 ## Future plans
 
 A checklist of future plans for the site is available on [GitHub](https://github.com/north-ross/floral-world), along with the source code. For now, the things I'm most interested in are:
-- Letting the user filter the data to toggle introduced, extinct species.
-- Mapping number of endemic species (at botanical country-scale)
 - Filtering by "life-form" (e.g. tree, shrub, aquatic)
+- Joining the IUCN conservation status so we can model threatened species richness (where assessment has occured)
 
 </div>
 
