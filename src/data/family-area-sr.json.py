@@ -234,32 +234,29 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
     d = d[d.area_code_l3.notna() & (d.area_code_l3 != "")]
 
     # Run the unknown-code check here on d.area_code_l3 now, instead of on `native`
-    is_intro = (d.introduced == "1").fillna(False).to_numpy()
-    is_ext = (d.extinct == "1").fillna(False).to_numpy()
+    is_intro = (d.introduced == "1").fillna(False).to_numpy(dtype=bool)
+    is_ext = (d.extinct == "1").fillna(False).to_numpy(dtype=bool)
+    d["is_intro"] = is_intro          
+    d["is_ext"] = is_ext
     d["bucket"] = np.select([is_intro, is_ext], ["introduced", "extinct"], default="native")
     d = d.drop_duplicates(["plant_name_id", "area_code_l3", "bucket"])
     counts = (d.groupby(["family", "area_code_l3", "bucket"]).plant_name_id
                 .nunique().unstack(fill_value=0))
 
     # Calculate global count for each bucket
+    flags = d.groupby("plant_name_id").agg(all_ext=("is_ext", "all"), any_intro=("is_intro", "any"))
+    per_species = (species[["plant_name_id", "family"]]
+                .merge(flags, left_on="plant_name_id", right_index=True, how="left"))
     # For extinct, it needs to be extinct everywhere, meaning .all()
-    d['is_intro'] = is_intro
-    d['is_ext'] = is_ext
-    extinct_plants = (d[['plant_name_id', 'family', 'is_ext']]
-                        .groupby(['family', 'plant_name_id']).all())
-    extinct_counts = extinct_plants.loc[extinct_plants.is_ext].groupby('family').count()
-    # Native (native extant) is the inverse of extinct:
-    native_counts = (extinct_plants.loc[~extinct_plants.is_ext]
-                        .groupby('family').count().rename(columns={"is_ext": 'native'}))
+    per_species["all_ext"] = per_species.all_ext.fillna(False).astype(bool)
     # The total introduced means all plants that are introduced somwhere, even if they have a 
     #   native range. Therefore it's not additive with the others
     # And we need to use .any() instead of .all() because of this
-    introduced_plants = (d[['plant_name_id', 'family', 'is_intro']]
-                            .groupby(['family', 'plant_name_id']).any())
-    introduced_counts = introduced_plants.loc[introduced_plants.is_intro].groupby('family').count()
-    # Join all of the counts
-    global_count = (native_counts.join(introduced_counts, how="outer").join(extinct_counts, how="outer")
-                                .fillna(0).astype('int'))
+    per_species["any_intro"] = per_species.any_intro.fillna(False).astype(bool)
+    # Native (native extant) is the inverse of extinct:
+    per_species["native"] = ~per_species.all_ext
+    global_count = (per_species.groupby("family")[["native", "any_intro", "all_ext"]]
+                    .sum().astype(int))        # column order: native, introduced, extinct
     global_count_lookup = dict(zip(global_count.index, global_count.to_numpy().tolist()))
 
     # Count endemics
@@ -276,7 +273,7 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
     # get counts as a collection of dicts to better put into the dict later
     counts_lookup = dict(zip(counts.index, counts.to_numpy().tolist()))
 
-    unmapped = set(native.area_code_l3) - set(area_codes)
+    unmapped = set(d.area_code_l3) - set(area_codes)
     unknown = unmapped - UNMAPPED_CODES
     if unknown:
         raise ValueError(f"Unknown WGSRPD level 3 codes: {sorted(unknown)}")
