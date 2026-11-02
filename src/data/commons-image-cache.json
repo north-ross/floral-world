@@ -397,6 +397,7 @@
       "artist",
       "Francisco Manuel Blanco (O.S.A.)"
     ],
+    "depicts": "Annona muricata",
     "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Annona_muricata_Blanco1.196.png",
     "license": "Public domain",
     "licenseUrl": null,
@@ -2780,6 +2781,17 @@
     "license": "CC BY-SA 2.5",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
     "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Khaya_senegalensis_MS_2037.JPG/330px-Khaya_senegalensis_MS_2037.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "http://commons.wikimedia.org/wiki/Special:FilePath/Kiefer-Ardre-Gotland-2010%2001.jpg": {
+    "author": [
+      "artist",
+      "Karl Brodowsky"
+    ],
+    "depicts": "Pinus sylvestris",
+    "descriptionUrl": "https://commons.wikimedia.org/wiki/File:Kiefer-Ardre-Gotland-2010_01.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "thumbUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Kiefer-Ardre-Gotland-2010_01.jpg/330px-Kiefer-Ardre-Gotland-2010_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "http://commons.wikimedia.org/wiki/Special:FilePath/Kirkia%20wilmsii%283%29.JPG": {
     "author": [
