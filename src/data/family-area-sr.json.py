@@ -13,7 +13,7 @@ from urllib.request import urlopen
 from urllib.parse import urlparse, unquote
 import re
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from zipfile import ZipFile
 import pandas as pd
 import geopandas as gpd
@@ -72,6 +72,14 @@ def save_wikidata_snapshot(wikidata_info):
     with open(WIKIDATA_SNAPSHOT_PATH, "w") as f:
         json.dump(payload, f, sort_keys=True)
 
+def load_fresh_snapshot(max_age=timedelta(days=5)):
+    if not WIKIDATA_SNAPSHOT_PATH.exists():
+        return None
+    with open(WIKIDATA_SNAPSHOT_PATH) as f:
+        payload = json.load(f)
+    age = datetime.now(timezone.utc) - datetime.fromisoformat(payload["fetched_at"])
+    return payload["data"] if age < max_age else None
+
 def load_wikidata_snapshot():
     if WIKIDATA_SNAPSHOT_PATH.exists():
         with open(WIKIDATA_SNAPSHOT_PATH) as f:
@@ -81,6 +89,10 @@ def load_wikidata_snapshot():
     return None
 
 def fetch_wikidata_info_with_fallback(family_names, chunk_size=50, delay_between_chunks=2):
+    fresh = load_fresh_snapshot()
+    if fresh is not None:
+        print("Using fresh Wikidata snapshot, skipping query", file=sys.stderr)
+        return fresh
     try:
         result = fetch_wikidata_info(family_names, chunk_size, delay_between_chunks)
         save_wikidata_snapshot(result)
@@ -229,6 +241,27 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
     counts = (d.groupby(["family", "area_code_l3", "bucket"]).plant_name_id
                 .nunique().unstack(fill_value=0))
 
+    # Calculate global count for each bucket
+    # For extinct, it needs to be extinct everywhere, meaning .all()
+    d['is_intro'] = is_intro
+    d['is_ext'] = is_ext
+    extinct_plants = (d[['plant_name_id', 'family', 'is_ext']]
+                        .groupby(['family', 'plant_name_id']).all())
+    extinct_counts = extinct_plants.loc[extinct_plants.is_ext].groupby('family').count()
+    # Native (native extant) is the inverse of extinct:
+    native_counts = (extinct_plants.loc[~extinct_plants.is_ext]
+                        .groupby('family').count().rename(columns={"is_ext": 'native'}))
+    # The total introduced means all plants that are introduced somwhere, even if they have a 
+    #   native range. Therefore it's not additive with the others
+    # And we need to use .any() instead of .all() because of this
+    introduced_plants = (d[['plant_name_id', 'family', 'is_intro']]
+                            .groupby(['family', 'plant_name_id']).any())
+    introduced_counts = introduced_plants.loc[introduced_plants.is_intro].groupby('family').count()
+    # Join all of the counts
+    global_count = (native_counts.join(introduced_counts, how="outer").join(extinct_counts, how="outer")
+                                .fillna(0).astype('int'))
+    global_count_lookup = dict(zip(global_count.index, global_count.to_numpy().tolist()))
+
     # Count endemics
     native = d[d.bucket != "introduced"]
     n_areas = native.groupby("plant_name_id").area_code_l3.transform("nunique")
@@ -237,7 +270,6 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
     # Since each endemic is only in one area, we can just sum to get the global count
     endemic_global = endemics.groupby(level="family").sum()
 
-    # TODO: Troubleshoot the reindex not working - it seems the output has introduced and extinct swapped
     counts = (counts.join(endemics, how="left")
                     .reindex(columns=["native", "introduced", "extinct", "endemic"], fill_value=0)
                     .fillna(0).astype('int'))
@@ -312,7 +344,7 @@ def build_richness(names, distributions, area_codes, gdf, wikidata_fetcher=fetch
             "sr": {code: counts_lookup[(family, code)]
                     for code in sorted(set(area_codes))
                     if (family, code) in counts_lookup},
-            "global": int(group.plant_name_id.nunique()),
+            "global": global_count_lookup.get(family),
             "globalEndemic": int(endemic_global.get(family, 0)),
             "climate": climates_dict,
             "ids": {
@@ -360,7 +392,7 @@ def main():
     #     json.dump(result, outfile, allow_nan=False, sort_keys=True)
     #     print("wrote to file")
     sys.stdout.write("\n")
-    
+
 
 if __name__ == "__main__":
     main()
