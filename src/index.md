@@ -103,7 +103,7 @@ const endemicOnly = Generators.input(endemicInput);
 function cellValue(c) {
   if (!c) return 0;
   if (endemicOnly) return c[3];
-  return (opts.includes("Native") ? c[0] : 0) + (opts.includes("Extinct/Extirpated") ? c[2] : 0) + (opts.includes("Introduced") ? c[1] : 0);
+  return (opts.includes("Native") ? c[0] : 0) + (opts.includes("Introduced") ? c[1] : 0) + (opts.includes("Extinct/Extirpated") ? c[2] : 0);
 }
 const areaCodes = wgsrpd.features.map(f => f.properties.LEVEL3_COD)
 // Define a "view" based on current settings
@@ -149,14 +149,19 @@ const colorOptions = {
 ```
 
 ```js
-// Get total vascular plant sr by family
+// Get total vascular plant sr and number of families present, by area
 const totalSrMap = {};
+const totalFamMap = {};
 
-// For each country code, sum the values across all plant families
 areaCodes.forEach(area => {
-  totalSrMap[area] = Object.values(srView).reduce((sum, family) => {
-    return sum + (family[area] || 0);
-  }, 0);
+  let total = 0, nFam = 0;
+  for (const family of Object.values(srView)) {
+    const n = family[area] || 0;
+    total += n;
+    if (n > 0) nFam++;
+  }
+  totalSrMap[area] = total;
+  totalFamMap[area] = nFam;
 });
 ```
 
@@ -334,7 +339,10 @@ const helpTip = (text) => html`<details class="help">
 const chartCards = html`<div class="dash-right ${stacked ? "stacked" : ""}">
     <div class="card">
       <div class="dash-fill">${distPlot}</div>
-      ${helpTip("Comparison of the global diversity and distribution of each plant family, selected family highlighted.")}
+      ${helpTip(html`Comparison of the global diversity and distribution of each plant family, selected family highlighted.
+        ${!opts.includes("Native") 
+            ? html`<br><br>Here, "extinct" refers to species that are extinct <i>everywhere</i>, but "introduced" refers to species that <i>also</i> exist outside their native range.` : ""}`
+      )}
     </div>
     <div class="card" style="${stacked ? "height: 350px;" : ""}">
       ${helpTip("Preferred climate of the each species in the selected plant family, as reported in WCVP. Does not support filtering by introduced/extinct/endemic.")}
@@ -426,7 +434,7 @@ ${persistedArea === null
     <p>Select a family from the table below, or a botanical country from the map or right table.</p>
     `
   : html`
-      <p>Contains ${areaRanked.length.toLocaleString()} plant families and ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} species.</p>
+      <p>Contains ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} ${!opts.includes("Native") ? opts.map(v => v.toLowerCase()).join(" and ") : endemicOnly ? "endemic" : ""} species in ${areaRanked.length.toLocaleString()} plant families.</p>
       ${topFamiliesNum > 0 ? html`<p><mark>Hotspot!</mark> Top ranked for ${topFamiliesNum} families.</p>` : html``}
     `
 }
@@ -434,11 +442,17 @@ ${persistedArea === null
 ```js
 // Get global SR by family
 // TODO: Get global SR for the different "buckets" so they work for this chart - more complex than I thought
+function getGlobalSrOptions(c){
+  if (!c) return 0;
+  if (opts.includes("Native")) return (c[0] + (opts.includes("Extinct/Extirpated") ? c[2] : 0));
+  return  (0 + (opts.includes("Introduced") ? c[1] : 0) + (opts.includes("Extinct/Extirpated") ? c[2] : 0));
+}
+
 const globalFamilyEntries = Object.keys(sr).map((family) => {
   return {
     family, 
     cmnName: cmnNamesFiltered[family]?.[0],
-    globalSr: sr[family]['global'],
+    globalSr: getGlobalSrOptions(sr[family]['global']),
     endemicGlobalSr: sr[family]['globalEndemic'],
     nAreas: Object.values(srView[family]).filter((d) => d > 0).length
   }
@@ -603,7 +617,10 @@ const readMore = selectedFam == null ? [] : [
 
 ```js
 selectedFam == null
-  ? html`<p>Select a plant family with the search bar or from the left table.</p>`
+  ? html`
+    <div style="margin: -1rem 0;"><h1 style="font-family: 'serif'; font-weight: normal;">Botanical Countries</h1>
+    <br>${familySearchBox}<br></div>
+    <p>Select a plant family with the search bar or from the left table.</p>`
   : html`
     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; margin: -1rem 0;">
       <div>
@@ -664,7 +681,7 @@ const famEntries = Object.entries(srView[selectedFam] || {}).map(([areaCode, ric
   areaCode,
   areaName: codeToName[areaCode] ?? areaCode,
   richness: Math.round(richness),
-  percentGlobal: Math.round(richness / sr[selectedFam]['global'] * 1000) / 10
+  percentGlobal: Math.round(richness / (sr[selectedFam]['global'][0] + sr[selectedFam]['global'][2]) * 1000) / 10
 }));
 const famRanked = rankFamily(famEntries);
 
@@ -673,6 +690,7 @@ const famEntriesTotal = Object.entries(totalSrMap).map(([areaCode, richness]) =>
   areaCode,
   areaName: codeToName[areaCode] ?? areaCode,
   richness: Math.round(richness),
+  nFamilies: totalFamMap[areaCode]
   // TODO: Number of families present
 }));
 
@@ -690,11 +708,11 @@ const areaTableInput = selectedFam
     })
   // if selectedFam is null, do table of all areas by total richness
   : Inputs.table(famEntriesTotal, {
-      columns: ["areaName", "richness"],
+      columns: ["areaName", "richness", "nFamilies"],
       header: {
         areaName: "Area",
-        richness: "Species Richness"
-        // TODO: Number of families present
+        richness: "Species Richness",
+        nFamilies: "Families present"
       },
       multiple: false,
       rows: 14,
@@ -723,15 +741,14 @@ if (areaTableSelect !== null) {
 };
 ```
 ```js
+
 // Display table and image
 selectedFam != null
   ? html`
   <div style="display:flex; gap:1em; align-items:flex-start; flex-wrap:wrap;">
-        
-    
     <div style="flex:1 1 280px; min-width:0;">
       <div>${familySearchBox}</div>
-      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() + " endemic " : sr[selectedFam]?.['global'].toLocaleString() ?? "—"} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} countries, highest species richness in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
+      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() + " endemic " : getGlobalSrOptions(sr[selectedFam]['global']).toLocaleString() ?? "—"} ${!opts.includes("Native") ? opts.map(v => v.toLowerCase()).join(" and ") : ""} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} areas, highest in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
       <p>${akaHtml}</p>
       ${areaTableInput} 
     </div>
@@ -750,8 +767,7 @@ selectedFam != null
       : html`<p>No images available. Consider adding one on <a href="${sr[selectedFam]?.['ids']['wikidata'] ?? ""}" target="_blank">Wikidata</a>?</p>`}
   </div>
   `
-  : html`<div>${familySearchBox}</div><br>
-        ${areaTableInput}`
+  : html`${areaTableInput}`
   // TODO: Add overall areas table by total species richness when selFamily=null. Should include total number of families also
 ```
 </div>
@@ -802,6 +818,8 @@ const asaGrayButtons = Inputs.button([
 ## Methodology
 
 After the WCVP dataset is updated (weekly), a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species. The count of unique extant native, introduced and extinct species in each area is recorded and grouped by family. Note that "native" implies "extant native", and extinct introduced species are included in the "introduced" category. Next, the non-introduced subset is filtered to find "endemic" species which only naturally occur(red) in one area. 
+
+A few areas on the dashboard use a "global" count of species per family, such as the global plant families table or distribution plot. "Introduced" species for this purpose inclues any species that exist outside their native range, while "extinct" species only include those that are extinct everywhere.
 
 The species richness in each ten-degree latitude band is calculated for each country by selecting all areas intersecting this band and counting their combined unique species. The number of species by climate for each family is also recorded. Future plans are to also examine the unique "life-forms".
 
