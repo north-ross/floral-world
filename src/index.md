@@ -341,7 +341,7 @@ const chartCards = html`<div class="dash-right ${stacked ? "stacked" : ""}">
       <div class="dash-fill">${distPlot}</div>
       ${helpTip(html`Comparison of the global diversity and distribution of each plant family, selected family highlighted.
         ${!opts.includes("Native") 
-            ? html`<br><br>Here, "extinct" refers to species that are extinct <i>everywhere</i>, but "introduced" refers to species that <i>also</i> exist outside their native range.` : ""}`
+            ? html`<br><br>Here, "introduced" refers to species that <i>also</i> exist outside their native range, but "extinct" refers to species that are extinct <i>everywhere</i>.` : ""}`
       )}
     </div>
     <div class="card" style="${stacked ? "height: 350px;" : ""}">
@@ -781,7 +781,7 @@ display(stacked ? chartCards : html` `);
 
 ## About
 
-The World Checklist for Vascular Plants (WCVP)[^1] classifies the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${globalSrSum.toLocaleString()} species in ${Object.keys(sr).length} families. It also tracks their distributions into ${wgsrpd.features.length} "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
+The World Checklist for Vascular Plants ([WCVP](https://powo.science.kew.org/about-wcvp))[^1] classifies the world's [vascular plants](https://en.wikipedia.org/wiki/Vascular_plant) into ${globalSrSum.toLocaleString()} species in ${Object.keys(sr).length} families. It also tracks their distributions into ${wgsrpd.features.length} "botanical countries". This site is used to explore the number of species in different areas, a useful measure of global biodiversity ([α-diversity](https://en.wikipedia.org/wiki/Alpha_diversity)). 
 
 The data on this site **includes** hybrids and "doubtfully present" locations, and allows filtering by native, introduced and extirpated range. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
