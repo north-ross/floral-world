@@ -6,7 +6,7 @@ toc: true
 <style>
 mark {
   background-color: #688816;
-  padding: 2px;
+  padding: 1px;
 }
 .wide p,
 .wide h1,
@@ -424,6 +424,14 @@ if (areaSelectDropdown !== null) {
 };
 ```
 
+```js
+// Helper for selecting family by hyperlink
+const famLink = (fam) => html`<a href="#" onclick=${(event) => {
+  event.preventDefault();   // stop the "#" from jumping to the top of the page
+  setSelectedFam(fam);
+}}>${fam}</a>`;
+```
+
 <div style="display:flex; gap:4px; align-items:center;">
   ${areaSelectDropdownInput}
   ${areaClearButtonInput}
@@ -434,8 +442,16 @@ ${persistedArea === null
     <p>Select a family from the table below, or a botanical country from the map or right table.</p>
     `
   : html`
-      <p>Contains ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} ${!opts.includes("Native") ? opts.map(v => v.toLowerCase()).join(" and ") : endemicOnly ? "endemic" : ""} species in ${areaRanked.length.toLocaleString()} plant families.</p>
-      ${topFamiliesNum > 0 ? html`<p><mark>Hotspot!</mark> Top ranked for ${topFamiliesNum} families.</p>` : html``}
+      <p>Contains ${totalSrMap[persistedArea.properties.LEVEL3_COD].toLocaleString()} 
+        ${!opts.includes("Native") 
+          ? opts.map(v => v.toLowerCase()).join(" and ") 
+          : endemicOnly ? "endemic" : ""} species in ${areaRanked.length.toLocaleString()} plant families.</p>
+      ${topFamiliesNum > 1 
+        ? html`<p><mark>Hotspot!</mark> Top ranked for ${topFamiliesNum} families. Explore on the table:</p>` 
+        : specialtyFam?.['pctAboveAvg'] 
+          ? html`<p style="max-width: none;"><mark style="background-color: #ada644;">Specialty family</mark>: ${persistedArea.properties.LEVEL3_NAM} is ${specialtyTie ? "one of the" : specialtyFam['denseRank'] == 1 ? "the" : "the "+ordinal(specialtyFam['denseRank'])} most diverse place${specialtyTie ? "s" : ""} on Earth for the family ${famLink(specialtyFam['family'])}${cmnNamesFiltered[specialtyFam['family']]?.[0] ? " ("+cmnNamesFiltered[specialtyFam['family']][0]+")" : ""}, ${specialtyFam['pctAboveAvg'].toFixed()}% above the global average species richness.` 
+          : ""
+        } 
     `
 }
 
@@ -488,7 +504,8 @@ function transposeForArea(nested, areaCode) {
       rank: row?.rank ?? null,
       denseRank: row?.denseRank ?? null,
       tieLabel: row?.tieLabel ?? "—",
-      pctAboveAvg: row?.pctAboveAvg ?? null
+      pctAboveAvg: row?.pctAboveAvg ?? null,
+      tieCount: row?.tieCount ?? null
     };
   });
 }
@@ -499,7 +516,18 @@ const areaEntries = persistedArea
 
 // Sort by the family's global rank (best/lowest rank number first)
 const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank)).filter((d) => d.richness>0);
+
+// Get the number of top ranked families in this area
 const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
+// Get the highest-ranked family from this area. "% above average" as the between-fam tiebreaker
+const highestRank = areaRanked[0]?.["rank"]
+const specialtyFam = areaRanked.filter((d) => d.rank == highestRank).sort((a, b) => b.pctAboveAvg - a.pctAboveAvg)[0]
+// if the specialty is a tie, indicate
+const specialtyTie = specialtyFam?.['tieCount'] > 1
+// Function to convert rank to ordinal
+const ordinalRules = new Intl.PluralRules("en", {type: "ordinal"});
+const suffixes = {one: "st", two: "nd", few: "rd", other: "th"};
+const ordinal = (n) => `${n}${suffixes[ordinalRules.select(n)]}`;
 ```
 
 ```js
@@ -791,14 +819,10 @@ Displaying the names of all the species would be too intensive for this site, bu
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
 
 Here are a few plant families with interesting distributions you could check out as well:
-- Ericaceae, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the variation in rest of the world better
-${Inputs.button("Select Ericaceae", {reduce: () => setSelectedFam("Ericaceae")})} 
-- Polemoniaceae (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
-${Inputs.button("Select Polemoniaceae", {reduce: () => setSelectedFam("Polemoniaceae")})}
-- The parasitic "vampire-cup" family Cytinaceae has a weird ditribution around Mexico, Madagascar and the mediterranean. I suspect that this is a relict population that has survived in these three areas with similar climates.
-${Inputs.button("Select Cytinaceae", {reduce: () => setSelectedFam("Cytinaceae")})}
-- Sarraceniaceae (new world pitcher plants) are a cool family with an interesting distribution, highest around Florida and Venezuela.
-${Inputs.button("Select Sarraceniaceae", {reduce: () => setSelectedFam("Sarraceniaceae")})}
+- ${famLink("Ericaceae")}, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the variation in rest of the world better.
+- ${famLink("Polemoniaceae")} (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
+- The parasitic "vampire-cup" family ${famLink("Cytinaceae")} has a weird ditribution around Mexico, Madagascar and the mediterranean. I suspect that this is a relict population that has survived in these three areas with similar climates.
+- ${famLink("Sarraceniaceae")} (new world pitcher plants) are a cool family with an interesting distribution, highest around Florida and Venezuela.
 - The "[Asa Gray disjunction](https://en.wikipedia.org/wiki/Asa_Gray_disjunction)" can be seen in the following families that are found in both East Asia and eastern North America, but not in between. It's generally though that these families used to be present over all of the northern hemisphere, but went extinct in western North America as the climate became drier there during the Neogene.
 
  ${asaGrayButtons}
@@ -812,8 +836,7 @@ const asaGrayButtons = Inputs.button([
 ], {label: "Select examples"});
 ```
 
-- The gentian family has an unusual climate breakdown, the majority of species are found in "subalpine or subarctic" climate.
- ${Inputs.button("Select Gentianaceae", {reduce: () => setSelectedFam("Gentianaceae")})}
+- The gentian family ${famLink("Gentianaceae")} has an unusual climate breakdown, the majority of species are found in "subalpine or subarctic" climate.
 
 ## Methodology
 
