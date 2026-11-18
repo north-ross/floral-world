@@ -383,7 +383,7 @@ display(html`
 
 ${persistedArea === null
   ? html`
-    <h1 style="font-family: var(--serif);font-weight: normal;">Global Vascular Plant Families</h1>
+    <h1 style="font-family: var(--serif);">Global Vascular Plant Families</h1>
     ${helpTip("Table lists all global plant families and their diversity. Select a family by clicking the button to the left of its name.")}
     `
   : html`
@@ -646,7 +646,7 @@ const readMore = selectedFam == null ? [] : [
 ```js
 selectedFam == null
   ? html`
-    <div style="margin: -1rem 0;"><h1 style="font-family: var(--serif); font-weight: normal;">Botanical Countries</h1>
+    <div style="margin: -1rem 0;"><h1 style="font-family: var(--serif);">Botanical Countries</h1>
     <br>${familySearchBox}<br></div>
     <p>Select a plant family with the search bar or from the left table.</p>`
   : html`
@@ -813,7 +813,7 @@ The World Checklist for Vascular Plants ([WCVP](https://powo.science.kew.org/abo
 
 The data on this site **includes** hybrids and "doubtfully present" locations, and allows filtering by native, introduced and extirpated range. Data is updated weekly from WCVP's [data repository](https://sftp.kew.org/pub/data-repositories/WCVP/). The idea is that this will allow us to examine the "natural" patterns of plant diversity. A future version of the site will allow the user to tweak these parameters.
 
-Displaying the names of all the species would be too intensive for this site, but you can use the [WCVP Build a Checklist](https://checklistbuilder.science.kew.org/reportbuilder.do) tool to get this list for your area/family/range options combo. Alternatively, check out Arnau Ribera's [WCVP checklist builder](https://arnauribera.com/portfolio/wcvp-checklist-builder/), which has a more user-friendly output. Use "Botanical Country" or "TWDG Level 3" to filter using the same areas displayed here.
+Displaying the names of all the species would be too intensive for this site, but you can use the [Kew WCVP Checklist Builder](https://checklistbuilder.science.kew.org/reportbuilder.do) (or Arnau Ribera's [alternative](https://arnauribera.com/portfolio/wcvp-checklist-builder/)) to get this list for your area/family/range options combo.
 
 ## How to use 
 You might want to start by clicking on your home area, or one that you're interested in. The table that will show in the bottom left will be sorted by the uniquely high families for this area. Selecting that row in the table will update the map to show its distribution.
@@ -823,7 +823,7 @@ Here are a few plant families with interesting distributions you could check out
 - ${famLink("Polemoniaceae")} (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
 - The parasitic "vampire-cup" family ${famLink("Cytinaceae")} has a weird ditribution around Mexico, Madagascar and the mediterranean. I suspect that this is a relict population that has survived in these three areas with similar climates.
 - ${famLink("Sarraceniaceae")} (new world pitcher plants) are a cool family with an interesting distribution, highest around Florida and Venezuela.
-- The "[Asa Gray disjunction](https://en.wikipedia.org/wiki/Asa_Gray_disjunction)" can be seen in the following families that are found in both East Asia and eastern North America, but not in between. It's generally though that these families used to be present over all of the northern hemisphere, but went extinct in western North America as the climate became drier there during the Neogene.
+- The "[Asa Gray disjunction](https://en.wikipedia.org/wiki/Asa_Gray_disjunction)" can be seen in the following families that are found in both East Asia and eastern North America, but not in between. It's generally thought that these families used to be present over all of the northern hemisphere, but went extinct in western North America as the climate became drier there during the Neogene.
 
  ${asaGrayButtons}
 
@@ -840,7 +840,7 @@ const asaGrayButtons = Inputs.button([
 
 ## Methodology
 
-After the WCVP dataset is updated (weekly), a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species. The count of unique extant native, introduced and extinct species in each area is recorded and grouped by family. Note that "native" implies "extant native", and extinct introduced species are included in the "introduced" category. Next, the non-introduced subset is filtered to find "endemic" species which only naturally occur(red) in one area. 
+Each week, following the WCVP dataset update, a Python script is triggered to update the underlying data from the site. The checklist is filtered to include only accepted species. The count of native, introduced and extinct species in each area is recorded and grouped by family. Note that the "native" category implies "extant native", and extinct introduced species are included in the "introduced" category. Next, the non-introduced subset is filtered to find endemic species which only naturally occur(red) in one area. 
 
 A few areas on the dashboard use a "global" count of species per family, such as the global plant families table or distribution plot. "Introduced" species for this purpose inclues any species that exist outside their native range, while "extinct" species only include those that are extinct everywhere.
 
@@ -864,6 +864,8 @@ On this map, a species is considered endemic if its native range (including area
 
 This is a central and still unresolved question in biogeography, sometimes called the Latitudinal Diversity Gradient (LDG). The general pattern is that species richness tends to be higher around the equator and lower around the poles. The LDG chart to the right of the map on this site shows that this is true for most families, although some have a preference for the northern hemisphere or mid-latitudes. It seems to be a relatively recent phenomenon which began after the end of the Cretaceous period, 30 or 40 million years ago. Before this, Earth usually had a much wider tropical band, and species richness was probably not much lower around the poles than at the equator. 
 
+
+
 Areas with a diversity of climates or geographic features ([geodiversity](https://www.gtk.fi/en/current/geodiversity-lays-the-foundation-for-biodiversity/)) will also naturally have higher plant biodiversity, since they contain more niches for plants to fill. This is part of why areas like "China South-Central" (Chongqing, Guizhou, Hubei, Sichuan and Yunnan) have such high species richness on the map.
 
 One paper ([Tietje et al. 2022](https://www.researchgate.net/publication/361631933_Global_variation_in_diversification_rate_and_species_richness_are_unlinked_in_plants)[^3]) used this same dataset (filtered to seed plants) to try and explore some different hypotheses on this question. They found that one of the most important factors contributing to an area's plant species richness are temperature and precipitation. However, they also found that the diversification rate was generally lower in these areas and higher in dry, northern areas that experienced more climate change in the past 30 million years. They conclude that the reason why tropical areas have more diverse plants is not because of higher rates of diversification, but that they have conserved more species from the Earth's deep tropical past. Something to consdier when exploring the map!
@@ -877,7 +879,7 @@ I previously assumed the reason why some families are very diverse in one area a
 
 ${Inputs.button("Select Onagraceae on the map", {reduce: () => setSelectedFam("Onagraceae")})}
 
-Onagraceae (the "evening primrose" or fireweed family), is present around the world but extremely diverse in California. However, the earliest fossils we have are from Paleocene Colombia (as per [Paleobiology Database](https://paleobiodb.org)), and its evolutionary history is much more complex, with its most diverse lineages originating in California, but with other genera originating in South America, eastern North America, and *Chamanerion* appearing to originate in the northern temporal zone[^4].
+Onagraceae (the "evening primrose" or fireweed family), is present around the world but extremely diverse in California. However, the earliest fossils we have are from Paleocene Colombia (as per [Paleobiology Database](https://paleobiodb.org)), and its evolutionary history is much more complex, with its most diverse lineages originating in California, but with other genera originating in South America, eastern North America, and *Chamanerion* appearing to originate in the northern temporal zone[^5].
 
 I hope this helps you dive into lots of rabbit holes!
 
@@ -893,6 +895,8 @@ A checklist of future plans for the site is available on [GitHub](https://github
 
 [^2]: Sabatini, F.M., Jiménez-Alfaro, B., Jandt, U. et al. Global patterns of vascular plant alpha diversity. Nat Commun 13, 4683 (2022). https://doi.org/10.1038/s41467-022-32063-z
 
-[^3]: Tietje, Melanie & Antonelli, Alexandre & Baker, William & Govaerts, Rafaël & Smith, Stephen & Eiserhardt, Wolf. (2022). Global variation in diversification rate and species richness are unlinked in plants. Proceedings of the National Academy of Sciences. 119. https://doi.org/10.1073/pnas.2120662119. 
+[^3]: Tietje, Melanie & Antonelli, Alexandre & Baker, William & Govaerts, Rafaël & Smith, Stephen & Eiserhardt, Wolf. (2022). Global variation in diversification rate and species richness are unlinked in plants. Proceedings of the National Academy of Sciences. 119. https://doi.org/10.1073/pnas.2120662119
 
-[^4]: Katinas L, Crisci JV, Wagner WL, Hoch PC. Geographical diversification of tribes Epilobieae, Gongylocarpeae, and Onagreae (Onagraceae) in North America, based on parsimony analysis of endemicity and track compatibility analysis. Ann Mo Bot Gard. 2004;91(1):159–85. https://repository.si.edu/server/api/core/bitstreams/8deb0998-cb59-412f-9369-96add8cf4641/content.
+[^4]: Kreft, Holger & Jetz, Walter. (2007). Global patterns and determinants of vascular plant diversity. Proceedings of the National Academy of Sciences. 104. 5925-5930. https://doi.org/10.1073/pnas.0608361104
+
+[^5]: Katinas L, Crisci JV, Wagner WL, Hoch PC. Geographical diversification of tribes Epilobieae, Gongylocarpeae, and Onagreae (Onagraceae) in North America, based on parsimony analysis of endemicity and track compatibility analysis. Ann Mo Bot Gard. 2004;91(1):159–85. https://repository.si.edu/server/api/core/bitstreams/8deb0998-cb59-412f-9369-96add8cf4641/content
