@@ -383,11 +383,11 @@ display(html`
 
 ${persistedArea === null
   ? html`
-    <h1 style="font-family: 'serif';font-weight: normal;">Global Vascular Plant Families</h1>
+    <h1 style="font-family: var(--serif);font-weight: normal;">Global Vascular Plant Families</h1>
     ${helpTip("Table lists all global plant families and their diversity. Select a family by clicking the button to the left of its name.")}
     `
   : html`
-      <h1 style="font-family: 'serif';font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
+      <h1 style="font-family: var(--serif);font-weight: normal;">${persistedArea.properties.LEVEL3_NAM}</h1>
       ${helpTip(html`This table lists all the plant families present in the selected area, sorted by their global diversity rank. 
                     <br><br>For example, Finland is ranked third place for Ranunculaceae (buttercup family) diversity, behind Sweden and China South-Central. <br> <br>
                     Select a family in the table to update the map and other panels.`)}
@@ -521,7 +521,7 @@ const areaRanked = [...areaEntries].sort((a, b) => d3.ascending(a.rank, b.rank))
 const topFamiliesNum = areaRanked.filter((d) => d.rank == 1).length
 // Get the highest-ranked family from this area. "% above average" as the between-fam tiebreaker
 const highestRank = areaRanked[0]?.["rank"]
-const specialtyFam = areaRanked.filter((d) => d.rank == highestRank).sort((a, b) => b.pctAboveAvg - a.pctAboveAvg)[0]
+const specialtyFam = areaRanked.filter((d) => (d.rank == highestRank) & (d.rank < 8)).sort((a, b) => b.pctAboveAvg - a.pctAboveAvg)[0]
 // if the specialty is a tie, indicate
 const specialtyTie = specialtyFam?.['tieCount'] > 1
 // Function to convert rank to ordinal
@@ -646,14 +646,14 @@ const readMore = selectedFam == null ? [] : [
 ```js
 selectedFam == null
   ? html`
-    <div style="margin: -1rem 0;"><h1 style="font-family: 'serif'; font-weight: normal;">Botanical Countries</h1>
+    <div style="margin: -1rem 0;"><h1 style="font-family: var(--serif); font-weight: normal;">Botanical Countries</h1>
     <br>${familySearchBox}<br></div>
     <p>Select a plant family with the search bar or from the left table.</p>`
   : html`
     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; margin: -1rem 0;">
       <div>
-        <h1 style="font-family: 'serif'; font-weight: normal;">${selectedFam}</h1>
-        <h2 style="font-family: 'serif';">${cmnNamesFiltered[selectedFam]?.[0] ?? ""}</h2>
+        <h1 style="font-family: var(--serif); font-weight: normal;">${selectedFam}</h1>
+        <h2 style="font-family: var(--serif); color: var(--theme-foreground-muted)">${cmnNamesFiltered[selectedFam]?.[0] ?? ""}</h2>
       </div>
       <div style="display:grid; grid-template-columns:auto auto; gap:0.4rem 1.2rem; font-size:0.9em;">
         ${readMore.map(l => html`
@@ -776,8 +776,8 @@ selectedFam != null
   <div style="display:flex; gap:1em; align-items:flex-start; flex-wrap:wrap;">
     <div style="flex:1 1 280px; min-width:0;">
       <div>${familySearchBox}</div>
-      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() + " endemic " : getGlobalSrOptions(sr[selectedFam]['global']).toLocaleString() ?? "—"} ${!opts.includes("Native") ? opts.map(v => v.toLowerCase()).join(" and ") : ""} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} areas, highest in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
       <p>${akaHtml}</p>
+      <p>Contains ${endemicOnly ? sr[selectedFam]?.['globalEndemic'].toLocaleString() + " endemic " : getGlobalSrOptions(sr[selectedFam]['global']).toLocaleString() ?? "—"} ${!opts.includes("Native") ? opts.map(v => v.toLowerCase()).join(" and ") : ""} species in ${Object.values(srView[selectedFam]).filter((d) => d > 0).length} areas, highest in ${famRanked[0]?.areaName ?? "—"}. <a href="https://checklistbuilder.science.kew.org/reportbuilder.do" target="_blank">Build species checklist</a></p>
       ${areaTableInput} 
     </div>
     ${imgUrl != null
