@@ -426,8 +426,10 @@ if (areaSelectDropdown !== null) {
 
 ```js
 // Helper for selecting family by hyperlink
-const famLink = (fam) => html`<a href="#" onclick=${(event) => {
-  event.preventDefault();   // stop the "#" from jumping to the top of the page
+const famLink = (fam, jump=true) => html`<a href="#" onclick=${(event) => {
+  if (!jump){  // stop the "#" from jumping to the top of the page unless specified
+   event.preventDefault()
+   };   
   setSelectedFam(fam);
 }}>${fam}</a>`;
 ```
@@ -449,7 +451,7 @@ ${persistedArea === null
       ${topFamiliesNum > 1 
         ? html`<p><mark>Hotspot!</mark> Top ranked for ${topFamiliesNum} families. Explore on the table:</p>` 
         : specialtyFam?.['pctAboveAvg'] 
-          ? html`<p style="max-width: none;"><mark style="background-color: #ada644;">Specialty family</mark>: ${persistedArea.properties.LEVEL3_NAM} is ${specialtyTie ? "one of the" : specialtyFam['denseRank'] == 1 ? "the" : "the "+ordinal(specialtyFam['denseRank'])} most diverse place${specialtyTie ? "s" : ""} on Earth for the family ${famLink(specialtyFam['family'])}${cmnNamesFiltered[specialtyFam['family']]?.[0] ? " ("+cmnNamesFiltered[specialtyFam['family']][0]+")" : ""}, ${specialtyFam['pctAboveAvg'].toFixed()}% above the global average species richness.` 
+          ? html`<p style="max-width: none;"><mark style="background-color: #ada644;">Specialty family</mark>: ${persistedArea.properties.LEVEL3_NAM} is ${specialtyTie ? "one of the" : specialtyFam['denseRank'] == 1 ? "the" : "the "+ordinal(specialtyFam['denseRank'])} most diverse place${specialtyTie ? "s" : ""} on Earth for the family ${famLink(specialtyFam['family'], false)}${cmnNamesFiltered[specialtyFam['family']]?.[0] ? " ("+cmnNamesFiltered[specialtyFam['family']][0]+")" : ""}, ${specialtyFam['pctAboveAvg'].toFixed()}% above the global average species richness.` 
           : ""
         } 
     `
@@ -822,7 +824,7 @@ Here are a few plant families with interesting distributions you could check out
 - ${famLink("Ericaceae")}, the heather family, is insanely high in the Cape of South Africa. Try turning on the log scale (top right) to see the variation in rest of the world better.
 - ${famLink("Polemoniaceae")} (phlox) is centered on California. Click on California to see all the other plant families that are unusually high here. 
 - The parasitic "vampire-cup" family ${famLink("Cytinaceae")} has a weird ditribution around Mexico, Madagascar and the mediterranean. I suspect that this is a relict population that has survived in these three areas with similar climates.
-- ${famLink("Sarraceniaceae")} (new world pitcher plants) are a cool family with an interesting distribution, highest around Florida and Venezuela.
+- ${famLink("Sarraceniaceae")} (new world pitcher plants) are a cool family with an interesting distribution, highest around Alabama and Venezuela.
 - The "[Asa Gray disjunction](https://en.wikipedia.org/wiki/Asa_Gray_disjunction)" can be seen in the following families that are found in both East Asia and eastern North America, but not in between. It's generally thought that these families used to be present over all of the northern hemisphere, but went extinct in western North America as the climate became drier there during the Neogene.
 
  ${asaGrayButtons}
