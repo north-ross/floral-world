@@ -864,7 +864,7 @@ On this map, a species is considered endemic if its native range (including area
 
 This is a central and still unresolved question in biogeography, sometimes called the Latitudinal Diversity Gradient (LDG). The general pattern is that species richness tends to be higher around the equator and lower around the poles. The LDG chart to the right of the map on this site shows that this is true for most families, although some have a preference for the northern hemisphere or mid-latitudes. It seems to be a relatively recent phenomenon which began after the end of the Cretaceous period, 30 or 40 million years ago. Before this, Earth usually had a much wider tropical band, and species richness was probably not much lower around the poles than at the equator. 
 
-
+Using generalized linear models to predict plant species richness based on local climate has proved to be somewhat feasible, although the Cape Floristic Region of South Africa is much more biodiverse than the model would typically predict [^4]. Pretty cool! 
 
 Areas with a diversity of climates or geographic features ([geodiversity](https://www.gtk.fi/en/current/geodiversity-lays-the-foundation-for-biodiversity/)) will also naturally have higher plant biodiversity, since they contain more niches for plants to fill. This is part of why areas like "China South-Central" (Chongqing, Guizhou, Hubei, Sichuan and Yunnan) have such high species richness on the map.
 
