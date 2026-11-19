@@ -70,12 +70,12 @@ mark {
 
 ```js
 import { rankFamily} from "./rankings.js";
+import {loadWithRetry, loadErrorMessage} from "./loadData.js";
 ```
 
 ```js
 // From the WGSRPD shapefile, simplified and converted to topojson with mapshaper
 const wgsrpdTopo = FileAttachment('./data/level3.json').json();
-const sr = FileAttachment('./data/family-area-sr.json').json();
 const cmnNames = FileAttachment('./data/taxa-inat-darwincore.json').json();
 const colorMap = FileAttachment('./data/climate-colors-map.json').json();
 const dark = Generators.dark();
@@ -86,6 +86,15 @@ const icons = {
   col:  await FileAttachment("./data/assets/col.png").url(),
   powo: await FileAttachment("./data/assets/powo.png").url()
 };
+```
+
+```js
+// Load species richness data with fallback message
+const sr = await loadWithRetry(() => FileAttachment("./data/family-area-sr.json").json())
+  .catch(() => {
+    display(loadErrorMessage());
+    return new Promise(() => {});  // never resolves, so dependent cells stay quiet
+  });
 ```
 
 ```js
